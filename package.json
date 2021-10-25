@@ -20,5 +20,13 @@
         "resolve-url-loader": "^3.1.2",
         "sass": "^1.32.11",
         "sass-loader": "^11.0.1"
+    },
+    "dependencies": {
+        "primeicons": "^4.1.0",
+        "primevue": "^3.8.0",
+        "vue": "^3.2.20",
+        "vue-loader": "^16.8.1",
+        "vue-router": "^4.0.12",
+        "vuex": "^4.0.2"
     }
 }
