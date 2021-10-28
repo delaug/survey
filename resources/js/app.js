@@ -2,14 +2,24 @@ require('./bootstrap');
 
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
+import store from './store'
+import components from './components/UI';
 
-// PrimeVue
-import 'primevue/resources/themes/saga-blue/theme.css'       //theme
-import 'primevue/resources/primevue.min.css'                 //core css
-import 'primeicons/primeicons.css'                           //icons
+// UIkit
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+// loads the Icon plugin
+UIkit.use(Icons);
 
-import PrimeVue from "primevue/config"
 
-createApp(App)
-    .use(PrimeVue)
-    .mount('#app')
+
+const app = createApp(App);
+
+components.forEach(component => {
+    app.component(component.name, component);
+});
+
+app.use(store);
+app.use(router);
+app.mount('#app');

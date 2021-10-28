@@ -1,15 +1,20 @@
 <template>
-    <div>
-        Test Vue
+    <NavBar/>
+    <div class="uk-container">
+        <router-view/>
     </div>
 </template>
 
 <script>
-    export default {
+    import NavBar from "./components/NavBar";
 
+    export default {
+        name: 'App',
+        components: {
+            NavBar
+        }
     }
 </script>
 
 <style scoped>
-
 </style>
