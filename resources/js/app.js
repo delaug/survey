@@ -20,6 +20,16 @@ components.forEach(component => {
     app.component(component.name, component);
 });
 
+app.mixin({
+    data: function () {
+        return {
+            get UIkit () {
+                return UIkit
+            }
+        }
+    }
+});
+
 app.use(store);
 app.use(router);
 app.mount('#app');

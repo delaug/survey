@@ -19660,6 +19660,14 @@ __webpack_require__.r(__webpack_exports__);
       login: '',
       password: ''
     };
+  },
+  mounted: function mounted() {
+    this.UIkit.notification({
+      message: "Welcome, Admin",
+      status: 'success',
+      pos: 'top-right',
+      timeout: 2000
+    });
   }
 });
 
@@ -20129,6 +20137,16 @@ uikit__WEBPACK_IMPORTED_MODULE_5___default().use((uikit_dist_js_uikit_icons__WEB
 var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 _components_UI__WEBPACK_IMPORTED_MODULE_4__["default"].forEach(function (component) {
   app.component(component.name, component);
+});
+app.mixin({
+  data: function data() {
+    return {
+      get UIkit() {
+        return (uikit__WEBPACK_IMPORTED_MODULE_5___default());
+      }
+
+    };
+  }
 });
 app.use(_store__WEBPACK_IMPORTED_MODULE_3__["default"]);
 app.use(_router__WEBPACK_IMPORTED_MODULE_2__["default"]);

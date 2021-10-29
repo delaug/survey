@@ -53,6 +53,14 @@
                 password: '',
             }
         },
+        mounted() {
+            this.UIkit.notification({
+                message: `Welcome, Admin`,
+                status: 'success',
+                pos: 'top-right',
+                timeout: 2000
+            });
+        }
     }
 </script>
 
