@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Field;
+use App\Models\Survey;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,7 +18,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             RoleSeeder::class,
-            RoleUserSeeder::class
+            RoleUserSeeder::class,
+            FieldTypeSeeder::class,
+            FieldOptionSeeder::class,
+            // For test
+            SurveySeeder::class,
+            QuestionSeeder::class,
+            FieldSeeder::class,
         ]);
     }
 }
