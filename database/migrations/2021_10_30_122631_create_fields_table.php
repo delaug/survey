@@ -17,7 +17,6 @@ class CreateFieldsTable extends Migration
             $table->id();
             $table->unsignedInteger('sort')->default(10);
             $table->foreignId('type_id')->constrained('field_types');
-            $table->foreignId('option_id')->constrained('field_options');
             $table->foreignId('question_id');
             $table->timestamps();
             $table->softDeletes();

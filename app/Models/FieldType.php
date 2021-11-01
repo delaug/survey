@@ -14,4 +14,8 @@ class FieldType extends Model
     const RADIO = 2;
     const TEXT = 3;
     const TEXTAREA = 4;
+
+    public function options() {
+        return $this->belongsToMany(FieldOption::class,'option_type', 'type_id', 'option_id');
+    }
 }

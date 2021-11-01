@@ -3,13 +3,22 @@ import Home from '../views/Home'
 import About from '../views/About'
 import Login from '../views/Login'
 import Register from '../views/Register'
+import Surveys from "../views/Surveys";
+import SurveyDetail from "../views/SurveyDetail";
 
 const routes = [
     {
-        path: '/',
-        name: 'Home',
+        path: '/surveys',
+        name: 'Surveys',
         position: 'left',
-        component: Home
+        component: Surveys
+    },
+    {
+        path: '/surveys/:id',
+        name: 'SurveyDetail',
+        //position: 'left',
+        component: SurveyDetail,
+        //props: true,
     },
     {
         path: '/about',

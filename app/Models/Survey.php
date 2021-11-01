@@ -20,7 +20,25 @@ class Survey extends Model
         'description',
     ];
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    //protected $with = ['questions'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'date:Y-m-d H:i:s',
+        'updated_at' => 'date:Y-m-d H:i:s',
+    ];
+
+
     public function questions() {
-        return $this->belongsTo(Question::class);
+        return $this->hasMany(Question::class);
     }
 }

@@ -18,10 +18,17 @@ class Question extends Model
     protected $fillable = [
         'text',
         'sort',
-        'survey_id',
+        'survey_id'
     ];
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    //protected $with = ['fields'];
+
     public function fields() {
-        return $this->belongsTo(Field::class);
+        return $this->hasMany(Field::class);
     }
 }

@@ -18,15 +18,21 @@ class Field extends Model
     protected $fillable = [
         'sort',
         'type_id',
-        'option_id',
         'question_id',
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    //protected $with = ['type', 'option'];
 
     public function type() {
         return $this->belongsTo(FieldType::class);
     }
 
-    public function option() {
-        return $this->belongsTo(FieldOption::class);
+    public function question() {
+        return $this->belongsTo(Question::class);
     }
 }

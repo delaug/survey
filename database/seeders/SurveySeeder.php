@@ -14,6 +14,6 @@ class SurveySeeder extends Seeder
      */
     public function run()
     {
-        Survey::factory()->count(2)->create();
+        Survey::factory()->count(33)->create();
     }
 }

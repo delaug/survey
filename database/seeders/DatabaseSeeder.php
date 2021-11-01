@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Field;
-use App\Models\Survey;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +18,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             RoleUserSeeder::class,
             FieldTypeSeeder::class,
-            FieldOptionSeeder::class,
             // For test
             SurveySeeder::class,
             QuestionSeeder::class,
