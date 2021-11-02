@@ -1,6 +1,5 @@
 import {createStore} from 'vuex'
 import auth from './modules/auth'
-import survey from './modules/survey'
 import surveys from './modules/surveys'
 
 export default createStore({
@@ -9,7 +8,6 @@ export default createStore({
     actions: {},
     modules: {
         auth,
-        survey,
         surveys,
     }
 })

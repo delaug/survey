@@ -15,8 +15,8 @@ class CreateFieldsTable extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
+            $table->string('text');
             $table->unsignedInteger('sort')->default(10);
-            $table->foreignId('type_id')->constrained('field_types');
             $table->foreignId('question_id');
             $table->timestamps();
             $table->softDeletes();

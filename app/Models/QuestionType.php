@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class FieldType extends Model
+class QuestionType extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,12 @@ class FieldType extends Model
     const TEXT = 3;
     const TEXTAREA = 4;
 
-    public function options() {
-        return $this->belongsToMany(FieldOption::class,'option_type', 'type_id', 'option_id');
-    }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'name'
+    ];
 }

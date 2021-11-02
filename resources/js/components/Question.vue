@@ -4,26 +4,27 @@
             <div class="uk-grid-small uk-flex-middle" uk-grid>
                 <div class="uk-width-expand">
                     <h3 class="uk-card-title uk-margin-remove-bottom">{{question.text}}</h3>
-                    <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">Question {{step}} /
-                        {{questions_count}}</time></p>
+                    <p class="uk-text-meta uk-margin-remove-top">
+                        <time datetime="2016-04-01T19:00">Question {{step}} /
+                            {{questions_count}}
+                        </time>
+                    </p>
                 </div>
             </div>
         </div>
         <div class="uk-card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+            <FieldsList :type="question.type.id" :fields="question.fields"/>
         </div>
         <div class="uk-card-footer">
             <div class="uk-grid-small uk-child-width-auto" uk-grid>
                 <div>
-                    <button class="uk-button uk-button-default" :disabled="step==1" @click="back">Back</button>
+                    <ui-button :class="'uk-button-default'" @click="back" :disabled="step==1">Back</ui-button>
                 </div>
-                <div>
-                    <button class="uk-button uk-button-primary" :disabled="step==questions_count" @click="next">Next</button>
+                <div v-if="step != questions_count">
+                    <ui-button :class="'uk-button-primary'" @click="next">Next</ui-button>
                 </div>
-            </div>
-            <div  v-if="step == questions_count" class="uk-grid-small uk-child-width-auto" uk-grid>
-                <div>
-                    <button class="uk-button uk-button-primary" @click="done">Done</button>
+                <div v-else>
+                    <ui-button :class="'uk-button-primary'" @click="done">Done</ui-button>
                 </div>
             </div>
         </div>
@@ -31,8 +32,10 @@
 </template>
 
 <script>
+    import FieldsList from "./FieldsList";
     export default {
         name: "Question",
+        components: {FieldsList},
         props: {
             questions: {
                 type: Array,
@@ -61,7 +64,7 @@
         },
         computed: {
             question() {
-                return this.questions[this.step-1]
+                return this.questions[this.step - 1]
             }
         }
     }

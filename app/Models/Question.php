@@ -18,7 +18,8 @@ class Question extends Model
     protected $fillable = [
         'text',
         'sort',
-        'survey_id'
+        'survey_id',
+        'type_id',
     ];
 
     /**
@@ -30,5 +31,9 @@ class Question extends Model
 
     public function fields() {
         return $this->hasMany(Field::class);
+    }
+
+    public function type() {
+        return $this->belongsTo(QuestionType::class);
     }
 }

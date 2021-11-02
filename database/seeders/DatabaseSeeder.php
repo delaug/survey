@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleSeeder::class,
             RoleUserSeeder::class,
-            FieldTypeSeeder::class,
+            QuestionTypeSeeder::class,
             // For test
             SurveySeeder::class,
             QuestionSeeder::class,

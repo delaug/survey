@@ -1,7 +1,13 @@
 <template>
     <Loader v-if="loading"/>
 
-    <article v-else-if="survey" class="uk-article">
+    <div v-if="!user" class="uk-grid">
+        <div class="uk-align-center">
+            Please auth for take survey.
+        </div>
+    </div>
+
+    <article v-else-if="user && survey" class="uk-article">
         <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{survey.title}}</a></h1>
         <p class="uk-article-meta">Written by <a href="#">Admin</a> on {{survey.created_at}}. Posted in <a href="#">Blog</a></p>
         <p class="uk-text-lead">{{survey.description}}</p>
@@ -27,24 +33,29 @@
         components: {Question, Loader},
         data() {
             return {
-                id: null
+                id: null,
+                loading: false
             }
         },
         computed: {
             ...mapState({
-                survey: state => state.survey.survey,
-                loading: state => state.survey.loading
+                user: state => state.auth.user,
+                survey: state => state.surveys.survey,
             }),
         },
         methods: {
             ...mapActions({
-                getSurvey: 'survey/getSurvey',
-                getLoading: 'survey/getLoading'
+                getSurvey: 'surveys/getSurvey',
             })
         },
         mounted() {
-            this.id = this.$route.params.id
-            this.getSurvey(this.id);
+            if(this.user) {
+                this.loading = true
+                this.id = this.$route.params.id
+                this.getSurvey(this.id).then(() => {
+                    this.loading = false
+                });
+            }
         }
 
     }

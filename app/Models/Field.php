@@ -16,8 +16,8 @@ class Field extends Model
      * @var string[]
      */
     protected $fillable = [
+        'text',
         'sort',
-        'type_id',
         'question_id',
     ];
 
@@ -27,12 +27,4 @@ class Field extends Model
      * @var array
      */
     //protected $with = ['type', 'option'];
-
-    public function type() {
-        return $this->belongsTo(FieldType::class);
-    }
-
-    public function question() {
-        return $this->belongsTo(Question::class);
-    }
 }

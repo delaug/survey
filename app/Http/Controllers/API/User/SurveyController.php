@@ -16,7 +16,7 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        $surveys = Survey::paginate(5);
+        $surveys = Survey::withCount('questions')->paginate(5);
         return response()->json($surveys, Response::HTTP_OK);
     }
 
@@ -30,10 +30,10 @@ class SurveyController extends Controller
     {
         $survey = Survey::with([
             'questions' => fn($q) => $q
-                ->select(['id', 'text', 'sort', 'survey_id'])
+                ->select(['id', 'text', 'sort', 'survey_id', 'type_id'])
                 ->withCount(['fields']),
-            'questions.fields:id,sort,type_id,question_id',
-            'questions.fields.type:id,name,description',
+            'questions.type:id,name',
+            'questions.fields:id,text,question_id',
         ])
             ->withCount('questions')
             ->findOrFail($id);

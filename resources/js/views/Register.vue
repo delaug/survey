@@ -156,7 +156,7 @@
                                 pos: 'top-right',
                                 timeout: 2000
                             });
-                            router.push('/')
+                            router.go(-1)
                         })
                         .catch(error => {
                             if (this.errors != undefined)
