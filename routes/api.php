@@ -26,6 +26,13 @@ Route::prefix('v1')->group(function () {
     Route::apiResources(['surveys' => SurveyController::class], ['only' => ['index','show']]);
 
     /*
+     * User auth routes
+     */
+    Route::group(['middleware'=>'auth:sanctum'], function () {
+        Route::post('/surveys/{survey}/take', [SurveyController::class, 'take']);
+    });
+
+    /*
      * Protected routes
      */
 

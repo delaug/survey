@@ -4,7 +4,7 @@
             <div class="uk-grid-small uk-flex-middle" uk-grid>
                 <div class="uk-width-expand">
                     <h3 class="uk-card-title uk-margin-remove-bottom">{{question.text}}</h3>
-                    <p class="uk-text-meta uk-margin-remove-top">
+                    <p class="uk-text-meta">
                         <time datetime="2016-04-01T19:00">Question {{step}} /
                             {{questions_count}}
                         </time>
@@ -12,6 +12,7 @@
                 </div>
             </div>
         </div>
+        <progress class="uk-progress uk-margin-remove" :value="progress" max="100"></progress>
         <div class="uk-card-body">
             <FieldsList :type="question.type.id" :fields="question.fields"/>
         </div>
@@ -65,11 +66,17 @@
         computed: {
             question() {
                 return this.questions[this.step - 1]
+            },
+            progress() {
+                return (this.step * 100) / this.questions_count
             }
         }
     }
 </script>
 
 <style scoped>
-
+    .uk-progress {
+        border-radius: unset;
+        height: 5px;
+    }
 </style>

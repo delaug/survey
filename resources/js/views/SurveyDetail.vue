@@ -8,9 +8,10 @@
     </div>
 
     <article v-else-if="user && survey" class="uk-article">
-        <h1 class="uk-article-title"><a class="uk-link-reset" href="">{{survey.title}}</a></h1>
-        <p class="uk-article-meta">Written by <a href="#">Admin</a> on {{survey.created_at}}. Posted in <a href="#">Blog</a></p>
-        <p class="uk-text-lead">{{survey.description}}</p>
+        <h1 class="uk-article-title">
+            <span class="uk-margin-small-right uk-icon" uk-icon="icon:question; ratio: 2"></span>
+            {{survey.title}}
+        </h1>
 
         <Question
             :questions="survey.questions"
@@ -19,7 +20,9 @@
     </article>
 
     <div v-else>
-        404 Not found
+        <div class="uk-card uk-card-default uk-card-body uk-text-center">
+            <h3 class="uk-card-title">404. Survey not found or no started!</h3>
+        </div>
     </div>
 </template>
 
@@ -52,7 +55,7 @@
             if(this.user) {
                 this.loading = true
                 this.id = this.$route.params.id
-                this.getSurvey(this.id).then(() => {
+                this.getSurvey(this.id).finally(() => {
                     this.loading = false
                 });
             }

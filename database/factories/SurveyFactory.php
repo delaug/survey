@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Survey;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SurveyFactory extends Factory
@@ -22,8 +23,9 @@ class SurveyFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->text(120),
-            'description' => $this->faker->text()
+            'title' => $this->faker->text(32),
+            'description' => $this->faker->text(),
+            'user_id' => User::all()->random()->id
         ];
     }
 }

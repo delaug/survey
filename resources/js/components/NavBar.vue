@@ -24,7 +24,7 @@
                                 <ul class="uk-nav uk-navbar-dropdown-nav">
                                     <li class="uk-active">Signed in as: <b>{{user.name}}</b></li>
                                     <li class="uk-nav-divider"></li>
-                                    <li><a @click="logout"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> Logout</a></li>
+                                    <li><a @click="onLogout"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span> Logout</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -60,7 +60,10 @@
         methods: {
             ...mapActions({
                 logout: 'auth/logout'
-            })
+            }),
+            onLogout() {
+                this.logout()
+            }
         },
         mounted() {
             this.UIkit.navbar('.uk-navbar-right', {});

@@ -11,6 +11,9 @@ export default {
         SET_SURVEY(state, payload) {
             state.survey = payload
         },
+        CLEAR_SURVEYS(state) {
+            state.surveys = []
+        },
         SET_SURVEYS(state, payload) {
             state.surveys = [...state.surveys, ...payload]
         },
@@ -49,7 +52,20 @@ export default {
                     .catch(error => {
                         reject(error);
                     })
+            })
+        },
+        takeSurvey({state}, id) {
+            if(!id)
+                return false;
 
+            return new Promise((resolve, reject) => {
+                window.axios.post(`api/v1/surveys/${id}/take`)
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    })
             })
         }
     },
