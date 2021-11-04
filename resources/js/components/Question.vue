@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <progress class="uk-progress uk-margin-remove" :value="progress" max="100"></progress>
+        <ui-progress :class="uk-margin-remove" :value="step" :max="questions_count" />
         <div class="uk-card-body">
             <FieldsList :type="question.type.id" :fields="question.fields"/>
         </div>
@@ -66,17 +66,11 @@
         computed: {
             question() {
                 return this.questions[this.step - 1]
-            },
-            progress() {
-                return (this.step * 100) / this.questions_count
             }
         }
     }
 </script>
 
 <style scoped>
-    .uk-progress {
-        border-radius: unset;
-        height: 5px;
-    }
+
 </style>

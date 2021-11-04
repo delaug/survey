@@ -4,6 +4,7 @@ import UIAlert from "./UIAlert";
 import UICheckBox from "./UICheckBox";
 import UIRadio from "./UIRadio";
 import UITextArea from "./UITextArea";
+import UIProgress from "./UIProgress";
 
 export default [
     UIAlert,
@@ -11,5 +12,6 @@ export default [
     UIInput,
     UICheckBox,
     UIRadio,
-    UITextArea
+    UITextArea,
+    UIProgress
 ]
