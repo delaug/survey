@@ -23,6 +23,10 @@ export default {
         SET_LAST_PAGE(state, payload) {
             state.last_page = payload
         },
+        UPDATE_SURVEY_QUESTION(state, payload) {
+            // Find question and replace by id
+            state.survey.questions = state.survey.questions.map(p => p.id === payload.id ? payload : p)
+        }
     },
     actions: {
         getSurvey({commit}, id) {

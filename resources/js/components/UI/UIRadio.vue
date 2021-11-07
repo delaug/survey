@@ -6,7 +6,7 @@
             :name="name"
             :class="radioClass"
             :value="modelValue"
-            @input="updateRadio"
+            @change="changeValue"
         /> <slot></slot>
     </label>
 </template>
@@ -30,8 +30,8 @@
             },
         },
         methods: {
-            updateRadio(event) {
-                this.$emit('update:modelValue', event.target.value)
+            changeValue(event) {
+                this.$emit('change:modelValue', event.target.value)
             }
         },
         computed: {

@@ -27,4 +27,8 @@ class Field extends Model
      * @var array
      */
     //protected $with = ['type', 'option'];
+
+    public function answers() {
+        return $this->belongsToMany(Answer::class)->withPivot(['question_id','value']);
+    }
 }

@@ -17,13 +17,19 @@
             <p>{{survey.description}}</p>
         </div>
         <div class="uk-card-footer" v-if="user">
-            <ui-button :class="status ? 'uk-button-primary' : 'uk-button-default'" :loading="loading" @click="onTakeSurvey">{{status ? 'Start' : 'Continue'}}</ui-button>
+            <ui-button
+                :class="status ? 'uk-button-primary' : 'uk-button-default'"
+                :loading="loading"
+                @click="onTakeSurvey"
+            >
+                {{status ? 'Start' : 'Continue'}}
+            </ui-button>
         </div>
     </div>
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex';
+    import {mapState, mapActions} from 'vuex';
     import router from "../router";
     export default {
         name: "SurveyItem",
@@ -43,7 +49,7 @@
                 user: state => state.auth.user
             }),
             status() {
-                return (!this.survey.latest_answer || this.survey.latest_answer.completed == true) ? true : false;
+                return !this.survey.answer ? true : false;
             }
         },
         methods: {
@@ -52,10 +58,21 @@
             }),
             onTakeSurvey() {
                 this.loading = true;
-                this.takeSurvey(this.survey.id).then(() => {
-                    this.loading = false
-                    router.push({ name: 'SurveyDetail', params: { id: this.survey.id } })
-                });
+                this.takeSurvey(this.survey.id)
+                    .then(() => {
+                        router.push({ name: 'SurveyDetail', params: { id: this.survey.id } })
+                    })
+                    .catch(error => {
+                        this.UIkit.notification({
+                            message: error.response.data.message,
+                            status: 'danger',
+                            pos: 'top-right',
+                            timeout: 2000
+                        });
+                    })
+                    .finally(() => {
+                        this.loading = false
+                    });
             }
         }
     }

@@ -20,4 +20,8 @@ class Answer extends Model
         'survey_id',
         'user_id',
     ];
+
+    public function fields() {
+        return $this->belongsToMany(Field::class)->withPivot(['question_id','value']);
+    }
 }

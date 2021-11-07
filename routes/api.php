@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function () {
      */
     Route::group(['middleware'=>'auth:sanctum'], function () {
         Route::post('/surveys/{survey}/take', [SurveyController::class, 'take']);
+        Route::post('/surveys/{survey}/answer', [SurveyController::class, 'answer']);
     });
 
     /*

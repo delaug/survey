@@ -14,6 +14,7 @@
         </h1>
 
         <Question
+            :survey="survey"
             :questions="survey.questions"
             :questions_count="survey.questions_count"
         />

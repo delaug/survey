@@ -6,7 +6,7 @@
             :name="name"
             :class="checkboxClass"
             :value="modelValue"
-            @input="updateCheckbox"
+            @change="changeValue"
         /> <slot></slot>
     </label>
 </template>
@@ -15,7 +15,7 @@
     export default {
         name: "ui-checkbox",
         props: {
-            modelValue: [String, Number],
+            modelValue: [Boolean],
             id: {
                 type: String,
                 default: null
@@ -30,8 +30,8 @@
             },
         },
         methods: {
-            updateCheckbox(event) {
-                this.$emit('update:modelValue', event.target.value)
+            changeValue(event) {
+                this.$emit('change:modelValue', event.target.value)
             }
         },
         computed: {

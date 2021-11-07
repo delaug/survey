@@ -1,7 +1,13 @@
 <template>
     <div class="uk-margin">
         <div class="uk-form-controls">
-            <FieldItem v-for="field in fields" :key="field.id" :field="field" :type="type"/>
+            <FieldItem
+                v-for="field in fields"
+                :key="field.id"
+                :field="field"
+                :question="question"
+                :type="type"
+            />
         </div>
     </div>
 </template>
@@ -12,12 +18,17 @@
         name: "FieldsList",
         components: {FieldItem},
         props: {
+            modelValue: [Object],
             type: {
                 type: Number,
                 required: true
             },
             fields: {
-                type: Array,
+                type: Object,
+                required: true
+            },
+            question: {
+                type: Object,
                 required: true
             },
         }

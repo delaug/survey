@@ -47,11 +47,7 @@ class Survey extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function answers() {
-        return $this->hasMany(Answer::class);
-    }
-
-    public function latestAnswer() {
-        return $this->hasOne(Answer::class)->latest();
+    public function answer() {
+        return $this->hasOne(Answer::class);
     }
 }
