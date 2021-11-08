@@ -20,7 +20,8 @@
             v-if="type == 3"
             :id="fieldId"
             :name="name"
-            :placeholder="field.text"
+            :label="field.text"
+            :modelValue="value"
             @input="updateValue"
         />
         <ui-textarea
@@ -91,6 +92,9 @@
             },
             name() {
                 return 'question_'+this.question.id
+            },
+            value() {
+                return this.field.answers.length ? this.field.answers[0].pivot.value : null
             }
         }
     }

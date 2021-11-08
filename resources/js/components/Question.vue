@@ -64,7 +64,8 @@
         },
         methods: {
             ...mapActions({
-                answerQuestion: 'answers/answerQuestion'
+                answerQuestion: 'answers/answerQuestion',
+                readAnswers: 'answers/readAnswers',
             }),
             ...mapMutations({
                 clearAnswer: 'answers/CLEAR_ANSWER',
@@ -111,6 +112,7 @@
                 }
             },
             back() {
+                this.readAnswers()
                 this.clearAnswer()
                 this.step--;
             },

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex';
+    import {mapState} from 'vuex';
     import router from "../router";
     export default {
         name: "SurveyItem",
@@ -53,26 +53,8 @@
             }
         },
         methods: {
-            ...mapActions({
-                takeSurvey: 'surveys/takeSurvey'
-            }),
             onTakeSurvey() {
-                this.loading = true;
-                this.takeSurvey(this.survey.id)
-                    .then(() => {
-                        router.push({ name: 'SurveyDetail', params: { id: this.survey.id } })
-                    })
-                    .catch(error => {
-                        this.UIkit.notification({
-                            message: error.response.data.message,
-                            status: 'danger',
-                            pos: 'top-right',
-                            timeout: 2000
-                        });
-                    })
-                    .finally(() => {
-                        this.loading = false
-                    });
+                router.push({ name: 'SurveyDetail', params: { id: this.survey.id } })
             }
         }
     }

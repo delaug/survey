@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\User\SurveyController;
+use App\Http\Controllers\API\User\QuestionController;
+use App\Http\Controllers\API\User\AnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +31,8 @@ Route::prefix('v1')->group(function () {
      * User auth routes
      */
     Route::group(['middleware'=>'auth:sanctum'], function () {
-        Route::post('/surveys/{survey}/take', [SurveyController::class, 'take']);
-        Route::post('/surveys/{survey}/answer', [SurveyController::class, 'answer']);
+        Route::apiResources(['questions' => QuestionController::class], ['only' => ['index','show']]);
+        Route::apiResources(['answers' => AnswerController::class]);
     });
 
     /*

@@ -44,7 +44,6 @@
         mounted() {
             this.clearSurveys();
             this.setCurrentPage(0);
-            //this.getSurveys();
         }
     }
 </script>

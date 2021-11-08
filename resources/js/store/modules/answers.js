@@ -24,7 +24,7 @@ export default {
         },
         SET_ANSWER_ID(state, payload) {
             state.answer_id = payload
-        },
+        }
     },
     actions: {
         answerQuestion({state, commit}, id) {
@@ -45,6 +45,17 @@ export default {
                         reject(error);
                     })
             })
+        },
+        readAnswers({state, rootGetters}) {
+            console.log('READ_ANSWERS')
+            console.log('question_id', state.question_id)
+            console.log(rootGetters['surveys/getQuestionById'](state.question_id).fields.map(f => {
+                return {
+                    'field_id': f.id,
+                    'type': 3,
+                    'value': f.answers[0].pivot.value,
+                }
+            }))
         }
     },
 }

@@ -19580,6 +19580,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     name: function name() {
       return 'question_' + this.question.id;
+    },
+    value: function value() {
+      return this.field.answers.length ? this.field.answers[0].pivot.value : null;
     }
   }
 });
@@ -19818,7 +19821,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
-    answerQuestion: 'answers/answerQuestion'
+    answerQuestion: 'answers/answerQuestion',
+    readAnswers: 'answers/readAnswers'
   })), (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)({
     clearAnswer: 'answers/CLEAR_ANSWER',
     setQuestionId: 'answers/SET_QUESTION_ID',
@@ -19863,6 +19867,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     back: function back() {
+      this.readAnswers();
       this.clearAnswer();
       this.step--;
     },
@@ -19936,32 +19941,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return !this.survey.answer ? true : false;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
-    takeSurvey: 'surveys/takeSurvey'
-  })), {}, {
+  methods: {
     onTakeSurvey: function onTakeSurvey() {
-      var _this = this;
-
-      this.loading = true;
-      this.takeSurvey(this.survey.id).then(function () {
-        _router__WEBPACK_IMPORTED_MODULE_0__["default"].push({
-          name: 'SurveyDetail',
-          params: {
-            id: _this.survey.id
-          }
-        });
-      })["catch"](function (error) {
-        _this.UIkit.notification({
-          message: error.response.data.message,
-          status: 'danger',
-          pos: 'top-right',
-          timeout: 2000
-        });
-      })["finally"](function () {
-        _this.loading = false;
+      _router__WEBPACK_IMPORTED_MODULE_0__["default"].push({
+        name: 'SurveyDetail',
+        params: {
+          id: this.survey.id
+        }
       });
     }
-  })
+  }
 });
 
 /***/ }),
@@ -20034,7 +20023,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   mounted: function mounted() {
     this.clearSurveys();
-    this.setCurrentPage(0); //this.getSurveys();
+    this.setCurrentPage(0);
   }
 });
 
@@ -20723,11 +20712,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 2,
     id: $options.fieldId,
     name: $options.name,
-    placeholder: $props.field.text,
+    label: $props.field.text,
+    modelValue: $options.value,
     onInput: $options.updateValue
   }, null, 8
   /* PROPS */
-  , ["id", "name", "placeholder", "onInput"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.type == 4 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ui_textarea, {
+  , ["id", "name", "label", "modelValue", "onInput"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.type == 4 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ui_textarea, {
     key: 3,
     id: $options.fieldId,
     name: $options.fieldId,
@@ -22247,6 +22237,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           reject(error);
         });
       });
+    },
+    readAnswers: function readAnswers(_ref2) {
+      var state = _ref2.state,
+          rootGetters = _ref2.rootGetters;
+      console.log('READ_ANSWERS');
+      console.log('question_id', state.question_id);
+      console.log(rootGetters['surveys/getQuestionById'](state.question_id).fields.map(function (f) {
+        return {
+          'field_id': f.id,
+          'type': 3,
+          'value': f.answers[0].pivot.value
+        };
+      }));
     }
   }
 });
@@ -22361,7 +22364,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       last_page: null
     };
   },
-  getters: {},
+  getters: {
+    getQuestionById: function getQuestionById(state) {
+      return function (id) {
+        return state.survey.questions.find(function (q) {
+          return q.id == id;
+        });
+      };
+    }
+  },
   mutations: {
     SET_SURVEY: function SET_SURVEY(state, payload) {
       state.survey = payload;
@@ -22377,12 +22388,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     SET_LAST_PAGE: function SET_LAST_PAGE(state, payload) {
       state.last_page = payload;
-    },
-    UPDATE_SURVEY_QUESTION: function UPDATE_SURVEY_QUESTION(state, payload) {
-      // Find question and replace by id
-      state.survey.questions = state.survey.questions.map(function (p) {
-        return p.id === payload.id ? payload : p;
-      });
     }
   },
   actions: {
@@ -22406,17 +22411,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit('SET_SURVEYS', response.data.data);
           commit('SET_CURRENT_PAGE', response.data.current_page);
           commit('SET_LAST_PAGE', response.data.last_page);
-          resolve(response);
-        })["catch"](function (error) {
-          reject(error);
-        });
-      });
-    },
-    takeSurvey: function takeSurvey(_ref3, id) {
-      var state = _ref3.state;
-      if (!id) return false;
-      return new Promise(function (resolve, reject) {
-        window.axios.post("api/v1/surveys/".concat(id, "/take")).then(function (response) {
           resolve(response);
         })["catch"](function (error) {
           reject(error);

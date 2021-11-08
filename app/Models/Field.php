@@ -20,15 +20,4 @@ class Field extends Model
         'sort',
         'question_id',
     ];
-
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    //protected $with = ['type', 'option'];
-
-    public function answers() {
-        return $this->belongsToMany(Answer::class)->withPivot(['question_id','value']);
-    }
 }

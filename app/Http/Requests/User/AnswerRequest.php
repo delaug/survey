@@ -4,7 +4,7 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AnswerSurveyRequest extends FormRequest
+class AnswerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,11 @@ class AnswerSurveyRequest extends FormRequest
     public function rules()
     {
         return [
+            'survey_id' => ['required','exists:surveys,id'],
+            'user_id' => ['required','exists:users,id'],
             'question_id' => ['required','exists:questions,id'],
-            'answer_id' => ['required','exists:answers,id'],
-            'answers' => ['required','array','min:1'],
-            'answers.*.field_id' => ['required','exists:fields,id'],
-            'answers.*.type_id' => ['required','exists:question_types,id'],
+            'field_id' => ['required','exists:fields,id'],
+            'text' => ['nullable'],
         ];
     }
 
@@ -40,14 +40,14 @@ class AnswerSurveyRequest extends FormRequest
     public function messages()
     {
         return [
+            'survey_id.required' => 'Survey ID is required',
+            'survey_id.exists' => 'Survey ID doesn\'t exists',
+            'user_id.required' => 'User ID is required',
+            'user_id.exists' => 'User ID doesn\'t exists',
             'question_id.required' => 'Question ID is required',
             'question_id.exists' => 'Question ID doesn\'t exists',
-            'answer_id.required' => 'Answer ID is required',
-            'answer_id.exists' => 'Answer ID doesn\'t exists',
-            'answers.*.field_id.required' => 'Field ID is required',
-            'answers.*.field_id.exists' => 'Field ID doesn\'t exists',
-            'answers.*.type_id.required' => 'Type ID is required',
-            'answers.*.type_id.exists' => 'Type ID doesn\'t exists',
+            'field_id.required' => 'Field ID is required',
+            'field_id.exists' => 'Field ID doesn\'t exists',
         ];
     }
 }

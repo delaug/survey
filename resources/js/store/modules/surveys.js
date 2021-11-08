@@ -6,7 +6,11 @@ export default {
         current_page: 0,
         last_page: null,
     }),
-    getters: {},
+    getters: {
+        getQuestionById: (state) => id => {
+            return state.survey.questions.find(q => q.id == id)
+        }
+    },
     mutations: {
         SET_SURVEY(state, payload) {
             state.survey = payload
@@ -22,10 +26,6 @@ export default {
         },
         SET_LAST_PAGE(state, payload) {
             state.last_page = payload
-        },
-        UPDATE_SURVEY_QUESTION(state, payload) {
-            // Find question and replace by id
-            state.survey.questions = state.survey.questions.map(p => p.id === payload.id ? payload : p)
         }
     },
     actions: {
@@ -51,20 +51,6 @@ export default {
                         commit('SET_SURVEYS', response.data.data)
                         commit('SET_CURRENT_PAGE', response.data.current_page)
                         commit('SET_LAST_PAGE', response.data.last_page)
-                        resolve(response);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    })
-            })
-        },
-        takeSurvey({state}, id) {
-            if(!id)
-                return false;
-
-            return new Promise((resolve, reject) => {
-                window.axios.post(`api/v1/surveys/${id}/take`)
-                    .then(response => {
                         resolve(response);
                     })
                     .catch(error => {
