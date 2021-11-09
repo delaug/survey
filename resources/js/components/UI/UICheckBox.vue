@@ -5,7 +5,7 @@
             :id="id"
             :name="name"
             :class="checkboxClass"
-            :value="modelValue"
+            :checked="modelValue"
             @change="changeValue"
         /> <slot></slot>
     </label>

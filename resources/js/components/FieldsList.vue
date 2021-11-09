@@ -7,6 +7,7 @@
                 :field="field"
                 :question="question"
                 :type="type"
+                :survey="survey"
             />
         </div>
     </div>
@@ -21,6 +22,10 @@
             modelValue: [Object],
             type: {
                 type: Number,
+                required: true
+            },
+            survey: {
+                type: Object,
                 required: true
             },
             fields: {

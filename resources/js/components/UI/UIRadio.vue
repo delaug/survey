@@ -5,7 +5,7 @@
             :id="id"
             :name="name"
             :class="radioClass"
-            :value="modelValue"
+            :checked="modelValue"
             @change="changeValue"
         /> <slot></slot>
     </label>
@@ -15,7 +15,7 @@
     export default {
         name: "ui-radio",
         props: {
-            modelValue: [String, Number],
+            modelValue: [Boolean],
             id: {
                 type: String,
                 default: null

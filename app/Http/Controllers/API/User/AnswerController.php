@@ -3,62 +3,41 @@
 namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\AnswerStoreRequest;
+use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AnswerController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\User\AnswerStoreRequest  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(AnswerStoreRequest $request)
     {
-        //
-    }
+        $validatedRequest = $request->validated();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        foreach ($validatedRequest as $data) {
+            $tmp = [
+                'survey_id' => $data['survey_id'],
+                'user_id' => $data['user_id'],
+                'question_id' => $data['question_id'],
+                'field_id' => $data['field_id'],
+            ];
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            if(empty($data['value']))
+                Answer::where($tmp)->delete();
+            else
+                Answer::updateOrCreate(array_merge($tmp,['value' => $data['value']]));
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        // Take result data from DB
+        $question = Question::with(['answers','fields'])->findOrFail($validatedRequest[0]['question_id']);
+
+        return response()->json($question, Response::HTTP_OK);
     }
 }

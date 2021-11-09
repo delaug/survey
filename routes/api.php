@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function () {
      */
     Route::group(['middleware'=>'auth:sanctum'], function () {
         Route::apiResources(['questions' => QuestionController::class], ['only' => ['index','show']]);
-        Route::apiResources(['answers' => AnswerController::class]);
+        Route::apiResources(['answers' => AnswerController::class], ['only' => ['store']]);
     });
 
     /*

@@ -36,4 +36,8 @@ class Question extends Model
     public function type() {
         return $this->belongsTo(QuestionType::class);
     }
+
+    public function answers() {
+        return $this->hasMany(Answer::class);
+    }
 }

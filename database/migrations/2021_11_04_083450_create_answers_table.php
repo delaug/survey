@@ -19,7 +19,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('question_id')->constrained();
             $table->foreignId('field_id')->constrained();
-            $table->string('text')->nullable();
+            $table->string('value')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

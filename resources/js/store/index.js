@@ -1,7 +1,8 @@
 import {createStore} from 'vuex'
 import auth from './modules/auth'
 import surveys from './modules/surveys'
-import answers from "./modules/answers";
+import answers from './modules/answers'
+import questions from './modules/questions'
 
 export default createStore({
     state: {},
@@ -10,6 +11,7 @@ export default createStore({
     modules: {
         auth,
         surveys,
-        answers
+        answers,
+        questions,
     }
 })

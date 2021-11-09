@@ -20,7 +20,7 @@ class Answer extends Model
         'user_id',
         'question_id',
         'field_id',
-        'text',
+        'value',
     ];
 
     public function survey() {

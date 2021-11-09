@@ -6,16 +6,17 @@
                     <h3 class="uk-card-title uk-margin-remove-bottom">{{question.text}}</h3>
                     <p class="uk-text-meta">
                         <time datetime="2016-04-01T19:00">Question {{step}} /
-                            {{questions_count}}
+                            {{questions.length}}
                         </time>
                     </p>
                 </div>
             </div>
         </div>
-        <ui-progress :class="'uk-margin-remove'" :value="step" :max="questions_count" />
+        <ui-progress :class="'uk-margin-remove'" :value="step" :max="questions.length" />
         <div class="uk-card-body">
             <FieldsList
-                :type="question.type.id"
+                :survey="survey"
+                :type="question.type_id"
                 :fields="question.fields"
                 :question="question"
             />
@@ -25,7 +26,7 @@
                 <div>
                     <ui-button :class="'uk-button-default'" @click="back" :disabled="step==1">Back</ui-button>
                 </div>
-                <div v-if="step != questions_count">
+                <div v-if="step != question.length">
                     <ui-button :class="'uk-button-primary'" :loading="loading" @click="next">Next</ui-button>
                 </div>
                 <div v-else>
@@ -46,14 +47,6 @@
             survey: {
                 type: Object,
                 required: true
-            },
-            questions: {
-                type: Array,
-                required: true
-            },
-            questions_count: {
-                type: Number,
-                required: true
             }
         },
         data() {
@@ -64,16 +57,15 @@
         },
         methods: {
             ...mapActions({
-                answerQuestion: 'answers/answerQuestion',
-                readAnswers: 'answers/readAnswers',
+                getQuestion: 'questions/getQuestion',
+                getQuestions: 'questions/getQuestions',
+                storeAnswers: 'answers/store',
             }),
             ...mapMutations({
-                clearAnswer: 'answers/CLEAR_ANSWER',
-                setQuestionId: 'answers/SET_QUESTION_ID',
-                setAnswerId: 'answers/SET_ANSWER_ID',
+                UPDATE_QUESTIONS: 'questions/UPDATE_QUESTIONS'
             }),
             checkAnswer(message) {
-                if(this.answer.length) {
+                if(this.question.answers.length) {
                     return true
                 } else {
                     this.UIkit.notification({
@@ -86,59 +78,60 @@
                 }
             },
             next() {
-                if(this.checkAnswer('Answer question')) {
+                if(this.answers.length) {
                     this.loading = true
-
-                    this.answerQuestion(this.survey.id)
-                        .then(() => {
-                            this.clearAnswer()
-                            this.step++;
-                        })
-                        .catch(error  => {
-                            for(var key in error.response.data.errors) {
-                                error.response.data.errors[key].map(error => {
-                                    this.UIkit.notification({
-                                        message: `<b>"${key}"</b>: ${error}`,
-                                        status: 'danger',
-                                        pos: 'top-right',
-                                        timeout: 2000
-                                    });
-                                })
-                            }
-                        })
-                        .finally(() => {
-                            this.loading = false
-                        })
+                    this.storeAnswers().then((e) => {
+                        this.UPDATE_QUESTIONS(e.data)
+                        this.calculateStep()
+                    }).catch(error  => {
+                        for(var key in error.response.data.errors) {
+                            error.response.data.errors[key].map(error => {
+                                this.UIkit.notification({
+                                    message: `<b>"${key}"</b>: ${error}`,
+                                    status: 'danger',
+                                    pos: 'top-right',
+                                    timeout: 2000
+                                });
+                            })
+                        }
+                    }).finally(() => {
+                        this.loading = false
+                    })
+                }
+                else if (this.checkAnswer('Please answer the question')) {
+                    this.step++
                 }
             },
             back() {
-                this.readAnswers()
-                this.clearAnswer()
-                this.step--;
+                this.step--
             },
             done() {
                 if(this.checkAnswer('Answer question for done')) {
 
                 }
             },
-        },
-        watch: {
-            question: function(val) {
-                this.setQuestionId(val.id)
-            },
+            calculateStep() {
+                this.questions.find((q, ids) => {
+                    if(!q.answers.length) {
+                        this.step = ids + 1
+                        return q
+                    }
+                })
+            }
         },
         computed: {
             ...mapState({
-                answer: state => state.answers.answer
+                questions: state => state.questions.questions,
+                answers: state => state.answers.answers,
             }),
             question() {
-                return this.questions[this.step - 1]
+                return this.questions ? this.questions[this.step - 1] : null
             }
         },
         mounted() {
-            this.clearAnswer()
-            this.setQuestionId(this.question.id)
-            this.setAnswerId(this.survey.answer ? this.survey.answer.id : null)
+            this.getQuestions(this.survey.id).then(() => {
+                this.calculateStep()
+            })
         }
     }
 </script>

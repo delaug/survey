@@ -19542,6 +19542,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     question: {
       type: Object,
       required: true
+    },
+    survey: {
+      type: Object,
+      required: true
     }
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)({
@@ -19551,30 +19555,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   })), {}, {
     updateValue: function updateValue(event) {
       this.addAnswer({
+        'survey_id': this.survey.id,
+        'user_id': this.user.id,
+        'question_id': this.question.id,
         'field_id': this.field.id,
-        'type_id': this.type,
         'value': event.target.value
       });
     },
     changeValue: function changeValue(event) {
-      if (event.target.checked) {
-        // 1 - checkbox
-        if (this.type == 1) this.addAnswer({
-          'field_id': this.field.id,
-          'type_id': this.type,
-          'value': event.target.checked
-        }); // radio
-        else this.setAnswer({
-          'field_id': this.field.id,
-          'type_id': this.type,
-          'value': event.target.checked
-        });
-      } else {
-        this.removeAnswer(this.field.id);
-      }
+      //if(event.target.checked) {
+      // 1 - checkbox
+      if (this.type == 1) this.addAnswer({
+        'survey_id': this.survey.id,
+        'user_id': this.user.id,
+        'question_id': this.question.id,
+        'field_id': this.field.id,
+        'value': event.target.checked
+      }); // radio
+      else this.setAnswer({
+        'survey_id': this.survey.id,
+        'user_id': this.user.id,
+        'question_id': this.question.id,
+        'field_id': this.field.id,
+        'value': event.target.checked
+      }); // } else {
+      //     this.removeAnswer(this.field.id)
+      // }
     }
   }),
-  computed: {
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
+    user: function user(state) {
+      return state.auth.user;
+    }
+  })), {}, {
     fieldId: function fieldId() {
       return 'field_' + this.field.id;
     },
@@ -19582,9 +19595,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return 'question_' + this.question.id;
     },
     value: function value() {
-      return this.field.answers.length ? this.field.answers[0].pivot.value : null;
+      var _this = this;
+
+      if (!this.question.answers) return null;
+      if (this.question.type_id == 1 || this.question.type_id == 2) return this.question.answers.find(function (f) {
+        return f.field_id == _this.field.id;
+      }) ? true : false;else {
+        var answer = this.question.answers.find(function (f) {
+          return f.field_id == _this.field.id;
+        });
+        return answer ? answer.value : null;
+      }
     }
-  }
+  })
 });
 
 /***/ }),
@@ -19611,6 +19634,10 @@ __webpack_require__.r(__webpack_exports__);
     modelValue: [Object],
     type: {
       type: Number,
+      required: true
+    },
+    survey: {
+      type: Object,
       required: true
     },
     fields: {
@@ -19804,14 +19831,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     survey: {
       type: Object,
       required: true
-    },
-    questions: {
-      type: Array,
-      required: true
-    },
-    questions_count: {
-      type: Number,
-      required: true
     }
   },
   data: function data() {
@@ -19821,15 +19840,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
-    answerQuestion: 'answers/answerQuestion',
-    readAnswers: 'answers/readAnswers'
+    getQuestion: 'questions/getQuestion',
+    getQuestions: 'questions/getQuestions',
+    storeAnswers: 'answers/store'
   })), (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)({
-    clearAnswer: 'answers/CLEAR_ANSWER',
-    setQuestionId: 'answers/SET_QUESTION_ID',
-    setAnswerId: 'answers/SET_ANSWER_ID'
+    UPDATE_QUESTIONS: 'questions/UPDATE_QUESTIONS'
   })), {}, {
     checkAnswer: function checkAnswer(message) {
-      if (this.answer.length) {
+      if (this.question.answers.length) {
         return true;
       } else {
         this.UIkit.notification({
@@ -19844,12 +19862,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     next: function next() {
       var _this = this;
 
-      if (this.checkAnswer('Answer question')) {
+      if (this.answers.length) {
         this.loading = true;
-        this.answerQuestion(this.survey.id).then(function () {
-          _this.clearAnswer();
+        this.storeAnswers().then(function (e) {
+          _this.UPDATE_QUESTIONS(e.data);
 
-          _this.step++;
+          _this.calculateStep();
         })["catch"](function (error) {
           for (var key in error.response.data.errors) {
             error.response.data.errors[key].map(function (error) {
@@ -19864,35 +19882,45 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         })["finally"](function () {
           _this.loading = false;
         });
+      } else if (this.checkAnswer('Please answer the question')) {
+        this.step++;
       }
     },
     back: function back() {
-      this.readAnswers();
-      this.clearAnswer();
       this.step--;
     },
     done: function done() {
       if (this.checkAnswer('Answer question for done')) {}
+    },
+    calculateStep: function calculateStep() {
+      var _this2 = this;
+
+      this.questions.find(function (q, ids) {
+        if (!q.answers.length) {
+          _this2.step = ids + 1;
+          return q;
+        }
+      });
     }
   }),
-  watch: {
-    question: function question(val) {
-      this.setQuestionId(val.id);
-    }
-  },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
-    answer: function answer(state) {
-      return state.answers.answer;
+    questions: function questions(state) {
+      return state.questions.questions;
+    },
+    answers: function answers(state) {
+      return state.answers.answers;
     }
   })), {}, {
     question: function question() {
-      return this.questions[this.step - 1];
+      return this.questions ? this.questions[this.step - 1] : null;
     }
   }),
   mounted: function mounted() {
-    this.clearAnswer();
-    this.setQuestionId(this.question.id);
-    this.setAnswerId(this.survey.answer ? this.survey.answer.id : null);
+    var _this3 = this;
+
+    this.getQuestions(this.survey.id).then(function () {
+      _this3.calculateStep();
+    });
   }
 });
 
@@ -20256,7 +20284,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ui-radio",
   props: {
-    modelValue: [String, Number],
+    modelValue: [Boolean],
     id: {
       type: String,
       "default": null
@@ -20680,6 +20708,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     id: $options.fieldId,
     name: $options.fieldId,
+    modelValue: $options.value,
     onChange: $options.changeValue
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -20692,10 +20721,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["id", "name", "onChange"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.type == 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ui_radio, {
+  , ["id", "name", "modelValue", "onChange"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.type == 2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ui_radio, {
     key: 1,
     id: $options.fieldId,
     name: $options.name,
+    modelValue: $options.value,
     onChange: $options.changeValue
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -20708,7 +20738,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["id", "name", "onChange"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.type == 3 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ui_input, {
+  , ["id", "name", "modelValue", "onChange"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.type == 3 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_ui_input, {
     key: 2,
     id: $options.fieldId,
     name: $options.name,
@@ -20721,11 +20751,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 3,
     id: $options.fieldId,
     name: $options.fieldId,
+    modelValue: $options.value,
     onInput: $options.updateValue,
     placeholder: $props.field.text
   }, null, 8
   /* PROPS */
-  , ["id", "name", "onInput", "placeholder"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  , ["id", "name", "modelValue", "onInput", "placeholder"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -20757,10 +20788,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: field.id,
       field: field,
       question: $props.question,
-      type: $props.type
+      type: $props.type,
+      survey: $props.survey
     }, null, 8
     /* PROPS */
-    , ["field", "question", "type"]);
+    , ["field", "question", "type", "survey"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]);
@@ -21066,21 +21098,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return $options.question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.question.text), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("time", _hoisted_7, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.step) + " / " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.questions_count), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("time", _hoisted_7, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.step) + " / " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.questions.length), 1
   /* TEXT */
   )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_progress, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-margin-remove'),
     value: $data.step,
-    max: $props.questions_count
+    max: _ctx.questions.length
   }, null, 8
   /* PROPS */
   , ["value", "max"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_FieldsList, {
-    type: $options.question.type.id,
+    survey: $props.survey,
+    type: $options.question.type_id,
     fields: $options.question.fields,
     question: $options.question
   }, null, 8
   /* PROPS */
-  , ["type", "fields", "question"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
+  , ["survey", "type", "fields", "question"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-default'),
     onClick: $options.back,
     disabled: $data.step == 1
@@ -21093,7 +21126,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onClick", "disabled"])]), $data.step != $props.questions_count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
+  , ["onClick", "disabled"])]), $data.step != $options.question.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-primary'),
     loading: $data.loading,
     onClick: $options.next
@@ -21370,7 +21403,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = ["id", "name", "value"];
+var _hoisted_1 = ["id", "name", "checked"];
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
 
@@ -21380,7 +21413,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: $props.id,
     name: $props.name,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.checkboxClass),
-    value: $props.modelValue,
+    checked: $props.modelValue,
     onChange: _cache[0] || (_cache[0] = function () {
       return $options.changeValue && $options.changeValue.apply($options, arguments);
     })
@@ -21480,7 +21513,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = ["id", "name", "value"];
+var _hoisted_1 = ["id", "name", "checked"];
 
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
 
@@ -21490,7 +21523,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: $props.id,
     name: $props.name,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.radioClass),
-    value: $props.modelValue,
+    checked: $props.modelValue,
     onChange: _cache[0] || (_cache[0] = function () {
       return $options.changeValue && $options.changeValue.apply($options, arguments);
     })
@@ -21936,12 +21969,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !_ctx.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_3)) : _ctx.user && _ctx.survey ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("article", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.survey.title), 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Question, {
-    survey: _ctx.survey,
-    questions: _ctx.survey.questions,
-    questions_count: _ctx.survey.questions_count
+    survey: _ctx.survey
   }, null, 8
   /* PROPS */
-  , ["survey", "questions", "questions_count"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, _hoisted_9))], 64
+  , ["survey"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, _hoisted_9))], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -22140,22 +22171,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _modules_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/auth */ "./resources/js/store/modules/auth.js");
 /* harmony import */ var _modules_surveys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/surveys */ "./resources/js/store/modules/surveys.js");
 /* harmony import */ var _modules_answers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/answers */ "./resources/js/store/modules/answers.js");
+/* harmony import */ var _modules_questions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/questions */ "./resources/js/store/modules/questions.js");
 
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vuex__WEBPACK_IMPORTED_MODULE_4__.createStore)({
   state: {},
   mutations: {},
   actions: {},
   modules: {
     auth: _modules_auth__WEBPACK_IMPORTED_MODULE_0__["default"],
     surveys: _modules_surveys__WEBPACK_IMPORTED_MODULE_1__["default"],
-    answers: _modules_answers__WEBPACK_IMPORTED_MODULE_2__["default"]
+    answers: _modules_answers__WEBPACK_IMPORTED_MODULE_2__["default"],
+    questions: _modules_questions__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }));
 
@@ -22188,68 +22222,40 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   namespaced: true,
   state: function state() {
     return {
-      answer: [],
-      question_id: null,
-      answer_id: null
+      answers: []
     };
   },
   getters: {},
   mutations: {
     SET_ANSWER: function SET_ANSWER(state, payload) {
-      state.answer = [payload];
+      state.answers = [payload];
     },
     ADD_ANSWER: function ADD_ANSWER(state, payload) {
-      state.answer = [].concat(_toConsumableArray(state.answer.filter(function (e) {
+      state.answers = [].concat(_toConsumableArray(state.answers.filter(function (e) {
         return e.field_id != payload.field_id;
       })), [payload]);
     },
     REMOVE_ANSWER: function REMOVE_ANSWER(state, payload) {
-      state.answer = state.answer.filter(function (e) {
+      state.answers = state.answers.filter(function (e) {
         return e.field_id != payload;
       });
     },
     CLEAR_ANSWER: function CLEAR_ANSWER(state) {
-      state.answer = [];
-    },
-    SET_QUESTION_ID: function SET_QUESTION_ID(state, payload) {
-      state.question_id = payload;
-    },
-    SET_ANSWER_ID: function SET_ANSWER_ID(state, payload) {
-      state.answer_id = payload;
+      state.answers = [];
     }
   },
   actions: {
-    answerQuestion: function answerQuestion(_ref, id) {
+    store: function store(_ref) {
       var state = _ref.state,
           commit = _ref.commit;
-      if (!id) return false;
       return new Promise(function (resolve, reject) {
-        window.axios.post("api/v1/surveys/".concat(id, "/answer"), {
-          'question_id': state.question_id,
-          'answer_id': state.answer_id,
-          'answers': state.answer
-        }).then(function (response) {
-          commit('surveys/UPDATE_SURVEY_QUESTION', response.data, {
-            root: true
-          });
+        window.axios.post("api/v1/answers", state.answers).then(function (response) {
+          commit('CLEAR_ANSWER');
           resolve(response);
         })["catch"](function (error) {
           reject(error);
         });
       });
-    },
-    readAnswers: function readAnswers(_ref2) {
-      var state = _ref2.state,
-          rootGetters = _ref2.rootGetters;
-      console.log('READ_ANSWERS');
-      console.log('question_id', state.question_id);
-      console.log(rootGetters['surveys/getQuestionById'](state.question_id).fields.map(function (f) {
-        return {
-          'field_id': f.id,
-          'type': 3,
-          'value': f.answers[0].pivot.value
-        };
-      }));
     }
   }
 });
@@ -22325,6 +22331,64 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.removeItem('user');
       commit('SET_TOKEN', null);
       commit('SET_USER', null);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/questions.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/questions.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: function state() {
+    return {
+      questions: []
+    };
+  },
+  getters: {},
+  mutations: {
+    SET_QUESTIONS: function SET_QUESTIONS(state, payload) {
+      state.questions = payload;
+    },
+    UPDATE_QUESTIONS: function UPDATE_QUESTIONS(state, payload) {
+      state.questions = state.questions.map(function (e) {
+        return e.id == payload.id ? e = payload : e;
+      });
+    }
+  },
+  actions: {
+    getQuestions: function getQuestions(_ref, survey_id) {
+      var state = _ref.state,
+          commit = _ref.commit;
+      return new Promise(function (resolve, reject) {
+        window.axios.get("api/v1/questions?survey_id=".concat(survey_id)).then(function (response) {
+          commit('SET_QUESTIONS', response.data);
+          resolve(response);
+        })["catch"](function (error) {
+          reject(error);
+        });
+      });
+    },
+    getQuestion: function getQuestion(_ref2, id) {
+      var commit = _ref2.commit;
+      return new Promise(function (resolve, reject) {
+        window.axios.get("api/v1/questions/".concat(id)).then(function (response) {
+          commit('SET_QUESTION', response.data);
+          resolve(response);
+        })["catch"](function (error) {
+          reject(error);
+        });
+      });
     }
   }
 });

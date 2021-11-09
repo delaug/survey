@@ -30,18 +30,7 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        $survey = Survey::with([
-            'questions' => fn($q) => $q
-                ->select(['id', 'text', 'sort', 'survey_id', 'type_id'])
-                ->withCount(['fields']),
-            'questions.type:id,name',
-            'questions.fields:id,text,question_id',
-            'user:id,name,email',
-            'user.roles:id,name'
-        ])
-            ->withCount('questions')
-            ->findOrFail($id);
-
+        $survey = Survey::findOrFail($id);
         return response()->json($survey, Response::HTTP_OK);
     }
 
