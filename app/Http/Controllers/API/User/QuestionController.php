@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\QuestionIndexRequest;
-use App\Models\Question;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Http\Services\User\AppService;
 use Illuminate\Http\Response;
 
 class QuestionController extends Controller
@@ -19,16 +17,7 @@ class QuestionController extends Controller
      */
     public function index(QuestionIndexRequest $request)
     {
-        $validatedRequest = $request->validated();
-
-        $questions = Question::with([
-            'answers' => fn($q) => $q->where(['answers.user_id' => auth('sanctum')->id()]),
-            'fields'
-        ])
-            ->where(['survey_id' => $validatedRequest['survey_id']])
-            ->orderBy('sort')
-            ->get();
-
+        $questions = AppService::getQuestions($request);
         return response()->json($questions, Response::HTTP_OK);
     }
 
@@ -40,8 +29,7 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        $question = Question::with(['answers','fields'])->findOrFail($id);
-
+        $question = AppService::getQuestion($id);
         return response()->json($question, Response::HTTP_OK);
     }
 }

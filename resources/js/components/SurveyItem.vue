@@ -10,7 +10,7 @@
             <hr class="uk-divider-small">
             <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
                 <li><a href="#">{{survey.created_at}}</a></li>
-                <li><a href="#"><span>Questions:</span> {{survey.questions_count}}</a></li>
+                <li><a href="#"><span>Questions:</span> {{survey.answers_to_questions_count}} / {{survey.questions_count}}</a></li>
             </ul>
         </div>
         <div class="uk-card-body">
@@ -18,18 +18,19 @@
         </div>
         <div class="uk-card-footer" v-if="user">
             <ui-button
-                :class="status ? 'uk-button-primary' : 'uk-button-default'"
+                :class="!status ? 'uk-button-primary' : 'uk-button-default'"
                 :loading="loading"
                 @click="onTakeSurvey"
+                :disabled="status"
             >
-                {{status ? 'Start' : 'Continue'}}
+                {{getButtonText()}}
             </ui-button>
         </div>
     </div>
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapGetters} from 'vuex';
     import router from "../router";
     export default {
         name: "SurveyItem",
@@ -48,13 +49,22 @@
             ...mapState({
                 user: state => state.auth.user
             }),
+            ...mapGetters({
+                isDone: 'surveys/isDone'
+            }),
             status() {
-                return !this.survey.answer ? true : false;
+                return this.isDone(this.survey.id);
             }
         },
         methods: {
             onTakeSurvey() {
                 router.push({ name: 'SurveyDetail', params: { id: this.survey.id } })
+            },
+            getButtonText() {
+                if(!status)
+                    return !this.survey.answers_to_questions_count ? 'Start' : 'Continue'
+                else
+                    return 'Done'
             }
         }
     }

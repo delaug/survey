@@ -1,5 +1,5 @@
 <template>
-    <button v-if="!loading" :class="buttonClass" :type="type">
+    <button v-if="!loading" :class="buttonClass" :type="type" :disabled="disabled">
         <slot></slot>
     </button>
     <button v-else :class="buttonClass" :type="type" disabled>
@@ -24,7 +24,11 @@
             loading: {
                 type: Boolean,
                 default: false
-            }
+            },
+            disabled: {
+                type: Boolean,
+                default: false
+            },
         },
         computed: {
             buttonClass() {

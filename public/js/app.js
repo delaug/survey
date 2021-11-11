@@ -19498,12 +19498,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   })),
   methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)({
-    SET_TOKEN: 'auth/SET_TOKEN',
-    SET_USER: 'auth/SET_USER'
+    SET_DATA: 'auth/SET_DATA'
   })),
   mounted: function mounted() {
-    this.SET_TOKEN(localStorage.getItem('token') ? localStorage.getItem('token') : null);
-    this.SET_USER(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
+    this.SET_DATA({
+      token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
+      user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
+    });
   }
 });
 
@@ -19844,7 +19845,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getQuestions: 'questions/getQuestions',
     storeAnswers: 'answers/store'
   })), (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)({
-    UPDATE_QUESTIONS: 'questions/UPDATE_QUESTIONS'
+    UPDATE_QUESTION: 'questions/UPDATE_QUESTION'
   })), {}, {
     checkAnswer: function checkAnswer(message) {
       if (this.question.answers.length) {
@@ -19859,13 +19860,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return false;
       }
     },
-    next: function next() {
+    sendAnswer: function sendAnswer() {
       var _this = this;
 
       if (this.answers.length) {
         this.loading = true;
         this.storeAnswers().then(function (e) {
-          _this.UPDATE_QUESTIONS(e.data);
+          _this.UPDATE_QUESTION(e.data.question);
 
           _this.calculateStep();
         })["catch"](function (error) {
@@ -19886,21 +19887,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.step++;
       }
     },
-    back: function back() {
+    onNext: function onNext() {
+      this.sendAnswer();
+    },
+    onBack: function onBack() {
       this.step--;
     },
-    done: function done() {
-      if (this.checkAnswer('Answer question for done')) {}
+    onDone: function onDone() {
+      this.sendAnswer();
     },
     calculateStep: function calculateStep() {
       var _this2 = this;
 
-      this.questions.find(function (q, ids) {
+      console.log(this.questions.find(function (q, ids) {
         if (!q.answers.length) {
           _this2.step = ids + 1;
           return q;
+        } else {
+          q; //this.step =
         }
-      });
+      }));
     }
   }),
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
@@ -19960,13 +19966,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       loading: false
     };
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
+  computed: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
     user: function user(state) {
       return state.auth.user;
     }
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({
+    isDone: 'surveys/isDone'
   })), {}, {
     status: function status() {
-      return !this.survey.answer ? true : false;
+      return this.isDone(this.survey.id);
     }
   }),
   methods: {
@@ -19977,6 +19985,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           id: this.survey.id
         }
       });
+    },
+    getButtonText: function getButtonText() {
+      if (!status) return !this.survey.answers_to_questions_count ? 'Start' : 'Continue';else return 'Done';
     }
   }
 });
@@ -20111,6 +20122,10 @@ __webpack_require__.r(__webpack_exports__);
       "default": null
     },
     loading: {
+      type: Boolean,
+      "default": false
+    },
+    disabled: {
       type: Boolean,
       "default": false
     }
@@ -21115,7 +21130,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["survey", "type", "fields", "question"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-default'),
-    onClick: $options.back,
+    onClick: $options.onBack,
     disabled: $data.step == 1
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -21126,10 +21141,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onClick", "disabled"])]), $data.step != $options.question.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
+  , ["onClick", "disabled"])]), $data.step != $props.survey.questions_count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-primary'),
     loading: $data.loading,
-    onClick: $options.next
+    onClick: $options.onNext
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_13];
@@ -21141,7 +21156,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["loading", "onClick"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-primary'),
-    onClick: $options.done
+    onClick: $options.onDone
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_15];
@@ -21245,17 +21260,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.created_at), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.questions_count), 1
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.answers_to_questions_count) + " / " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.questions_count), 1
   /* TEXT */
   )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.description), 1
   /* TEXT */
   )]), _ctx.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.status ? 'uk-button-primary' : 'uk-button-default'),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(!$options.status ? 'uk-button-primary' : 'uk-button-default'),
     loading: $data.loading,
-    onClick: $options.onTakeSurvey
+    onClick: $options.onTakeSurvey,
+    disabled: $options.status
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.status ? 'Start' : 'Continue'), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getButtonText()), 1
       /* TEXT */
       )];
     }),
@@ -21264,7 +21280,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["class", "loading", "onClick"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  , ["class", "loading", "onClick", "disabled"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -21357,7 +21373,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = ["type"];
+var _hoisted_1 = ["type", "disabled"];
 var _hoisted_2 = ["type"];
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
@@ -21375,7 +21391,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return !$props.loading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.buttonClass),
-    type: $props.type
+    type: $props.type,
+    disabled: $props.disabled
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 10
   /* CLASS, PROPS */
   , _hoisted_1)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
@@ -22029,6 +22046,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  // loads the Icon plugin
 
 uikit__WEBPACK_IMPORTED_MODULE_5___default().use((uikit_dist_js_uikit_icons__WEBPACK_IMPORTED_MODULE_6___default()));
+window.UIKit = (uikit__WEBPACK_IMPORTED_MODULE_5___default());
 var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
 _components_UI__WEBPACK_IMPORTED_MODULE_4__["default"].forEach(function (component) {
   app.component(component.name, component);
@@ -22251,8 +22269,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       return new Promise(function (resolve, reject) {
         window.axios.post("api/v1/answers", state.answers).then(function (response) {
           commit('CLEAR_ANSWER');
+          if (response.data.answers_to_questions_count) commit('surveys/SET_ANSWERS_TO_QUESTIONS_COUNT', response.data.answers_to_questions_count, {
+            root: true
+          });
           resolve(response);
         })["catch"](function (error) {
+          if (error.request.status === 401) {
+            commit('auth/CLEAR_DATA', null, {
+              root: true
+            });
+          }
+
           reject(error);
         });
       });
@@ -22283,11 +22310,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   getters: {},
   mutations: {
-    SET_USER: function SET_USER(state, payload) {
-      state.user = payload;
+    SET_DATA: function SET_DATA(state, payload) {
+      localStorage.setItem('token', payload.token);
+      localStorage.setItem('user', JSON.stringify(payload.user));
+      window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token;
+      state.user = payload.user;
+      state.token = payload.token;
     },
-    SET_TOKEN: function SET_TOKEN(state, payload) {
-      state.token = payload;
+    CLEAR_DATA: function CLEAR_DATA(state) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.axios.defaults.headers.common['Authorization'] = null;
+      state.user = null;
+      state.token = null;
     }
   },
   actions: {
@@ -22296,11 +22331,7 @@ __webpack_require__.r(__webpack_exports__);
       return new Promise(function (resolve, reject) {
         window.axios.get('/sanctum/csrf-cookie').then(function (response) {
           window.axios.post('api/v1/login', payload).then(function (response) {
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
-            commit('SET_USER', response.data.user);
-            commit('SET_TOKEN', response.data.token);
+            commit('SET_DATA', response.data);
             resolve(response);
           })["catch"](function (error) {
             reject(error);
@@ -22313,11 +22344,7 @@ __webpack_require__.r(__webpack_exports__);
       return new Promise(function (resolve, reject) {
         window.axios.get('/sanctum/csrf-cookie').then(function (response) {
           window.axios.post('api/v1/register', payload).then(function (response) {
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
-            commit('SET_USER', response.data.user);
-            commit('SET_TOKEN', response.data.token);
+            commit('SET_DATA', response.data);
             resolve(response);
           })["catch"](function (error) {
             reject(error);
@@ -22327,10 +22354,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     logout: function logout(_ref3) {
       var commit = _ref3.commit;
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      commit('SET_TOKEN', null);
-      commit('SET_USER', null);
+      return new Promise(function (resolve, reject) {
+        window.axios.get('/sanctum/csrf-cookie').then(function (response) {
+          window.axios.post('api/v1/logout', null).then(function (response) {
+            commit('CLEAR_DATA');
+            resolve(response);
+          })["catch"](function (error) {
+            if (error.request.status === 401) {
+              commit('CLEAR_DATA');
+            }
+
+            reject(error);
+          });
+        });
+      });
     }
   }
 });
@@ -22360,7 +22397,7 @@ __webpack_require__.r(__webpack_exports__);
     SET_QUESTIONS: function SET_QUESTIONS(state, payload) {
       state.questions = payload;
     },
-    UPDATE_QUESTIONS: function UPDATE_QUESTIONS(state, payload) {
+    UPDATE_QUESTION: function UPDATE_QUESTION(state, payload) {
       state.questions = state.questions.map(function (e) {
         return e.id == payload.id ? e = payload : e;
       });
@@ -22375,6 +22412,12 @@ __webpack_require__.r(__webpack_exports__);
           commit('SET_QUESTIONS', response.data);
           resolve(response);
         })["catch"](function (error) {
+          if (error.request.status === 401) {
+            commit('auth/CLEAR_DATA', null, {
+              root: true
+            });
+          }
+
           reject(error);
         });
       });
@@ -22386,6 +22429,12 @@ __webpack_require__.r(__webpack_exports__);
           commit('SET_QUESTION', response.data);
           resolve(response);
         })["catch"](function (error) {
+          if (error.request.status === 401) {
+            commit('auth/CLEAR_DATA', null, {
+              root: true
+            });
+          }
+
           reject(error);
         });
       });
@@ -22432,8 +22481,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     getQuestionById: function getQuestionById(state) {
       return function (id) {
         return state.survey.questions.find(function (q) {
-          return q.id == id;
+          return q.id === id;
         });
+      };
+    },
+    isDone: function isDone(state) {
+      return function (id) {
+        var r = state.surveys.find(function (s) {
+          return s.id === id;
+        });
+        return r.answers_to_questions_count >= r.questions_count ? true : false;
       };
     }
   },
@@ -22452,6 +22509,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     SET_LAST_PAGE: function SET_LAST_PAGE(state, payload) {
       state.last_page = payload;
+    },
+    SET_ANSWERS_TO_QUESTIONS_COUNT: function SET_ANSWERS_TO_QUESTIONS_COUNT(state, payload) {
+      state.survey.answers_to_questions_count = payload;
     }
   },
   actions: {
@@ -22462,6 +22522,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit('SET_SURVEY', response.data);
           resolve(response);
         })["catch"](function (error) {
+          if (error.request.status === 401) {
+            commit('auth/CLEAR_DATA', null, {
+              root: true
+            });
+          }
+
           reject(error);
         });
       });
@@ -22477,6 +22543,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           commit('SET_LAST_PAGE', response.data.last_page);
           resolve(response);
         })["catch"](function (error) {
+          if (error.request.status === 401) {
+            commit('auth/CLEAR_DATA', null, {
+              root: true
+            });
+          }
+
           reject(error);
         });
       });

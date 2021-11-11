@@ -24,13 +24,13 @@
         <div class="uk-card-footer">
             <div class="uk-grid-small uk-child-width-auto" uk-grid>
                 <div>
-                    <ui-button :class="'uk-button-default'" @click="back" :disabled="step==1">Back</ui-button>
+                    <ui-button :class="'uk-button-default'" @click="onBack" :disabled="step==1">Back</ui-button>
                 </div>
-                <div v-if="step != question.length">
-                    <ui-button :class="'uk-button-primary'" :loading="loading" @click="next">Next</ui-button>
+                <div v-if="step != survey.questions_count">
+                    <ui-button :class="'uk-button-primary'" :loading="loading" @click="onNext">Next</ui-button>
                 </div>
                 <div v-else>
-                    <ui-button :class="'uk-button-primary'" @click="done">Done</ui-button>
+                    <ui-button :class="'uk-button-primary'" @click="onDone">Done</ui-button>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 storeAnswers: 'answers/store',
             }),
             ...mapMutations({
-                UPDATE_QUESTIONS: 'questions/UPDATE_QUESTIONS'
+                UPDATE_QUESTION: 'questions/UPDATE_QUESTION'
             }),
             checkAnswer(message) {
                 if(this.question.answers.length) {
@@ -77,11 +77,11 @@
                     return false
                 }
             },
-            next() {
+            sendAnswer() {
                 if(this.answers.length) {
                     this.loading = true
                     this.storeAnswers().then((e) => {
-                        this.UPDATE_QUESTIONS(e.data)
+                        this.UPDATE_QUESTION(e.data.question)
                         this.calculateStep()
                     }).catch(error  => {
                         for(var key in error.response.data.errors) {
@@ -102,21 +102,25 @@
                     this.step++
                 }
             },
-            back() {
+            onNext() {
+                this.sendAnswer()
+            },
+            onBack() {
                 this.step--
             },
-            done() {
-                if(this.checkAnswer('Answer question for done')) {
-
-                }
+            onDone() {
+                this.sendAnswer()
             },
             calculateStep() {
-                this.questions.find((q, ids) => {
+                console.log(this.questions.find((q, ids) => {
                     if(!q.answers.length) {
                         this.step = ids + 1
                         return q
+                    } else {
+                        q
+                        //this.step =
                     }
-                })
+                }))
             }
         },
         computed: {

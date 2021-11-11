@@ -38,6 +38,26 @@ class Survey extends Model
         'updated_at' => 'date:Y-m-d H:i:s',
     ];
 
+    protected $appends = ['answers_to_questions_count'];
+
+    public function getAnswersToQuestionsCountAttribute()
+    {
+        return $this->answersToQuestionsCount();
+    }
+
+    public function answersToQuestionsCount()
+    {
+        return $this->answers()
+            ->where('user_id', auth('sanctum')->id())
+            ->select('question_id')
+            ->distinct()
+            ->count('question_id');
+    }
+
+    public function answers()
+    {
+        return $this->hasManyThrough(Answer::class, Question::class);
+    }
 
     public function questions() {
         return $this->hasMany(Question::class);

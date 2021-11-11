@@ -31,6 +31,8 @@ Route::prefix('v1')->group(function () {
      * User auth routes
      */
     Route::group(['middleware'=>'auth:sanctum'], function () {
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
         Route::apiResources(['questions' => QuestionController::class], ['only' => ['index','show']]);
         Route::apiResources(['answers' => AnswerController::class], ['only' => ['store']]);
     });

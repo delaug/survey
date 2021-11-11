@@ -8,7 +8,11 @@ export default {
     }),
     getters: {
         getQuestionById: (state) => id => {
-            return state.survey.questions.find(q => q.id == id)
+            return state.survey.questions.find(q => q.id === id)
+        },
+        isDone: (state) => id => {
+            const r = state.surveys.find(s => s.id === id)
+            return r.answers_to_questions_count >= r.questions_count ? true : false
         }
     },
     mutations: {
@@ -26,6 +30,9 @@ export default {
         },
         SET_LAST_PAGE(state, payload) {
             state.last_page = payload
+        },
+        SET_ANSWERS_TO_QUESTIONS_COUNT(state, payload) {
+            state.survey.answers_to_questions_count = payload
         }
     },
     actions: {
@@ -37,6 +44,9 @@ export default {
                         resolve(response);
                     })
                     .catch(error => {
+                        if(error.request.status === 401) {
+                            commit('auth/CLEAR_DATA',null,{root:true})
+                        }
                         reject(error);
                     })
             })
@@ -54,6 +64,9 @@ export default {
                         resolve(response);
                     })
                     .catch(error => {
+                        if(error.request.status === 401) {
+                            commit('auth/CLEAR_DATA',null,{root:true})
+                        }
                         reject(error);
                     })
             })

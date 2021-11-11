@@ -21,7 +21,6 @@ class CreateAnswersTable extends Migration
             $table->foreignId('field_id')->constrained();
             $table->string('value')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

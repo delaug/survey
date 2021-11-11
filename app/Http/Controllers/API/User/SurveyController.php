@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Survey;
+use App\Http\Services\User\AppService;
 use Illuminate\Http\Response;
 
 class SurveyController extends Controller
@@ -15,10 +15,7 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        $surveys = Survey::with([
-            'user:id,name,email',
-            'user.roles:id,name',
-        ])->withCount('questions')->paginate(5);
+        $surveys = AppService::getSurveys();
         return response()->json($surveys, Response::HTTP_OK);
     }
 
@@ -30,7 +27,7 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        $survey = Survey::findOrFail($id);
+        $survey = AppService::getSurvey($id);
         return response()->json($survey, Response::HTTP_OK);
     }
 

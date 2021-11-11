@@ -8,7 +8,7 @@ export default {
         SET_QUESTIONS(state, payload) {
             state.questions = payload
         },
-        UPDATE_QUESTIONS(state, payload) {
+        UPDATE_QUESTION(state, payload) {
             state.questions = state.questions.map(e => e.id == payload.id ? e = payload : e)
         },
     },
@@ -21,6 +21,9 @@ export default {
                         resolve(response);
                     })
                     .catch(error => {
+                        if(error.request.status === 401) {
+                            commit('auth/CLEAR_DATA',null,{root:true})
+                        }
                         reject(error);
                     })
             })
@@ -33,6 +36,9 @@ export default {
                         resolve(response);
                     })
                     .catch(error => {
+                        if(error.request.status === 401) {
+                            commit('auth/CLEAR_DATA',null,{root:true})
+                        }
                         reject(error);
                     })
             })

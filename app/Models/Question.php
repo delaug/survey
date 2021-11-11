@@ -29,6 +29,10 @@ class Question extends Model
      */
     //protected $with = ['fields'];
 
+    public function survey() {
+        return $this->belongsTo(Survey::class);
+    }
+
     public function fields() {
         return $this->hasMany(Field::class);
     }

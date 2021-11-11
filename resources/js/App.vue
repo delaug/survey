@@ -22,13 +22,14 @@
         },
         methods: {
             ...mapMutations({
-                SET_TOKEN:'auth/SET_TOKEN',
-                SET_USER:'auth/SET_USER',
+                SET_DATA:'auth/SET_DATA',
             })
         },
         mounted() {
-            this.SET_TOKEN(localStorage.getItem('token') ? localStorage.getItem('token') : null);
-            this.SET_USER(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
+            this.SET_DATA({
+                token: localStorage.getItem('token') ? localStorage.getItem('token') : null,
+                user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
+            })
         }
     }
 </script>

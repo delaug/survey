@@ -24,9 +24,16 @@ export default {
                 window.axios.post(`api/v1/answers`, state.answers)
                     .then(response => {
                         commit('CLEAR_ANSWER')
+
+                        if(response.data.answers_to_questions_count)
+                            commit('surveys/SET_ANSWERS_TO_QUESTIONS_COUNT', response.data.answers_to_questions_count, {root: true})
+
                         resolve(response);
                     })
                     .catch(error => {
+                        if(error.request.status === 401) {
+                            commit('auth/CLEAR_DATA',null,{root:true})
+                        }
                         reject(error);
                     })
             })
