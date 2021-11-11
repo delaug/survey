@@ -20,16 +20,4 @@ class QuestionController extends Controller
         $questions = AppService::getQuestions($request);
         return response()->json($questions, Response::HTTP_OK);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $question = AppService::getQuestion($id);
-        return response()->json($question, Response::HTTP_OK);
-    }
 }

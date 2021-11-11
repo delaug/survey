@@ -19836,16 +19836,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   data: function data() {
     return {
-      step: 1,
       loading: false
     };
   },
-  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
     getQuestion: 'questions/getQuestion',
-    getQuestions: 'questions/getQuestions',
+    getNext: 'questions/getNext',
+    getBack: 'questions/getBack',
     storeAnswers: 'answers/store'
-  })), (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)({
-    UPDATE_QUESTION: 'questions/UPDATE_QUESTION'
   })), {}, {
     checkAnswer: function checkAnswer(message) {
       if (this.question.answers.length) {
@@ -19866,9 +19864,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.answers.length) {
         this.loading = true;
         this.storeAnswers().then(function (e) {
-          _this.UPDATE_QUESTION(e.data.question);
-
-          _this.calculateStep();
+          _this.getNext(_this.survey.id);
         })["catch"](function (error) {
           for (var key in error.response.data.errors) {
             error.response.data.errors[key].map(function (error) {
@@ -19884,49 +19880,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.loading = false;
         });
       } else if (this.checkAnswer('Please answer the question')) {
-        this.step++;
+        this.getNext(this.survey.id);
       }
     },
     onNext: function onNext() {
       this.sendAnswer();
     },
     onBack: function onBack() {
-      this.step--;
-    },
-    onDone: function onDone() {
-      this.sendAnswer();
-    },
-    calculateStep: function calculateStep() {
-      var _this2 = this;
-
-      console.log(this.questions.find(function (q, ids) {
-        if (!q.answers.length) {
-          _this2.step = ids + 1;
-          return q;
-        } else {
-          q; //this.step =
-        }
-      }));
+      this.getBack(this.survey.id);
     }
   }),
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
-    questions: function questions(state) {
-      return state.questions.questions;
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
+    question: function question(state) {
+      return state.questions.question;
+    },
+    current_page: function current_page(state) {
+      return state.questions.current_page;
+    },
+    last_page: function last_page(state) {
+      return state.questions.last_page;
     },
     answers: function answers(state) {
       return state.answers.answers;
     }
-  })), {}, {
-    question: function question() {
-      return this.questions ? this.questions[this.step - 1] : null;
-    }
-  }),
+  })),
   mounted: function mounted() {
-    var _this3 = this;
-
-    this.getQuestions(this.survey.id).then(function () {
-      _this3.calculateStep();
-    });
+    this.getQuestion(this.survey.id);
   }
 });
 
@@ -19987,7 +19966,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     getButtonText: function getButtonText() {
-      if (!status) return !this.survey.answers_to_questions_count ? 'Start' : 'Continue';else return 'Done';
+      if (!this.isDone(this.survey.id)) return !this.survey.answers_to_questions_count ? 'Start' : 'Continue';else return 'Done';
+    },
+    getButtonIcon: function getButtonIcon() {
+      if (!this.isDone(this.survey.id)) return !this.survey.answers_to_questions_count ? 'play' : 'future';else return 'check';
     }
   }
 });
@@ -20618,13 +20600,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       loading: false
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
     user: function user(state) {
       return state.auth.user;
     },
     survey: function survey(state) {
       return state.surveys.survey;
     }
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+    surveyIsDone: 'surveys/surveyIsDone'
   })),
   methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
     getSurvey: 'surveys/getSurvey'
@@ -21092,18 +21076,6 @@ var _hoisted_10 = {
 
 var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Back");
 
-var _hoisted_12 = {
-  key: 0
-};
-
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Next");
-
-var _hoisted_14 = {
-  key: 1
-};
-
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Done");
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ui_progress = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-progress");
 
@@ -21111,27 +21083,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_ui_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-button");
 
-  return $options.question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.question.text), 1
+  return _ctx.question ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.question.text), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("time", _hoisted_7, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.step) + " / " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.questions.length), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("time", _hoisted_7, "Question " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.current_page) + " / " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.last_page), 1
   /* TEXT */
   )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_progress, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-margin-remove'),
-    value: $data.step,
-    max: _ctx.questions.length
+    value: _ctx.current_page,
+    max: _ctx.last_page
   }, null, 8
   /* PROPS */
   , ["value", "max"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_FieldsList, {
     survey: $props.survey,
-    type: $options.question.type_id,
-    fields: $options.question.fields,
-    question: $options.question
+    type: _ctx.question.type_id,
+    fields: _ctx.question.fields,
+    question: _ctx.question
   }, null, 8
   /* PROPS */
   , ["survey", "type", "fields", "question"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-default'),
     onClick: $options.onBack,
-    disabled: $data.step == 1
+    disabled: _ctx.current_page == 1
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_11];
@@ -21141,32 +21113,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["onClick", "disabled"])]), $data.step != $props.survey.questions_count ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
+  , ["onClick", "disabled"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-primary'),
     loading: $data.loading,
     onClick: $options.onNext
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_13];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.current_page != _ctx.last_page ? 'Next' : 'Done'), 1
+      /* TEXT */
+      )];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["loading", "onClick"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)('uk-button-primary'),
-    onClick: $options.onDone
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_15];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["onClick"])]))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
+  , ["loading", "onClick"])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true);
 }
 
 /***/ }),
@@ -21249,6 +21211,7 @@ var _hoisted_14 = {
   key: 0,
   "class": "uk-card-footer"
 };
+var _hoisted_15 = ["uk-icon"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ui_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-button");
 
@@ -21271,7 +21234,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $options.status
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getButtonText()), 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+        "uk-icon": 'icon: ' + $options.getButtonIcon()
+      }, null, 8
+      /* PROPS */
+      , _hoisted_15), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getButtonText()), 1
       /* TEXT */
       )];
     }),
@@ -21964,10 +21931,22 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_7 = {
-  key: 3
+  key: 1,
+  "class": "uk-grid"
 };
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "uk-align-center"
+}, " Thank you for your answers. ", -1
+/* HOISTED */
+);
+
+var _hoisted_9 = [_hoisted_8];
+var _hoisted_10 = {
+  key: 3
+};
+
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "uk-card uk-card-default uk-card-body uk-text-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "uk-card-title"
@@ -21975,7 +21954,7 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_9 = [_hoisted_8];
+var _hoisted_12 = [_hoisted_11];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Loader = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Loader");
 
@@ -21985,11 +21964,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !_ctx.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_3)) : _ctx.user && _ctx.survey ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("article", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.survey.title), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Question, {
+  )]), !_ctx.surveyIsDone ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Question, {
+    key: 0,
     survey: _ctx.survey
   }, null, 8
   /* PROPS */
-  , ["survey"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, _hoisted_9))], 64
+  , ["survey"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, _hoisted_9))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, _hoisted_12))], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -22389,27 +22369,33 @@ __webpack_require__.r(__webpack_exports__);
   namespaced: true,
   state: function state() {
     return {
-      questions: []
+      question: null,
+      current_page: 1,
+      last_page: null,
+      next_page: null
     };
   },
   getters: {},
   mutations: {
-    SET_QUESTIONS: function SET_QUESTIONS(state, payload) {
-      state.questions = payload;
+    SET_DATA: function SET_DATA(state, payload) {
+      state.question = payload.data[0];
+      state.current_page = payload.current_page;
+      state.last_page = payload.last_page;
     },
-    UPDATE_QUESTION: function UPDATE_QUESTION(state, payload) {
-      state.questions = state.questions.map(function (e) {
-        return e.id == payload.id ? e = payload : e;
-      });
+    NEXT: function NEXT(state) {
+      state.next_page = state.current_page < state.last_page ? state.current_page + 1 : state.current_page;
+    },
+    BACK: function BACK(state) {
+      state.next_page = state.current_page > 1 ? state.current_page - 1 : state.current_page;
     }
   },
   actions: {
-    getQuestions: function getQuestions(_ref, survey_id) {
+    getQuestion: function getQuestion(_ref, survey_id) {
       var state = _ref.state,
           commit = _ref.commit;
       return new Promise(function (resolve, reject) {
-        window.axios.get("api/v1/questions?survey_id=".concat(survey_id)).then(function (response) {
-          commit('SET_QUESTIONS', response.data);
+        window.axios.get("api/v1/questions?question=".concat(state.next_page, "&survey_id=").concat(survey_id)).then(function (response) {
+          commit('SET_DATA', response.data);
           resolve(response);
         })["catch"](function (error) {
           if (error.request.status === 401) {
@@ -22422,22 +22408,17 @@ __webpack_require__.r(__webpack_exports__);
         });
       });
     },
-    getQuestion: function getQuestion(_ref2, id) {
-      var commit = _ref2.commit;
-      return new Promise(function (resolve, reject) {
-        window.axios.get("api/v1/questions/".concat(id)).then(function (response) {
-          commit('SET_QUESTION', response.data);
-          resolve(response);
-        })["catch"](function (error) {
-          if (error.request.status === 401) {
-            commit('auth/CLEAR_DATA', null, {
-              root: true
-            });
-          }
-
-          reject(error);
-        });
-      });
+    getNext: function getNext(_ref2, survey_id) {
+      var commit = _ref2.commit,
+          dispatch = _ref2.dispatch;
+      commit('NEXT');
+      return dispatch('getQuestion', survey_id);
+    },
+    getBack: function getBack(_ref3, survey_id) {
+      var commit = _ref3.commit,
+          dispatch = _ref3.dispatch;
+      commit('BACK');
+      return dispatch('getQuestion', survey_id);
     }
   }
 });
@@ -22492,6 +22473,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         });
         return r.answers_to_questions_count >= r.questions_count ? true : false;
       };
+    },
+    surveyIsDone: function surveyIsDone(state) {
+      return !state.survey || state.survey.answers_to_questions_count >= state.survey.questions_count ? true : false;
     }
   },
   mutations: {

@@ -14,8 +14,15 @@
         </h1>
 
         <Question
+            v-if="!surveyIsDone"
             :survey="survey"
         />
+        <div v-else class="uk-grid">
+            <div class="uk-align-center">
+                Thank you for your answers.
+            </div>
+        </div>
+
     </article>
 
     <div v-else>
@@ -26,7 +33,7 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex';
+    import {mapState, mapGetters, mapActions} from 'vuex';
     import Loader from "../components/Loader";
     import Question from "../components/Question";
 
@@ -43,6 +50,9 @@
             ...mapState({
                 user: state => state.auth.user,
                 survey: state => state.surveys.survey,
+            }),
+            ...mapGetters({
+                surveyIsDone: 'surveys/surveyIsDone'
             }),
         },
         methods: {

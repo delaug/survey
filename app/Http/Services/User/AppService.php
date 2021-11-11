@@ -55,17 +55,6 @@ class AppService
     }
 
     /**
-     * Get concrete Question
-     *
-     * @param int $id
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
-     */
-    public static function getQuestion(int $id)
-    {
-        return Question::with(['answers', 'fields'])->findOrFail($id);
-    }
-
-    /**
      * Set user Answer
      *
      * @param AnswerStoreRequest $request

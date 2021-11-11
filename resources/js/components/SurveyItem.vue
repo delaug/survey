@@ -23,6 +23,7 @@
                 @click="onTakeSurvey"
                 :disabled="status"
             >
+                <span :uk-icon="'icon: ' + getButtonIcon()"></span>
                 {{getButtonText()}}
             </ui-button>
         </div>
@@ -61,10 +62,16 @@
                 router.push({ name: 'SurveyDetail', params: { id: this.survey.id } })
             },
             getButtonText() {
-                if(!status)
+                if(!this.isDone(this.survey.id))
                     return !this.survey.answers_to_questions_count ? 'Start' : 'Continue'
                 else
                     return 'Done'
+            },
+            getButtonIcon() {
+                if(!this.isDone(this.survey.id))
+                    return !this.survey.answers_to_questions_count ? 'play' : 'future'
+                else
+                    return 'check'
             }
         }
     }

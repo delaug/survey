@@ -13,6 +13,9 @@ export default {
         isDone: (state) => id => {
             const r = state.surveys.find(s => s.id === id)
             return r.answers_to_questions_count >= r.questions_count ? true : false
+        },
+        surveyIsDone: (state) => {
+            return !state.survey || state.survey.answers_to_questions_count >= state.survey.questions_count ? true : false
         }
     },
     mutations: {

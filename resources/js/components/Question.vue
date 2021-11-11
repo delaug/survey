@@ -5,14 +5,14 @@
                 <div class="uk-width-expand">
                     <h3 class="uk-card-title uk-margin-remove-bottom">{{question.text}}</h3>
                     <p class="uk-text-meta">
-                        <time datetime="2016-04-01T19:00">Question {{step}} /
-                            {{questions.length}}
+                        <time datetime="2016-04-01T19:00">Question {{current_page}} /
+                            {{last_page}}
                         </time>
                     </p>
                 </div>
             </div>
         </div>
-        <ui-progress :class="'uk-margin-remove'" :value="step" :max="questions.length" />
+        <ui-progress :class="'uk-margin-remove'" :value="current_page" :max="last_page" />
         <div class="uk-card-body">
             <FieldsList
                 :survey="survey"
@@ -24,13 +24,10 @@
         <div class="uk-card-footer">
             <div class="uk-grid-small uk-child-width-auto" uk-grid>
                 <div>
-                    <ui-button :class="'uk-button-default'" @click="onBack" :disabled="step==1">Back</ui-button>
+                    <ui-button :class="'uk-button-default'" @click="onBack" :disabled="current_page==1">Back</ui-button>
                 </div>
-                <div v-if="step != survey.questions_count">
-                    <ui-button :class="'uk-button-primary'" :loading="loading" @click="onNext">Next</ui-button>
-                </div>
-                <div v-else>
-                    <ui-button :class="'uk-button-primary'" @click="onDone">Done</ui-button>
+                <div>
+                    <ui-button :class="'uk-button-primary'" :loading="loading" @click="onNext">{{current_page != last_page ? 'Next' : 'Done'}}</ui-button>
                 </div>
             </div>
         </div>
@@ -51,18 +48,15 @@
         },
         data() {
             return {
-                step: 1,
                 loading: false
             }
         },
         methods: {
             ...mapActions({
                 getQuestion: 'questions/getQuestion',
-                getQuestions: 'questions/getQuestions',
+                getNext: 'questions/getNext',
+                getBack: 'questions/getBack',
                 storeAnswers: 'answers/store',
-            }),
-            ...mapMutations({
-                UPDATE_QUESTION: 'questions/UPDATE_QUESTION'
             }),
             checkAnswer(message) {
                 if(this.question.answers.length) {
@@ -81,8 +75,7 @@
                 if(this.answers.length) {
                     this.loading = true
                     this.storeAnswers().then((e) => {
-                        this.UPDATE_QUESTION(e.data.question)
-                        this.calculateStep()
+                        this.getNext(this.survey.id)
                     }).catch(error  => {
                         for(var key in error.response.data.errors) {
                             error.response.data.errors[key].map(error => {
@@ -99,43 +92,26 @@
                     })
                 }
                 else if (this.checkAnswer('Please answer the question')) {
-                    this.step++
+                    this.getNext(this.survey.id)
                 }
             },
             onNext() {
                 this.sendAnswer()
             },
             onBack() {
-                this.step--
-            },
-            onDone() {
-                this.sendAnswer()
-            },
-            calculateStep() {
-                console.log(this.questions.find((q, ids) => {
-                    if(!q.answers.length) {
-                        this.step = ids + 1
-                        return q
-                    } else {
-                        q
-                        //this.step =
-                    }
-                }))
+                this.getBack(this.survey.id)
             }
         },
         computed: {
             ...mapState({
-                questions: state => state.questions.questions,
+                question: state => state.questions.question,
+                current_page: state => state.questions.current_page,
+                last_page: state => state.questions.last_page,
                 answers: state => state.answers.answers,
-            }),
-            question() {
-                return this.questions ? this.questions[this.step - 1] : null
-            }
+            })
         },
         mounted() {
-            this.getQuestions(this.survey.id).then(() => {
-                this.calculateStep()
-            })
+            this.getQuestion(this.survey.id)
         }
     }
 </script>

@@ -1,23 +1,31 @@
 export default {
     namespaced: true,
     state: () => ({
-        questions: []
+        question: null,
+        current_page: 1,
+        last_page: null,
+        next_page: null
     }),
     getters: {},
     mutations: {
-        SET_QUESTIONS(state, payload) {
-            state.questions = payload
+        SET_DATA(state, payload) {
+            state.question = payload.data[0]
+            state.current_page = payload.current_page
+            state.last_page = payload.last_page
         },
-        UPDATE_QUESTION(state, payload) {
-            state.questions = state.questions.map(e => e.id == payload.id ? e = payload : e)
+        NEXT(state) {
+            state.next_page = state.current_page < state.last_page ? state.current_page+1 : state.current_page
         },
+        BACK(state) {
+            state.next_page = state.current_page > 1 ? state.current_page-1 : state.current_page
+        }
     },
     actions: {
-        getQuestions({state, commit}, survey_id) {
+        getQuestion({state, commit}, survey_id) {
             return new Promise((resolve, reject) => {
-                window.axios.get(`api/v1/questions?survey_id=${survey_id}`)
+                window.axios.get(`api/v1/questions?question=${state.next_page}&survey_id=${survey_id}`)
                     .then(response => {
-                        commit('SET_QUESTIONS', response.data)
+                        commit('SET_DATA', response.data)
                         resolve(response);
                     })
                     .catch(error => {
@@ -28,20 +36,13 @@ export default {
                     })
             })
         },
-        getQuestion({commit}, id) {
-            return new Promise((resolve, reject) => {
-                window.axios.get(`api/v1/questions/${id}`)
-                    .then(response => {
-                        commit('SET_QUESTION', response.data)
-                        resolve(response);
-                    })
-                    .catch(error => {
-                        if(error.request.status === 401) {
-                            commit('auth/CLEAR_DATA',null,{root:true})
-                        }
-                        reject(error);
-                    })
-            })
+        getNext({commit, dispatch}, survey_id) {
+            commit('NEXT')
+            return dispatch('getQuestion', survey_id)
+        },
+        getBack({commit, dispatch}, survey_id) {
+            commit('BACK')
+            return dispatch('getQuestion', survey_id)
         }
     },
 }
