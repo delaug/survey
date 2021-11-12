@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters, mapActions} from 'vuex';
+    import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
     import Loader from "../components/Loader";
     import Question from "../components/Question";
 
@@ -52,12 +52,16 @@
                 survey: state => state.surveys.survey,
             }),
             ...mapGetters({
-                surveyIsDone: 'surveys/surveyIsDone'
+                surveyIsDone: 'surveys/surveyIsDone',
             }),
         },
         methods: {
             ...mapActions({
                 getSurvey: 'surveys/getSurvey',
+            }),
+            ...mapMutations({
+                setSurvey: 'surveys/SET_SURVEY',
+                clearQuestionData: 'questions/CLEAR_DATA',
             })
         },
         mounted() {
@@ -68,6 +72,10 @@
                     this.loading = false
                 });
             }
+        },
+        unmounted() {
+            this.clearQuestionData()
+            this.setSurvey(null)
         }
 
     }

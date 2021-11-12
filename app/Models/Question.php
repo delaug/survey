@@ -29,6 +29,14 @@ class Question extends Model
      */
     //protected $with = ['fields'];
 
+    public function userAnswers()
+    {
+        return $this->answers()
+            ->where('user_id', auth('sanctum')->id())
+            ->select(['id','user_id','question_id'])
+            ->distinct();
+    }
+
     public function survey() {
         return $this->belongsTo(Survey::class);
     }

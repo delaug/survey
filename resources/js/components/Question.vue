@@ -74,7 +74,7 @@
             sendAnswer() {
                 if(this.answers.length) {
                     this.loading = true
-                    this.storeAnswers().then((e) => {
+                    this.storeAnswers().then((response) => {
                         this.getNext(this.survey.id)
                     }).catch(error  => {
                         for(var key in error.response.data.errors) {

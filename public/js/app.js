@@ -19863,7 +19863,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.answers.length) {
         this.loading = true;
-        this.storeAnswers().then(function (e) {
+        this.storeAnswers().then(function (response) {
           _this.getNext(_this.survey.id);
         })["catch"](function (error) {
           for (var key in error.response.data.errors) {
@@ -20610,8 +20610,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   })), (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
     surveyIsDone: 'surveys/surveyIsDone'
   })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)({
     getSurvey: 'surveys/getSurvey'
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapMutations)({
+    setSurvey: 'surveys/SET_SURVEY',
+    clearQuestionData: 'questions/CLEAR_DATA'
   })),
   mounted: function mounted() {
     var _this = this;
@@ -20623,6 +20626,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.loading = false;
       });
     }
+  },
+  unmounted: function unmounted() {
+    this.clearQuestionData();
+    this.setSurvey(null);
   }
 });
 
@@ -22381,12 +22388,19 @@ __webpack_require__.r(__webpack_exports__);
       state.question = payload.data[0];
       state.current_page = payload.current_page;
       state.last_page = payload.last_page;
+      state.next_page = payload.current_page + 1;
     },
     NEXT: function NEXT(state) {
       state.next_page = state.current_page < state.last_page ? state.current_page + 1 : state.current_page;
     },
     BACK: function BACK(state) {
       state.next_page = state.current_page > 1 ? state.current_page - 1 : state.current_page;
+    },
+    CLEAR_DATA: function CLEAR_DATA(state) {
+      state.question = null;
+      state.current_page = 1;
+      state.last_page = null;
+      state.next_page = null;
     }
   },
   actions: {

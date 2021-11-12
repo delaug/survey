@@ -11,6 +11,29 @@ use App\Models\Survey;
 class AppService
 {
     /**
+     * Get next page number for paginator
+     * Search question where no exist user answers and get index element (equals page)
+     *
+     * TODO: Late think about it
+     *
+     * @param int $survey_id
+     * @return int
+     */
+    public static function getNextQuestionPageID(int $survey_id): int
+    {
+        $id = Question::withCount(['userAnswers'])
+            ->where(['survey_id' => $survey_id])
+            ->orderBy('sort')
+            ->get()
+            ->search(function ($value) {
+                return $value->user_answers_count == 0;
+            });
+
+        // if index 0 return first page
+        return $id ? $id + 1 : 1;
+    }
+
+    /**
      * Get all Surveys with paginate
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
@@ -40,10 +63,14 @@ class AppService
      * @param QuestionIndexRequest $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-
     public static function getQuestions(QuestionIndexRequest $request)
     {
         $validatedRequest = $request->validated();
+
+        // Check page or get next question where empty user answers
+        $page = !(int)$validatedRequest['question']
+            ? self::getNextQuestionPageID($validatedRequest['survey_id'])
+            : null;
 
         return Question::with([
             'answers' => fn($q) => $q->where(['answers.user_id' => auth('sanctum')->id()]),
@@ -51,7 +78,7 @@ class AppService
         ])
             ->where(['survey_id' => $validatedRequest['survey_id']])
             ->orderBy('sort')
-            ->paginate(1, ['*'], 'question');
+            ->paginate(1, ['*'], 'question', $page);
     }
 
     /**

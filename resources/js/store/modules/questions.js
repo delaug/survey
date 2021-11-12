@@ -12,12 +12,19 @@ export default {
             state.question = payload.data[0]
             state.current_page = payload.current_page
             state.last_page = payload.last_page
+            state.next_page = payload.current_page + 1
         },
         NEXT(state) {
             state.next_page = state.current_page < state.last_page ? state.current_page+1 : state.current_page
         },
         BACK(state) {
             state.next_page = state.current_page > 1 ? state.current_page-1 : state.current_page
+        },
+        CLEAR_DATA(state) {
+            state.question = null
+            state.current_page = 1
+            state.last_page = null
+            state.next_page = null
         }
     },
     actions: {

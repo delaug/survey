@@ -24,6 +24,7 @@ class QuestionIndexRequest extends FormRequest
     public function rules()
     {
         return [
+            'question' => ['nullable'],
             'survey_id' => ['required','exists:surveys,id'],
         ];
     }
