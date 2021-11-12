@@ -9,8 +9,7 @@
             <p class="uk-article-meta">Created by <a href="#"><b>{{survey.user.name}}</b></a> on {{survey.created_at}}.</p>
             <hr class="uk-divider-small">
             <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
-                <li><a href="#">{{survey.created_at}}</a></li>
-                <li><a href="#"><span>Questions:</span> {{survey.answers_to_questions_count}} / {{survey.questions_count}}</a></li>
+                <li><a href="#"><span>Questions:</span> {{user && survey.answers_to_questions_count + ' / '}}{{survey.questions_count}}</a></li>
             </ul>
         </div>
         <div class="uk-card-body">

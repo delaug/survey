@@ -36,6 +36,9 @@ export default {
         },
         SET_ANSWERS_TO_QUESTIONS_COUNT(state, payload) {
             state.survey.answers_to_questions_count = payload
+        },
+        CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT(state) {
+            state.surveys.map(s => s.answers_to_questions_count = 0)
         }
     },
     actions: {

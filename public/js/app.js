@@ -21201,24 +21201,21 @@ var _hoisted_9 = {
 var _hoisted_10 = {
   href: "#"
 };
-var _hoisted_11 = {
-  href: "#"
-};
 
-var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_11 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Questions:", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_13 = {
+var _hoisted_12 = {
   "class": "uk-card-body"
 };
-var _hoisted_14 = {
+var _hoisted_13 = {
   key: 0,
   "class": "uk-card-footer"
 };
-var _hoisted_15 = ["uk-icon"];
+var _hoisted_14 = ["uk-icon"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ui_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-button");
 
@@ -21228,13 +21225,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" on " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.created_at) + ".", 1
   /* TEXT */
-  )]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.created_at), 1
+  )]), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.user && $props.survey.answers_to_questions_count + ' / ') + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.questions_count), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.answers_to_questions_count) + " / " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.questions_count), 1
+  )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.description), 1
   /* TEXT */
-  )])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.description), 1
-  /* TEXT */
-  )]), _ctx.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
+  )]), _ctx.user ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ui_button, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(!$options.status ? 'uk-button-primary' : 'uk-button-default'),
     loading: $data.loading,
     onClick: $options.onTakeSurvey,
@@ -21245,7 +21240,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "uk-icon": 'icon: ' + $options.getButtonIcon()
       }, null, 8
       /* PROPS */
-      , _hoisted_15), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getButtonText()), 1
+      , _hoisted_14), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.getButtonText()), 1
       /* TEXT */
       )];
     }),
@@ -21598,8 +21593,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = {
+  "class": "uk-position-center"
+};
+
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "uk-width-expand@m uk-first-column uk-text-center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/favicon.ico"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
+  "class": "uk-article-title"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "uk-link-reset"
+}, "Survey project")])], -1
+/* HOISTED */
+);
+
+var _hoisted_3 = [_hoisted_2];
 function render(_ctx, _cache) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h2", null, "Home");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_3);
 }
 
 /***/ }),
@@ -22131,6 +22143,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var routes = [{
+  path: '/',
+  name: 'Home',
+  position: null,
+  component: _views_Home__WEBPACK_IMPORTED_MODULE_0__["default"]
+}, {
   path: '/surveys',
   name: 'Surveys',
   position: 'left',
@@ -22345,10 +22362,16 @@ __webpack_require__.r(__webpack_exports__);
         window.axios.get('/sanctum/csrf-cookie').then(function (response) {
           window.axios.post('api/v1/logout', null).then(function (response) {
             commit('CLEAR_DATA');
+            commit('surveys/CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT', null, {
+              root: true
+            });
             resolve(response);
           })["catch"](function (error) {
             if (error.request.status === 401) {
               commit('CLEAR_DATA');
+              commit('surveys/CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT', null, {
+                root: true
+              });
             }
 
             reject(error);
@@ -22510,6 +22533,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     SET_ANSWERS_TO_QUESTIONS_COUNT: function SET_ANSWERS_TO_QUESTIONS_COUNT(state, payload) {
       state.survey.answers_to_questions_count = payload;
+    },
+    CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT: function CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT(state) {
+      state.surveys.map(function (s) {
+        return s.answers_to_questions_count = 0;
+      });
     }
   },
   actions: {

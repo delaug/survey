@@ -57,11 +57,13 @@ export default {
                     window.axios.post('api/v1/logout', null)
                         .then(response => {
                             commit('CLEAR_DATA')
+                            commit('surveys/CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT', null, {root: true})
                             resolve(response);
                         })
                         .catch(error => {
                             if(error.request.status === 401) {
                                 commit('CLEAR_DATA')
+                                commit('surveys/CLEAR_ALL_ANSWERS_TO_QUESTIONS_COUNT', null, {root: true})
                             }
                             reject(error);
                         })

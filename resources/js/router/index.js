@@ -8,6 +8,12 @@ import SurveyDetail from "../views/SurveyDetail";
 
 const routes = [
     {
+        path: '/',
+        name: 'Home',
+        position: null,
+        component: Home
+    },
+    {
         path: '/surveys',
         name: 'Surveys',
         position: 'left',
