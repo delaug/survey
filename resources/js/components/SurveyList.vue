@@ -1,5 +1,5 @@
 <template>
-    <SurveyItem v-for="survey in surveys" :key="survey.id" :survey="survey"/>
+    <SurveyItem v-for="(survey, index) in surveys" :key="survey.id" :survey="survey" :index="index"/>
     <Loader v-if="loading"/>
     <Observer @intersect="intersected"/>
 </template>
