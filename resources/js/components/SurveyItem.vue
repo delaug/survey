@@ -11,8 +11,8 @@
                         #{{survey.id}}
                         {{survey.title}}</a>
                 </h3>
-                <p class="uk-article-meta">Created by <a href="#"><b>{{survey.user.name}}</b></a> on
-                    {{survey.created_at}}.</p>
+                <p class="uk-article-meta">Publish by <a href="#"><b>{{survey.user.name}}</b></a> on
+                    {{survey.publish_at}}.</p>
                 <hr class="uk-divider-small">
                 <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
                     <li>

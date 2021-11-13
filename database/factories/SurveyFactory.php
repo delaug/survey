@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Survey;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SurveyFactory extends Factory
@@ -25,7 +26,8 @@ class SurveyFactory extends Factory
         return [
             'title' => $this->faker->text(32),
             'description' => $this->faker->text(),
-            'user_id' => User::all()->random()->id
+            'user_id' => User::all()->random()->id,
+            'publish_at' => Carbon::createFromTimestamp($this->faker->dateTimeBetween($startDate = '+2 days', $endDate = '+1 week')->getTimeStamp())
         ];
     }
 }

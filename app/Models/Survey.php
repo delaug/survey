@@ -18,7 +18,8 @@ class Survey extends Model
     protected $fillable = [
         'title',
         'description',
-        'user_id'
+        'user_id',
+        'publish_at',
     ];
 
     /**
@@ -34,6 +35,7 @@ class Survey extends Model
      * @var array
      */
     protected $casts = [
+        'publish_at' => 'date:Y-m-d H:i:s',
         'created_at' => 'date:Y-m-d H:i:s',
         'updated_at' => 'date:Y-m-d H:i:s',
     ];

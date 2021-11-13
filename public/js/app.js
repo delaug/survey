@@ -21199,7 +21199,7 @@ var _hoisted_6 = {
   "class": "uk-article-meta"
 };
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Created by ");
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Publish by ");
 
 var _hoisted_8 = {
   href: "#"
@@ -21256,7 +21256,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.user.name), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" on " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.created_at) + ".", 1
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" on " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.publish_at) + ".", 1
   /* TEXT */
   )]), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.user && $props.survey.answers_to_questions_count + ' / ') + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.survey.questions_count), 1
   /* TEXT */

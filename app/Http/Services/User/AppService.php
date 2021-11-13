@@ -43,7 +43,11 @@ class AppService
         return Survey::with([
             'user:id,name,email',
             'user.roles:id,name'
-        ])->withCount('questions')->paginate(5);
+        ])
+            ->whereNotNull('publish_at')
+            ->withCount('questions')
+            ->orderByDesc('publish_at')
+            ->paginate(5);
     }
 
     /**
@@ -54,7 +58,9 @@ class AppService
      */
     public static function getSurvey(int $id)
     {
-        return Survey::withCount(['questions'])->findOrFail($id);
+        return Survey::withCount(['questions'])
+            ->whereNotNull('publish_at')
+            ->findOrFail($id);
     }
 
     /**
