@@ -7,6 +7,8 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\User\SurveyController;
 use App\Http\Controllers\API\User\QuestionController;
 use App\Http\Controllers\API\User\AnswerController;
+use App\Http\Controllers\API\Admin\UserController;
+use App\Http\Controllers\API\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,20 @@ Route::prefix('v1')->group(function () {
     /*
      * Protected routes
      */
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    });
+
+    /*
+     * Admin route
+     */
+    Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+        Route::apiResources([
+            'users' => UserController::class,
+            'roles' => RoleController::class,
+        ],
+            ['parameters' => [ 'users' => 'subject']]);
+    });
 
     // Unhandled routes
     Route::any('{any}', function () {
