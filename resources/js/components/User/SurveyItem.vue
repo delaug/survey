@@ -43,9 +43,9 @@
 
 <script>
     import {mapState, mapGetters} from 'vuex';
-    import router from "../router";
+    import router from "../../router";
 
-    import {randImageSrc} from "../helpers";
+    import {randImageSrc} from "../../helpers";
 
     export default {
         name: "SurveyItem",

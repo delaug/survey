@@ -1,23 +1,27 @@
 <template>
     <NavBar/>
     <div class="uk-container">
+        <AdminPanel v-if="isAdmin"/>
         <router-view/>
     </div>
 </template>
 
 <script>
-    import NavBar from "./components/NavBar";
-    import {mapState, mapMutations} from 'vuex';
+
+    import {mapState, mapGetters, mapMutations} from 'vuex';
+    import NavBar from "./components/User/NavBar";
+    import AdminPanel from "./components/Admin/AdminPanel";
 
     export default {
         name: 'App',
-        components: {
-            NavBar
-        },
+        components: {AdminPanel, NavBar},
         computed: {
             ...mapState({
                 token: state => state.auth.token,
                 user: state => state.auth.user,
+            }),
+            ...mapGetters({
+                isAdmin: 'auth/isAdmin'
             })
         },
         methods: {

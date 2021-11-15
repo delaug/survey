@@ -34,8 +34,8 @@
 
 <script>
     import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
-    import Loader from "../components/Loader";
-    import Question from "../components/Question";
+    import Loader from "../components/User/Loader";
+    import Question from "../components/User/Question";
 
     export default {
         name: "SurveyDetail",

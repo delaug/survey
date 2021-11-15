@@ -4,7 +4,11 @@ export default {
         user: null,
         token: null,
     }),
-    getters: {},
+    getters: {
+        isAdmin: (state) => {
+            return !!(state.user && state.user.roles.find(r => r.id === 1))
+        },
+    },
     mutations: {
         SET_DATA(state, payload) {
             localStorage.setItem('token', payload.token)

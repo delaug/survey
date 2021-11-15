@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import MainMenu from "./MainMenu";
+    import MainMenu from "../MainMenu";
     import {mapState, mapActions} from 'vuex';
 
     export default {
@@ -62,7 +62,9 @@
                 logout: 'auth/logout'
             }),
             onLogout() {
-                this.logout()
+                this.logout().finally(() => {
+                    this.$router.go()
+                })
             }
         },
         mounted() {

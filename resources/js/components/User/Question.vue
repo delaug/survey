@@ -39,7 +39,7 @@
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex';
     import FieldsList from "./FieldsList";
-    import {randImageSrc} from "../helpers";
+    import {randImageSrc} from "../../helpers";
 
     export default {
         name: "Question",

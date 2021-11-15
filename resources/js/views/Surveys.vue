@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import SurveyList from "../components/SurveyList";
+    import SurveyList from "../components/User/SurveyList";
     export default {
         name: "Surveys",
         components: {SurveyList},
