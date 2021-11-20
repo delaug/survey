@@ -23,7 +23,7 @@ const adminMenu = {
     meta: {
         menu: 'admin',
         title: 'Admin',
-        middleware: [isAdmin]
+        //middleware: [isAdmin]
     },
     children: [
         {

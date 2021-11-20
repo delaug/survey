@@ -6,9 +6,9 @@
 
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex';
-    import Observer from "./Observer";
+    import Observer from "../Observer";
     import SurveyItem from "./SurveyItem";
-    import Loader from "./Loader";
+    import Loader from "../Loader";
 
     export default {
         name: "SurveyList",

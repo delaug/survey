@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index()
     {
         $users = UserService::all();
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $users], Response::HTTP_OK);
+        return response()->json($users, Response::HTTP_OK);
     }
 
     /**
@@ -36,7 +36,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = UserService::create($request);
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $user], Response::HTTP_OK);
+        return response()->json($user, Response::HTTP_OK);
     }
 
     /**
@@ -48,7 +48,7 @@ class UserController extends Controller
     public function show(User $subject)
     {
         $subject = UserService::get($subject);
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $subject], Response::HTTP_OK);
+        return response()->json($subject, Response::HTTP_OK);
     }
 
     /**
@@ -61,7 +61,7 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $subject)
     {
         $subject = UserService::update($request, $subject);
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $subject], Response::HTTP_OK);
+        return response()->json($subject, Response::HTTP_OK);
     }
 
     /**
@@ -73,6 +73,6 @@ class UserController extends Controller
     public function destroy(User $subject)
     {
         UserService::delete($subject);
-        return response()->json(['status' => Response::HTTP_OK, 'message' => 'User was deleted!'], Response::HTTP_OK);
+        return response()->json(null, Response::HTTP_OK);
     }
 }

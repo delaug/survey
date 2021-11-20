@@ -63,7 +63,10 @@ class UserService
     public static function update(UpdateUserRequest $request, User $subject)
     {
         $data = $request->validated();
-        $data['password'] = bcrypt($data['password']);
+
+        if(!empty($data['password'] ))
+            $data['password'] = bcrypt($data['password']);
+
         $role_ids = [];
 
         // Extract roles

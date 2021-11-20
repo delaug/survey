@@ -14360,14 +14360,14 @@ select.uk-form-width-xsmall {
   display: flow-root;
   padding: 15px 30px;
   background: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid unset;
 }
 
 .uk-modal-footer {
   display: flow-root;
   padding: 15px 30px;
   background: #ffffff;
-  border-top: 1px solid #e5e5e5;
+  border-top: unset solid #e5e5e5;
 }
 
 /*

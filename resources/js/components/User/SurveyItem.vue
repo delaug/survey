@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex';
+    import {mapGetters, mapState} from 'vuex';
     import router from "../../router";
 
     import {randImageSrc} from "../../helpers";
@@ -78,7 +78,7 @@
         methods: {
             randImageSrc,
             onTakeSurvey() {
-                router.push({name: 'SurveyDetail', params: {id: this.survey.id}})
+                router.push({name: 'survey.detail', params: {id: this.survey.id}})
             },
             getButtonText() {
                 if (!this.isDone(this.survey.id))

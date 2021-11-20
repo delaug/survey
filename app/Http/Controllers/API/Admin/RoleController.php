@@ -24,7 +24,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = RoleService::all();
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $roles], Response::HTTP_OK);
+        return response()->json($roles, Response::HTTP_OK);
     }
 
     /**
@@ -36,7 +36,7 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request)
     {
         $role = RoleService::create($request);
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $role], Response::HTTP_OK);
+        return response()->json($role, Response::HTTP_OK);
     }
 
     /**
@@ -48,7 +48,7 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         $role = RoleService::get($role);
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $role], Response::HTTP_OK);
+        return response()->json($role, Response::HTTP_OK);
     }
 
     /**
@@ -61,7 +61,7 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role)
     {
         $role = RoleService::update($request, $role);
-        return response()->json(['status' => Response::HTTP_OK, 'data' => $role], Response::HTTP_OK);
+        return response()->json($role, Response::HTTP_OK);
     }
 
     /**
@@ -73,6 +73,6 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         RoleService::delete($role);
-        return response()->json(['status' => Response::HTTP_OK, 'message' => 'Role was deleted!'], Response::HTTP_OK);
+        return response()->json(null, Response::HTTP_OK);
     }
 }

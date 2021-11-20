@@ -1,10 +1,12 @@
 <template>
-
+    <router-view></router-view>
 </template>
 
 <script>
+    import AdminPanel from "./AdminPanel";
     export default {
-        name: "Admin"
+        name: "Admin",
+        components: {AdminPanel}
     }
 </script>
 
