@@ -7,8 +7,9 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\User\SurveyController;
 use App\Http\Controllers\API\User\QuestionController;
 use App\Http\Controllers\API\User\AnswerController;
-use App\Http\Controllers\API\Admin\UserController;
-use App\Http\Controllers\API\Admin\RoleController;
+use App\Http\Controllers\API\Admin\UserController as AdmUserController;
+use App\Http\Controllers\API\Admin\RoleController as AdmRoleController;
+use App\Http\Controllers\API\Admin\SurveyController as AdmSurveyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,8 +52,9 @@ Route::prefix('v1')->group(function () {
      */
     Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::apiResources([
-            'users' => UserController::class,
-            'roles' => RoleController::class,
+            'users' => AdmUserController::class,
+            'roles' => ADmRoleController::class,
+            'surveys' => ADmSurveyController::class,
         ],
             ['parameters' => [ 'users' => 'subject']]);
     });
