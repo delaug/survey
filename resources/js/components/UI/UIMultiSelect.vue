@@ -6,8 +6,9 @@
             :class="selectClass"
             :id="id"
             :name="name"
-            @change="updateInput"
             v-model="selected"
+            multiple
+            @change="updateInput"
         >
             <option
                 v-for="option in options"
@@ -24,7 +25,7 @@
 
 <script>
     export default {
-        name: "ui-select",
+        name: "ui-multiselect",
         props: {
             modelValue: {type: Array},
             id: {

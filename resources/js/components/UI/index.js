@@ -6,6 +6,7 @@ import UIRadio from "./UIRadio";
 import UITextArea from "./UITextArea";
 import UIProgress from "./UIProgress";
 import UITable from "./UITable";
+import UIMultiSelect from "./UIMultiSelect";
 import UISelect from "./UISelect";
 
 export default [
@@ -17,5 +18,6 @@ export default [
     UITextArea,
     UIProgress,
     UITable,
-    UISelect
+    UIMultiSelect,
+    UISelect,
 ]

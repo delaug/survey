@@ -7,11 +7,11 @@
             <thead>
             <tr>
                 <th
-                    v-for="(item, index) in data[0]"
-                    :key="'th_'+item"
-                    :class="{'uk-width-small':['email_verified_at','created_at','updated_at','deleted_at'].includes(index)}"
+                    v-for="title in titles"
+                    :key="'th_'+title.field"
+                    :class="{'uk-width-small':['email_verified_at','created_at','updated_at','deleted_at'].includes(title.field)}"
                 >
-                    {{index}}
+                    {{title.name}}
                 </th>
                 <th v-if="colActions" class="uk-table-small uk-text-nowrap uk-text-center">Action</th>
             </tr>
@@ -19,9 +19,9 @@
             <tbody>
             <tr v-for="row in data" :key="'tr_'+row.id">
                 <td
-                    v-for="(val, idx) in row" :key="'td_'+idx"
+                    v-for="(val, idx) in titles" :key="'td_'+idx"
                 >
-                    {{ prepareVal(val) }}
+                    {{ prepareVal(idx, row[val.field]) }}
                 </td>
                 <td v-if="colActions" class="uk-text-nowrap uk-text-center">
                     <a
@@ -48,16 +48,16 @@
         name: "ui-table",
         props: {
             colActions: {type: Boolean, default: true},
-            data: {type: Array, required: true}
+            data: {type: Array, required: true},
+            titles: {type: Array},
         },
         emits:['onEdit','onDelete'],
         methods: {
-            prepareVal(val) {
+            prepareVal(idx, val) {
                 if(!val || typeof val != 'object') {
                     return val
                 }
-
-                return val.map(v => v.name).join(',')
+                return val.length != undefined ? val.map(v => v.name).join(',') : val.name
             },
             onEdit(id) {
                 this.$emit('onEdit',id)

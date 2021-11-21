@@ -15,7 +15,9 @@ class SurveyService
      */
     public static function all()
     {
-        return Survey::all();
+        return Survey::with([
+            'user' => fn($q) => $q->select(['id','name'])
+        ])->get();
     }
 
     /**
@@ -26,18 +28,29 @@ class SurveyService
      */
     public static function create(StoreSurveyRequest $request)
     {
-        return Survey::create($request->validated());
+        $data = $request->validated();
+
+        $data['publish_at'] = $data['is_publish'] ? now() : null;
+        $survey = Survey::create($request->validated());
+
+        return Survey::with([
+            'user' => fn($q) => $q->select(['id','name'])
+        ])
+            ->find($survey->id);
     }
 
     /**
      * Get
      *
      * @param Survey $survey
-     * @return Survey
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
     public static function get(Survey $survey)
     {
-        return $survey;
+        return Survey::with([
+            'user' => fn($q) => $q->select(['id','name'])
+        ])
+            ->find($survey->id);
     }
 
     /**
@@ -49,9 +62,19 @@ class SurveyService
      */
     public static function update(UpdateSurveyRequest $request, Survey $survey)
     {
-        $survey->update($request->validated());
+        $data = $request->validated();
 
-        $survey = Survey::find($survey->id);
+        if($survey->publish_at && !$data['is_publish'])
+            $data['publish_at'] = null;
+        elseif (!$survey->publish_at)
+            $data['publish_at'] = now();
+
+        $survey->update($data);
+
+        $survey = Survey::with([
+            'user' => fn($q) => $q->select(['id','name'])
+        ])
+            ->find($survey->id);
         return $survey;
     }
 

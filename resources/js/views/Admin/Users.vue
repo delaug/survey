@@ -6,6 +6,7 @@
     <ui-table
         v-if="!loading && users"
         :data="users"
+        :titles="titles"
         @on-edit="onEdit"
         @on-delete="showConfirmBox"
     />
@@ -23,7 +24,16 @@ import ModalConfirmBox from "../../components/Admin/ModalConfirmBox";
         components: {ModalConfirmBox, ModalUserForm, Loader},
         data() {
             return {
-                loading: false
+                loading: false,
+                titles: [
+                    {field: 'id', name: 'id'},
+                    {field: 'name', name: 'name'},
+                    {field: 'email', name: 'email'},
+                    {field: 'email_verified_at', name: 'verified_at'},
+                    {field: 'created_at', name: 'created_at'},
+                    {field: 'updated_at', name: 'updated_at'},
+                    {field: 'roles', name: 'roles'},
+                ]
             }
         },
         computed: {

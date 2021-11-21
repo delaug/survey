@@ -6,7 +6,7 @@ export default {
     }),
     getters: {
         isAdmin: (state) => {
-            return !!(state.user && state.user.roles.find(r => r.id === 1))
+            return !!(state.user && state.user.roles && state.user.roles.find(r => r.id === 1))
         },
     },
     mutations: {

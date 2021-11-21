@@ -3,14 +3,16 @@ import auth from './modules/auth'
 import surveys from './modules/surveys'
 import answers from './modules/answers'
 import questions from './modules/questions'
-import users from "./modules/admin/users";
-import roles from "./modules/admin/roles";
+import admUsers from "./modules/admin/users";
+import admRoles from "./modules/admin/roles";
+import admSurveys from "./modules/admin/surveys";
 
 const admin = {
     namespaced: true,
     modules: {
-        users,
-        roles
+        'users': admUsers,
+        'roles': admRoles,
+        'surveys': admSurveys
     }
 }
 

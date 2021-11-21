@@ -33,7 +33,7 @@
                     :modelValue="form && form.password"
                     @input="updateData"
                 />
-                <ui-select
+                <ui-multiselect
                     :id="'roles'"
                     :name="'roles'"
                     :label="'roles'"
@@ -43,7 +43,7 @@
                 />
             </div>
             <div class="uk-modal-footer uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                <ui-button :class="'uk-button-default uk-modal-close'">Cancel</ui-button>
                 <ui-button :class="'uk-button-primary uk-margin-small-left'" :loading="loading" @click="createOrUpdate">Save</ui-button>
             </div>
         </div>
@@ -53,11 +53,10 @@
 <script>
     import Loader from "../Loader";
     import {mapState, mapActions, mapMutations} from 'vuex';
-    import UiButton from "../UI/UIButton";
 
     export default {
         name: "ModalUserForm",
-        components: {UiButton, Loader},
+        components: {Loader},
         props: {
             mode: {type: Boolean}
         },

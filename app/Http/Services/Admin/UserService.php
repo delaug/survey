@@ -15,7 +15,7 @@ class UserService
      */
     public static function all()
     {
-        return User::all();
+        return User::with(['roles'])->get();
     }
 
     /**
@@ -39,18 +39,18 @@ class UserService
         if($user)
             $user->roles()->sync($role_ids);
 
-        return User::find($user->id);
+        return User::with(['roles'])->find($user->id);
     }
 
     /**
      * Get
      *
      * @param User $subject
-     * @return User
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
     public static function get(User $subject)
     {
-        return $subject;
+        return User::with(['roles'])->find($subject->id);
     }
 
     /**
@@ -81,7 +81,7 @@ class UserService
         if($subject && $role_ids)
             $subject->roles()->sync($role_ids);
 
-        return User::find($subject->id);
+        return User::with(['roles'])->find($subject->id);
     }
 
     /**
