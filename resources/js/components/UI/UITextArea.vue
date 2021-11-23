@@ -1,13 +1,16 @@
 <template>
-    <textarea
-        :id="id"
-        :name="name"
-        :class="textareaClass"
-        :placeholder="placeholder"
-        :value="modelValue"
-        :rows="rows"
-        @input="updateTextarea"
-    ></textarea>
+    <div class="uk-margin uk-margin-small">
+        <label v-if="label" class="uk-form-label">{{label}}</label>
+        <textarea
+            :id="id"
+            :name="name"
+            :class="textareaClass"
+            :placeholder="placeholder"
+            :value="modelValue"
+            :rows="rows"
+            @input="updateTextarea"
+        ></textarea>
+    </div>
 </template>
 
 <script>

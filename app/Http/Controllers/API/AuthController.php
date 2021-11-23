@@ -26,7 +26,7 @@ class AuthController extends Controller
         $user->roles()->attach(Role::IS_USER);
         $token = $user->createToken($input['device_name'])->plainTextToken;
 
-        return response()->json(['token' => $token, 'user' => $user], Response::HTTP_OK);
+        return response()->json(['token' => $token, 'user' => User::with(['roles'])->find($user->id)], Response::HTTP_OK);
     }
 
 
@@ -37,7 +37,7 @@ class AuthController extends Controller
     public function login(LoginAuthRequest $request) {
         $input = $request->validated();
 
-        $user = User::where('email', $input['email'])->first();
+        $user = User::with(['roles'])->where('email', $input['email'])->first();
 
         if (!$user || !Hash::check($input['password'], $user['password'])) {
             return response()->json(['error' => 'The provided credentials are incorrect.'], Response::HTTP_UNAUTHORIZED);

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="uk-margin uk-margin-small">
         <label v-if="label" :class="labelClass" :htmlFor="id">{{label}}</label>
 
         <select

@@ -19,10 +19,11 @@
                     :modelValue="form && form.title"
                     @input="updateData"
                 />
-                <ui-input
+                <ui-textarea
                     :id="'description'"
                     :name="'description'"
                     :label="'description'"
+                    :rows="4"
                     :modelValue="form && form.description"
                     @input="updateData"
                 />
@@ -46,7 +47,9 @@
             </div>
             <div class="uk-modal-footer uk-text-right">
                 <ui-button :class="'uk-button-default uk-modal-close'">Cancel</ui-button>
-                <ui-button :class="'uk-button-primary uk-margin-small-left'" :loading="loading" @click="createOrUpdate">Save</ui-button>
+                <ui-button :class="'uk-button-primary uk-margin-small-left'" :loading="loading" @click="createOrUpdate">
+                    Save
+                </ui-button>
             </div>
         </div>
     </div>
@@ -63,8 +66,7 @@
             mode: {type: Boolean}
         },
         data() {
-            return {
-            }
+            return {}
         },
         computed: {
             ...mapState({
@@ -85,13 +87,13 @@
                 updateFormField: 'admin/surveys/UPDATE_FORM_FIELD',
             }),
             updateData(event) {
-                this.updateFormField({field:event.target.id, value:event.target.value})
+                this.updateFormField({field: event.target.id, value: event.target.value})
             },
             selectedUser(selected) {
-                this.updateFormField({field:'user_id', value:selected})
+                this.updateFormField({field: 'user_id', value: selected})
             },
             changePublish(event) {
-                this.updateFormField({field:event.target.id, value:event.target.checked})
+                this.updateFormField({field: event.target.id, value: event.target.checked})
             },
             createOrUpdate() {
                 this.id

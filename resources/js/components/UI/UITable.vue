@@ -25,13 +25,13 @@
                 </td>
                 <td v-if="colActions" class="uk-text-nowrap uk-text-center">
                     <a
-                        href="#"
+                        href="javascript:;"
                         class="uk-icon-link uk-margin-small-right uk-text-primary"
                         uk-icon="file-edit"
                         @click="onEdit(row.id)"
                     ></a>
                     <a
-                        href="#"
+                        href="javascript:;"
                         class="uk-icon-link uk-margin-small-right uk-text-danger"
                         uk-icon="trash"
                         @click="onDelete(row.id)"

@@ -1,4 +1,5 @@
 <template>
+    <div class="uk-margin uk-margin-small">
     <label>
         <input
             type="checkbox"
@@ -9,6 +10,7 @@
             @change="changeValue"
         /> <slot></slot>
     </label>
+    </div>
 </template>
 
 <script>
