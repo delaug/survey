@@ -31,7 +31,7 @@ class SurveyService
         $data = $request->validated();
 
         $data['publish_at'] = $data['is_publish'] ? now() : null;
-        $survey = Survey::create($request->validated());
+        $survey = Survey::create($data);
 
         return Survey::with([
             'user' => fn($q) => $q->select(['id','name'])

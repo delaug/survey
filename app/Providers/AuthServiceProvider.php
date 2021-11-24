@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Question;
+use App\Models\QuestionType;
 use App\Models\Role;
 use App\Models\Survey;
 use App\Models\User;
+use App\Policies\Admin\QuestionPolicy;
+use App\Policies\Admin\QuestionTypePolicy;
 use App\Policies\Admin\RolePolicy;
 use App\Policies\Admin\SurveyPolicy;
 use App\Policies\Admin\UserPolicy;
@@ -23,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Role::class => RolePolicy::class,
         Survey::class => SurveyPolicy::class,
+        Question::class => QuestionPolicy::class,
+        QuestionType::class => QuestionTypePolicy::class,
     ];
 
     /**

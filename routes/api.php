@@ -10,6 +10,8 @@ use App\Http\Controllers\API\User\AnswerController;
 use App\Http\Controllers\API\Admin\UserController as AdmUserController;
 use App\Http\Controllers\API\Admin\RoleController as AdmRoleController;
 use App\Http\Controllers\API\Admin\SurveyController as AdmSurveyController;
+use App\Http\Controllers\API\Admin\QuestionController as AdmQuestionController;
+use App\Http\Controllers\API\Admin\QuestionTypeController as AdmQuestionTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +57,11 @@ Route::prefix('v1')->group(function () {
             'users' => AdmUserController::class,
             'roles' => ADmRoleController::class,
             'surveys' => ADmSurveyController::class,
+            'questions' => AdmQuestionController::class,
         ],
             ['parameters' => [ 'users' => 'subject']]);
+
+        Route::apiResources(['question-types' => AdmQuestionTypeController::class], ['only' => ['index']]);
     });
 
     // Unhandled routes
