@@ -1,7 +1,7 @@
 <template>
     <div
         id="modal-survey-form"
-        class="uk-flex-top"
+        class="uk-modal-container uk-flex-top"
         uk-modal
     >
         <div class="uk-modal-dialog uk-margin-auto-vertical">
@@ -44,6 +44,9 @@
                 >
                     is_publish
                 </ui-checkbox>
+
+                <QuestionTabs/>
+                <Question :question="currentQuestion" :index="item_index"/>
             </div>
             <div class="uk-modal-footer uk-text-right">
                 <ui-button :class="'uk-button-default uk-modal-close'">Cancel</ui-button>
@@ -57,11 +60,13 @@
 
 <script>
     import Loader from "../Loader";
-    import {mapState, mapActions, mapMutations} from 'vuex';
+    import {mapState, mapGetters, mapActions, mapMutations} from 'vuex';
+    import Question from "./Question";
+    import QuestionTabs from "./QuestionTabs";
 
     export default {
         name: "ModalSurveyForm",
-        components: {Loader},
+        components: {QuestionTabs, Question, Loader},
         props: {
             mode: {type: Boolean}
         },
@@ -74,6 +79,10 @@
                 form: state => state.admin.surveys.form,
                 id: state => state.admin.surveys.id,
                 loading: state => state.admin.surveys.loading,
+                item_index: state => state.admin.questions.item_index,
+            }),
+            ...mapGetters({
+                currentQuestion: 'admin/questions/currentQuestion'
             })
         },
         methods: {

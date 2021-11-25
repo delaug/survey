@@ -49,15 +49,22 @@
             ...mapActions({
                 getUsers: 'admin/users/getUsers',
                 getSurveys: 'admin/surveys/getSurveys',
-                deleteSurvey: 'admin/surveys/deleteSurvey'
+                deleteSurvey: 'admin/surveys/deleteSurvey',
+                getQuestionsBySurvey: 'admin/questions/getQuestionsBySurvey',
+                getQuestionTypes: 'admin/question_types/getQuestionTypes',
             }),
             ...mapMutations({
                 setID: 'admin/surveys/SET_ID',
                 updateFormField: 'admin/surveys/UPDATE_FORM_FIELD',
+                setQuestions: 'admin/questions/SET_QUESTIONS',
             }),
             onEdit(id) {
                 this.setID(id)
                 this.updateFormField({field:'user_id', value:this.user.id})
+                if(id)
+                    this.getQuestionsBySurvey(id)
+                else
+                    this.setQuestions(null);
                 this.UIkit.modal('#modal-survey-form').show()
             },
             showConfirmBox(id) {
@@ -70,6 +77,7 @@
         mounted() {
             this.loading = true
 
+            this.getQuestionTypes()
             this.getUsers().then(() => {
                 this.getSurveys().finally(() => {
                     this.loading = false

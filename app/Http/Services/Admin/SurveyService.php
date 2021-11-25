@@ -4,6 +4,7 @@ namespace App\Http\Services\Admin;
 
 use App\Http\Requests\Admin\StoreSurveyRequest;
 use App\Http\Requests\Admin\UpdateSurveyRequest;
+use App\Models\Question;
 use App\Models\Survey;
 
 class SurveyService
@@ -88,5 +89,21 @@ class SurveyService
     {
         $survey->delete();
         return true;
+    }
+
+    /**
+     * Questions
+     *
+     * @param Survey $survey
+     * @return mixed
+     */
+    public static function getQuestions(Survey $survey)
+    {
+        $questions = Question::with([
+            'fields'
+        ])
+            ->where('survey_id', $survey->id)
+            ->get();
+        return $questions;
     }
 }

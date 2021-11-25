@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreSurveyRequest;
 use App\Http\Requests\Admin\UpdateSurveyRequest;
 use App\Http\Services\Admin\SurveyService;
+use App\Models\Question;
 use App\Models\Survey;
 use Illuminate\Http\Response;
 
@@ -74,5 +75,17 @@ class SurveyController extends Controller
     {
         SurveyService::delete($survey);
         return response()->json(null, Response::HTTP_OK);
+    }
+
+    /**
+     * Return survey questions
+     *
+     * @param Survey $survey
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function indexQuestions(Survey $survey)
+    {
+        $questions = SurveyService::getQuestions($survey);
+        return response()->json($questions, Response::HTTP_OK);
     }
 }

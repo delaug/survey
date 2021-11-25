@@ -60,7 +60,7 @@ Route::prefix('v1')->group(function () {
             'questions' => AdmQuestionController::class,
         ],
             ['parameters' => [ 'users' => 'subject']]);
-
+        Route::get('surveys/{survey}/questions', [AdmSurveyController::class, 'indexQuestions']);
         Route::apiResources(['question-types' => AdmQuestionTypeController::class], ['only' => ['index']]);
     });
 
