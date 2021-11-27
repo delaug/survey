@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
             QuestionTypeSeeder::class,
             // For test
             SurveySeeder::class,
-            QuestionSeeder::class,
-            FieldSeeder::class,
+            // QuestionSeeder::class,
+            // FieldSeeder::class,
         ]);
     }
 }
