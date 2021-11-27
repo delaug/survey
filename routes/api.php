@@ -12,6 +12,7 @@ use App\Http\Controllers\API\Admin\RoleController as AdmRoleController;
 use App\Http\Controllers\API\Admin\SurveyController as AdmSurveyController;
 use App\Http\Controllers\API\Admin\QuestionController as AdmQuestionController;
 use App\Http\Controllers\API\Admin\QuestionTypeController as AdmQuestionTypeController;
+use App\Http\Controllers\API\Admin\FieldController as AdmFieldController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,7 @@ Route::prefix('v1')->group(function () {
             'roles' => ADmRoleController::class,
             'surveys' => ADmSurveyController::class,
             'questions' => AdmQuestionController::class,
+            'fields' => AdmFieldController::class,
         ],
             ['parameters' => [ 'users' => 'subject']]);
         Route::get('surveys/{survey}/questions', [AdmSurveyController::class, 'indexQuestions']);

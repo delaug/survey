@@ -8,6 +8,7 @@ import admRoles from "./modules/admin/roles";
 import admSurveys from "./modules/admin/surveys";
 import admQuestions from "./modules/admin/questions";
 import admQuestionTypes from "./modules/admin/question_types";
+import admFields from "./modules/admin/fields";
 
 const admin = {
     namespaced: true,
@@ -17,6 +18,7 @@ const admin = {
         'surveys': admSurveys,
         'questions': admQuestions,
         'question_types': admQuestionTypes,
+        'fields': admFields,
     }
 }
 

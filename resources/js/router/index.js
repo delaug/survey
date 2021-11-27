@@ -9,6 +9,8 @@ import Dashboard from "../views/Admin/Dashboard";
 
 import AccessDenied from "../views/Admin/AccessDenied";
 import AdminSurveys from "../views/Admin/Surveys";
+import AdminQuestions from '../views/Admin/Questions'
+import AdminFields from '../views/Admin/Fields'
 
 import store from '../store'
 
@@ -54,6 +56,24 @@ const adminMenu = {
                 title: 'Surveys',
             },
             component: AdminSurveys
+        },
+        {
+            path: 'questions',
+            name: 'admin.questions',
+            meta: {
+                menu: 'admin',
+                title: 'Questions',
+            },
+            component: AdminQuestions
+        },
+        {
+            path: 'fields',
+            name: 'admin.fields',
+            meta: {
+                menu: 'admin',
+                title: 'Fields',
+            },
+            component: AdminFields
         }
     ]
 }

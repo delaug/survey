@@ -4,75 +4,73 @@
         <button class="uk-button uk-button-primary" type="button" @click="onEdit(null)">New</button>
     </div>
     <ui-table
-        v-if="!loading && surveys"
-        :data="surveys"
+        v-if="!loading && questions"
+        :data="questions"
         :titles="titles"
         @on-edit="onEdit"
         @on-delete="showConfirmBox"
     />
-    <ModalSurveyForm />
-    <ModalConfirmBox :text="'Delete survey?'" ref="confirmDeleteSurvey" @confirm="onDelete"/>
+    <ModalQuestionForm/>
+    <ModalConfirmBox :text="'Delete question?'" ref="confirmDeleteQuestion" @confirm="onDelete"/>
 </template>
 
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex';
     import Loader from "../../components/Loader";
-    import ModalSurveyForm from "../../components/Admin/ModalSurveyForm";
     import ModalConfirmBox from "../../components/Admin/ModalConfirmBox";
+    import ModalQuestionForm from "../../components/Admin/ModalQuestionForm";
 
     export default {
-        name: "AdminSurveys",
-        components: {ModalConfirmBox, ModalSurveyForm, Loader},
+        name: "AdminQuestions",
+        components: {ModalQuestionForm, ModalConfirmBox, Loader},
         data() {
             return {
                 loading: false,
                 titles: [
                     {field: 'id', name: 'id'},
-                    {field: 'title', name: 'title'},
-                    {field: 'description', name: 'description'},
-                    {field: 'publish_at', name: 'publish_at'},
+                    {field: 'text', name: 'text'},
+                    {field: 'sort', name: 'sort'},
+                    {field: 'type_id', name: 'type'},
+                    {field: 'survey_id', name: 'survey'},
                     {field: 'created_at', name: 'created_at'},
                     {field: 'updated_at', name: 'updated_at'},
                     {field: 'deleted_at', name: 'deleted_at'},
-                    {field: 'answers_to_questions_count', name: 'ans cnt'},
-                    {field: 'user', name: 'user'},
                 ]
             }
         },
         computed: {
             ...mapState({
-                surveys: state => state.admin.surveys.surveys,
-                user: state => state.auth.user
+                questions: state => state.admin.questions.questions,
             })
         },
         methods: {
             ...mapActions({
-                getUsers: 'admin/users/getUsers',
                 getSurveys: 'admin/surveys/getSurveys',
-                deleteSurvey: 'admin/surveys/deleteSurvey',
+                getQuestions: 'admin/questions/getQuestions',
+                deleteQuestion: 'admin/questions/deleteQuestion',
+                getQuestionTypes: 'admin/question_types/getQuestionTypes',
             }),
             ...mapMutations({
-                setID: 'admin/surveys/SET_ID',
-                updateFormField: 'admin/surveys/UPDATE_FORM_FIELD',
+                setID: 'admin/questions/SET_ID',
+                updateFormField: 'admin/questions/UPDATE_FORM_FIELD',
             }),
             onEdit(id) {
                 this.setID(id)
-                this.updateFormField({field:'user_id', value:this.user.id})
-                this.UIkit.modal('#modal-survey-form').show()
+                this.UIkit.modal('#modal-question-form').show()
             },
             showConfirmBox(id) {
-                this.$refs.confirmDeleteSurvey.show(id);
+                this.$refs.confirmDeleteQuestion.show(id);
             },
             onDelete(id) {
-                this.deleteSurvey(id)
+                this.deleteQuestion(id)
             }
         },
         mounted() {
             this.loading = true
-            this.getUsers().then(() => {
-                this.getSurveys().finally(() => {
-                    this.loading = false
-                })
+            this.getQuestionTypes()
+            this.getSurveys()
+            this.getQuestions().finally(() => {
+                this.loading = false
             })
         }
     }

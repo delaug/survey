@@ -29,6 +29,17 @@ class Question extends Model
      */
     //protected $with = ['fields'];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'publish_at' => 'date:Y-m-d H:i:s',
+        'created_at' => 'date:Y-m-d H:i:s',
+        'updated_at' => 'date:Y-m-d H:i:s',
+    ];
+
     public function userAnswers()
     {
         return $this->answers()

@@ -60,7 +60,7 @@ class QuestionController extends Controller
      */
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $question = Question::update($request, $question);
+        $question = QuestionService::update($request, $question);
         return response()->json($question, Response::HTTP_OK);
     }
 

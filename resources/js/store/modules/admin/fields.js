@@ -3,28 +3,28 @@ import {notify, notifyErrors} from "../../../helpers";
 export default {
     namespaced: true,
     state: () => ({
-        questions: null,
-        question: null,
+        fields: null,
+        field: null,
         form: null,
         loading: false,
         id: null
     }),
     getters: {},
     mutations: {
-        SET_QUESTIONS(state, payload) {
-            state.questions = payload
+        SET_FIELDS(state, payload) {
+            state.fields = payload
         },
-        SET_QUESTION(state, payload) {
-            state.question = payload
+        SET_FIELD(state, payload) {
+            state.field = payload
         },
-        ADD_QUESTION(state, payload) {
-            state.questions = [payload, ...state.questions]
+        ADD_FIELD(state, payload) {
+            state.fields = [payload, ...state.fields]
         },
-        UPDATE_QUESTION(state, payload) {
-            state.questions = state.questions.map(s => s.id === payload.id ? payload : s)
+        UPDATE_FIELD(state, payload) {
+            state.fields = state.fields.map(s => s.id === payload.id ? payload : s)
         },
-        REMOVE_QUESTION(state, payload) {
-            state.questions = state.questions.filter(f => f.id !== payload)
+        REMOVE_FIELD(state, payload) {
+            state.fields = state.fields.filter(f => f.id !== payload)
         },
         SET_FORM(state, payload) {
             state.form = payload
@@ -43,19 +43,17 @@ export default {
                 id: null,
                 text: '',
                 sort: 10,
-                type_id: null,
-                survey_id: null,
+                question_id: null,
             }
 
             if (payload) {
-                this.dispatch('admin/questions/getQuestion', payload)
+                this.dispatch('admin/fields/getField', payload)
                     .then(() => {
                         state.form = {
-                            id: state.question.id,
-                            text: state.question.text,
-                            sort: state.question.sort,
-                            type_id: state.question.type_id,
-                            survey_id: state.question.survey_id,
+                            id: state.field.id,
+                            text: state.field.text,
+                            sort: state.field.sort,
+                            question_id: state.field.question_id,
                         }
                     });
             }
@@ -65,13 +63,13 @@ export default {
         },
     },
     actions: {
-        getQuestions({state, commit}) {
+        getFields({state, commit}) {
             state.loading = true
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.get(`api/v1/admin/questions`)
+                    window.axios.get(`api/v1/admin/fields`)
                         .then(response => {
-                            commit('SET_QUESTIONS', response.data)
+                            commit('SET_FIELDS', response.data)
                             resolve(response);
                         })
                         .catch(error => {
@@ -86,14 +84,14 @@ export default {
                 })
             })
         },
-        getQuestion({state, commit}, id) {
+        getField({state, commit}, id) {
             state.loading = true
 
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.get(`api/v1/admin/questions/${id}`)
+                    window.axios.get(`api/v1/admin/fields/${id}`)
                         .then(response => {
-                            commit('SET_QUESTION', response.data)
+                            commit('SET_FIELD', response.data)
                             resolve(response);
                         })
                         .catch(error => {
@@ -109,13 +107,13 @@ export default {
                 })
             })
         },
-        postQuestion({state, commit}) {
+        postField({state, commit}) {
             state.loading = true
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.post(`api/v1/admin/questions`, state.form)
+                    window.axios.post(`api/v1/admin/fields`, state.form)
                         .then(response => {
-                            commit('ADD_QUESTION', response.data)
+                            commit('ADD_FIELD', response.data)
                             notify('Success','success')
                             resolve(response);
                         })
@@ -134,13 +132,13 @@ export default {
                 })
             })
         },
-        updateQuestion({state, commit}, id) {
+        updateField({state, commit}, id) {
             state.loading = true
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.put(`api/v1/admin/questions/${id}`, state.form)
+                    window.axios.put(`api/v1/admin/fields/${id}`, state.form)
                         .then(response => {
-                            commit('UPDATE_QUESTION', response.data)
+                            commit('UPDATE_FIELD', response.data)
                             notify('Success','success')
                             resolve(response);
                         })
@@ -159,13 +157,13 @@ export default {
                 })
             })
         },
-        deleteQuestion({state, commit}, id) {
+        deleteField({state, commit}, id) {
             state.loading = true
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.delete(`api/v1/admin/questions/${id}`)
+                    window.axios.delete(`api/v1/admin/fields/${id}`)
                         .then(response => {
-                            commit('REMOVE_QUESTION', id)
+                            commit('REMOVE_FIELD', id)
                             notify('Success','success')
                             resolve(response);
                         })

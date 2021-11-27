@@ -14,7 +14,7 @@
                 :key="option.id"
                 :value="option.id"
             >
-                {{option.name}}
+                {{option[value_field]}}
             </option>
 
         </select>
@@ -26,10 +26,14 @@
     export default {
         name: "ui-select",
         props: {
-            modelValue: {type: Array},
+            modelValue: {type: Number},
             id: {
                 type: String,
                 default: null
+            },
+            value_field: {
+                type: String,
+                default: 'name'
             },
             options: {
                 type: Array,
