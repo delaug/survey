@@ -10,6 +10,8 @@
         @on-edit="onEdit"
         @on-delete="showConfirmBox"
     />
+    <Observer @intersect="intersected"/>
+    <Loader v-if="loadingPage"/>
     <ModalQuestionForm/>
     <ModalConfirmBox :text="'Delete question?'" ref="confirmDeleteQuestion" @confirm="onDelete"/>
 </template>
@@ -19,13 +21,15 @@
     import Loader from "../../components/Loader";
     import ModalConfirmBox from "../../components/Admin/ModalConfirmBox";
     import ModalQuestionForm from "../../components/Admin/ModalQuestionForm";
+    import Observer from "../../components/Observer";
 
     export default {
         name: "AdminQuestions",
-        components: {ModalQuestionForm, ModalConfirmBox, Loader},
+        components: {Observer, ModalQuestionForm, ModalConfirmBox, Loader},
         data() {
             return {
                 loading: false,
+                loadingPage: false,
                 titles: [
                     {field: 'id', name: 'id'},
                     {field: 'text', name: 'text'},
@@ -64,15 +68,21 @@
             },
             onDelete(id) {
                 this.deleteQuestion(id)
+            },
+            intersected() {
+                this.loadingPage = true;
+                this.getQuestions().finally(() => {
+                    this.loadingPage = false
+                })
             }
         },
         mounted() {
             this.loading = true
-            this.getQuestionTypes()
-            this.getSurveys()
-            this.getQuestions().finally(() => {
-                this.loading = false
-            })
+            this.getQuestionTypes().then(
+                () => this.getSurveys().then(
+                    () => this.loading = false
+                )
+            )
         }
     }
 </script>

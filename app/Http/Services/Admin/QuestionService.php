@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\StoreQuestionRequest;
 use App\Http\Requests\Admin\UpdateQuestionRequest;
 use App\Models\Question;
 
-class QuestionService
+class QuestionService extends BaseService
 {
     /**
      * All
@@ -17,9 +17,7 @@ class QuestionService
      */
     public static function all()
     {
-        return Question::with([
-            'type' => fn($q) => $q->select(['id','name'])
-        ])->get();
+        return Question::withType()->paginate(request()->input('per_page',self::$paginate_per_page));
     }
 
     /**
@@ -33,9 +31,7 @@ class QuestionService
         $data = $request->validated();
         $question = Question::create($data);
 
-        return Question::with([
-            'type' => fn($q) => $q->select(['id','name'])
-        ])->find($question->id);
+        return Question::withType()->find($question->id);
     }
 
     /**
@@ -46,9 +42,7 @@ class QuestionService
      */
     public static function get(Question $question)
     {
-        return Question::with([
-            'type' => fn($q) => $q->select(['id','name'])
-        ])->find($question->id);
+        return Question::withType()->find($question->id);
     }
 
     /**
@@ -63,9 +57,7 @@ class QuestionService
         $data = $request->validated();
         $question->update($data);
 
-        $question = Question::with([
-            'type' => fn($q) => $q->select(['id','name'])
-        ])->find($question->id);
+        $question = Question::withType()->find($question->id);
 
         return $question;
     }

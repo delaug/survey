@@ -68,4 +68,11 @@ class Survey extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeWithUser($query)
+    {
+        return $query->with([
+            'user' => fn($q) => $q->select(['id','name'])
+        ]);
+    }
 }

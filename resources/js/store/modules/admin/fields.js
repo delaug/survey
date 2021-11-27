@@ -3,16 +3,19 @@ import {notify, notifyErrors} from "../../../helpers";
 export default {
     namespaced: true,
     state: () => ({
-        fields: null,
+        fields: [],
         field: null,
         form: null,
         loading: false,
-        id: null
+        id: null,
+
+        current_page: 1,
+        last_page: null,
     }),
     getters: {},
     mutations: {
         SET_FIELDS(state, payload) {
-            state.fields = payload
+            state.fields = [...state.fields, ...payload]
         },
         SET_FIELD(state, payload) {
             state.field = payload
@@ -61,15 +64,27 @@ export default {
         UPDATE_FORM_FIELD(state, payload) {
             state.form[payload.field] = payload.value
         },
+
+        SET_CURRENT_PAGE(state, payload) {
+            state.current_page = payload + 1
+        },
+        SET_LAST_PAGE(state, payload) {
+            state.last_page = payload
+        },
     },
     actions: {
         getFields({state, commit}) {
+            if(state.last_page && state.current_page > state.last_page)
+                return false;
+
             state.loading = true
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.get(`api/v1/admin/fields`)
+                    window.axios.get(`api/v1/admin/fields?page=${state.current_page}`)
                         .then(response => {
-                            commit('SET_FIELDS', response.data)
+                            commit('SET_FIELDS', response.data.data)
+                            commit('SET_CURRENT_PAGE', response.data.current_page)
+                            commit('SET_LAST_PAGE', response.data.last_page)
                             resolve(response);
                         })
                         .catch(error => {

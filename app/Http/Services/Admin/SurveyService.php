@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\UpdateSurveyRequest;
 use App\Models\Question;
 use App\Models\Survey;
 
-class SurveyService
+class SurveyService extends BaseService
 {
     /**
      * All
@@ -16,9 +16,7 @@ class SurveyService
      */
     public static function all()
     {
-        return Survey::with([
-            'user' => fn($q) => $q->select(['id','name'])
-        ])->get();
+        return Survey::withUser()->paginate(request()->input('per_page', self::$paginate_per_page));
     }
 
     /**
@@ -34,10 +32,7 @@ class SurveyService
         $data['publish_at'] = $data['is_publish'] ? now() : null;
         $survey = Survey::create($data);
 
-        return Survey::with([
-            'user' => fn($q) => $q->select(['id','name'])
-        ])
-            ->find($survey->id);
+        return Survey::withUser()->find($survey->id);
     }
 
     /**
@@ -48,10 +43,7 @@ class SurveyService
      */
     public static function get(Survey $survey)
     {
-        return Survey::with([
-            'user' => fn($q) => $q->select(['id','name'])
-        ])
-            ->find($survey->id);
+        return Survey::withUser()->find($survey->id);
     }
 
     /**
@@ -72,10 +64,7 @@ class SurveyService
 
         $survey->update($data);
 
-        $survey = Survey::with([
-            'user' => fn($q) => $q->select(['id','name'])
-        ])
-            ->find($survey->id);
+        $survey = Survey::withUser()->find($survey->id);
         return $survey;
     }
 

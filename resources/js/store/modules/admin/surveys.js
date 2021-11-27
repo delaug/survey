@@ -3,16 +3,19 @@ import {notify, notifyErrors} from "../../../helpers";
 export default {
     namespaced: true,
     state: () => ({
-        surveys: null,
+        surveys: [],
         survey: null,
         form: null,
         loading: false,
-        id: null
+        id: null,
+
+        current_page: 1,
+        last_page: null,
     }),
     getters: {},
     mutations: {
         SET_SURVEYS(state, payload) {
-            state.surveys = payload
+            state.surveys = [...state.surveys, ...payload]
         },
         SET_SURVEY(state, payload) {
             state.survey = payload
@@ -63,15 +66,27 @@ export default {
         UPDATE_FORM_FIELD(state, payload) {
             state.form[payload.field] = payload.value
         },
+
+        SET_CURRENT_PAGE(state, payload) {
+            state.current_page = payload + 1
+        },
+        SET_LAST_PAGE(state, payload) {
+            state.last_page = payload
+        },
     },
     actions: {
         getSurveys({state, commit}) {
+            if(state.last_page && state.current_page > state.last_page)
+                return false;
+
             state.loading = true
             return new Promise((resolve, reject) => {
                 window.axios.get('/sanctum/csrf-cookie').then(response => {
-                    window.axios.get(`api/v1/admin/surveys`)
+                    window.axios.get(`api/v1/admin/surveys?page=${state.current_page}`)
                         .then(response => {
-                            commit('SET_SURVEYS', response.data)
+                            commit('SET_SURVEYS', response.data.data)
+                            commit('SET_CURRENT_PAGE', response.data.current_page)
+                            commit('SET_LAST_PAGE', response.data.last_page)
                             resolve(response);
                         })
                         .catch(error => {

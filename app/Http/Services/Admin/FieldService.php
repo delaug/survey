@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\StoreFieldRequest;
 use App\Http\Requests\Admin\UpdateFieldRequest;
 use App\Models\Field;
 
-class FieldService
+class FieldService extends BaseService
 {
     /**
      * All
@@ -17,7 +17,7 @@ class FieldService
      */
     public static function all()
     {
-        return Field::get();
+        return Field::paginate(request()->input('per_page', self::$paginate_per_page));
     }
 
     /**

@@ -21101,10 +21101,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _components_Loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Loader */ "./resources/js/components/Loader.vue");
 /* harmony import */ var _components_Admin_ModalConfirmBox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Admin/ModalConfirmBox */ "./resources/js/components/Admin/ModalConfirmBox.vue");
 /* harmony import */ var _components_Admin_ModalFieldForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Admin/ModalFieldForm */ "./resources/js/components/Admin/ModalFieldForm.vue");
+/* harmony import */ var _components_Observer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Observer */ "./resources/js/components/Observer.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -21115,9 +21116,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AdminFields",
   components: {
+    Observer: _components_Observer__WEBPACK_IMPORTED_MODULE_3__["default"],
     ModalFieldForm: _components_Admin_ModalFieldForm__WEBPACK_IMPORTED_MODULE_2__["default"],
     ModalConfirmBox: _components_Admin_ModalConfirmBox__WEBPACK_IMPORTED_MODULE_1__["default"],
     Loader: _components_Loader__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -21125,6 +21128,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       loading: false,
+      loadingPage: false,
       titles: [{
         field: 'id',
         name: 'id'
@@ -21149,7 +21153,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }]
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
     fields: function fields(state) {
       return state.admin.fields.fields;
     },
@@ -21157,11 +21161,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.auth.user;
     }
   })),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapActions)({
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)({
     getQuestions: 'admin/questions/getQuestions',
     getFields: 'admin/fields/getFields',
     deleteField: 'admin/fields/deleteField'
-  })), (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)({
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)({
     setID: 'admin/fields/SET_ID',
     updateFormField: 'admin/fields/UPDATE_FORM_FIELD'
   })), {}, {
@@ -21174,15 +21178,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onDelete: function onDelete(id) {
       this.deleteField(id);
+    },
+    intersected: function intersected() {
+      var _this = this;
+
+      this.loadingPage = true;
+      this.getFields()["finally"](function () {
+        _this.loadingPage = false;
+      });
     }
   }),
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     this.loading = true;
-    this.getQuestions();
-    this.getFields()["finally"](function () {
-      _this.loading = false;
+    this.getQuestions().then(function () {
+      return _this2.loading = false;
     });
   }
 });
@@ -21200,10 +21211,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _components_Loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Loader */ "./resources/js/components/Loader.vue");
 /* harmony import */ var _components_Admin_ModalConfirmBox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Admin/ModalConfirmBox */ "./resources/js/components/Admin/ModalConfirmBox.vue");
 /* harmony import */ var _components_Admin_ModalQuestionForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Admin/ModalQuestionForm */ "./resources/js/components/Admin/ModalQuestionForm.vue");
+/* harmony import */ var _components_Observer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Observer */ "./resources/js/components/Observer.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -21214,9 +21226,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AdminQuestions",
   components: {
+    Observer: _components_Observer__WEBPACK_IMPORTED_MODULE_3__["default"],
     ModalQuestionForm: _components_Admin_ModalQuestionForm__WEBPACK_IMPORTED_MODULE_2__["default"],
     ModalConfirmBox: _components_Admin_ModalConfirmBox__WEBPACK_IMPORTED_MODULE_1__["default"],
     Loader: _components_Loader__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -21224,6 +21238,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       loading: false,
+      loadingPage: false,
       titles: [{
         field: 'id',
         name: 'id'
@@ -21251,7 +21266,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }]
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
     questions: function questions(state) {
       return state.admin.questions.questions;
     },
@@ -21259,12 +21274,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.auth.user;
     }
   })),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapActions)({
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)({
     getSurveys: 'admin/surveys/getSurveys',
     getQuestions: 'admin/questions/getQuestions',
     deleteQuestion: 'admin/questions/deleteQuestion',
     getQuestionTypes: 'admin/question_types/getQuestionTypes'
-  })), (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)({
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)({
     setID: 'admin/questions/SET_ID',
     updateFormField: 'admin/questions/UPDATE_FORM_FIELD'
   })), {}, {
@@ -21277,16 +21292,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onDelete: function onDelete(id) {
       this.deleteQuestion(id);
+    },
+    intersected: function intersected() {
+      var _this = this;
+
+      this.loadingPage = true;
+      this.getQuestions()["finally"](function () {
+        _this.loadingPage = false;
+      });
     }
   }),
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     this.loading = true;
-    this.getQuestionTypes();
-    this.getSurveys();
-    this.getQuestions()["finally"](function () {
-      _this.loading = false;
+    this.getQuestionTypes().then(function () {
+      return _this2.getSurveys().then(function () {
+        return _this2.loading = false;
+      });
     });
   }
 });
@@ -21304,10 +21327,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _components_Loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Loader */ "./resources/js/components/Loader.vue");
 /* harmony import */ var _components_Admin_ModalSurveyForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Admin/ModalSurveyForm */ "./resources/js/components/Admin/ModalSurveyForm.vue");
 /* harmony import */ var _components_Admin_ModalConfirmBox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Admin/ModalConfirmBox */ "./resources/js/components/Admin/ModalConfirmBox.vue");
+/* harmony import */ var _components_Observer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Observer */ "./resources/js/components/Observer.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -21318,9 +21342,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AdminSurveys",
   components: {
+    Observer: _components_Observer__WEBPACK_IMPORTED_MODULE_3__["default"],
     ModalConfirmBox: _components_Admin_ModalConfirmBox__WEBPACK_IMPORTED_MODULE_2__["default"],
     ModalSurveyForm: _components_Admin_ModalSurveyForm__WEBPACK_IMPORTED_MODULE_1__["default"],
     Loader: _components_Loader__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -21328,6 +21354,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   data: function data() {
     return {
       loading: false,
+      loadingPage: false,
       titles: [{
         field: 'id',
         name: 'id'
@@ -21358,7 +21385,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }]
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapState)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapState)({
     surveys: function surveys(state) {
       return state.admin.surveys.surveys;
     },
@@ -21366,11 +21393,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.auth.user;
     }
   })),
-  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapActions)({
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)({
     getUsers: 'admin/users/getUsers',
     getSurveys: 'admin/surveys/getSurveys',
     deleteSurvey: 'admin/surveys/deleteSurvey'
-  })), (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)({
+  })), (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)({
     setID: 'admin/surveys/SET_ID',
     updateFormField: 'admin/surveys/UPDATE_FORM_FIELD'
   })), {}, {
@@ -21387,16 +21414,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onDelete: function onDelete(id) {
       this.deleteSurvey(id);
+    },
+    intersected: function intersected() {
+      var _this = this;
+
+      this.loadingPage = true;
+      this.getSurveys()["finally"](function () {
+        _this.loadingPage = false;
+      });
     }
   }),
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     this.loading = true;
     this.getUsers().then(function () {
-      _this.getSurveys()["finally"](function () {
-        _this.loading = false;
-      });
+      _this2.loading = false;
     });
   }
 });
@@ -23713,6 +23746,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_ui_table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-table");
 
+  var _component_Observer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Observer");
+
   var _component_ModalFieldForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalFieldForm");
 
   var _component_ModalConfirmBox = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalConfirmBox");
@@ -23733,7 +23768,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onOnDelete: $options.showConfirmBox
   }, null, 8
   /* PROPS */
-  , ["data", "titles", "onOnEdit", "onOnDelete"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalFieldForm), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalConfirmBox, {
+  , ["data", "titles", "onOnEdit", "onOnDelete"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Observer, {
+    onIntersect: $options.intersected
+  }, null, 8
+  /* PROPS */
+  , ["onIntersect"]), $data.loadingPage ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Loader, {
+    key: 3
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalFieldForm), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalConfirmBox, {
     text: 'Delete field?',
     ref: "confirmDeleteField",
     onConfirm: $options.onDelete
@@ -23768,6 +23809,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_ui_table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-table");
 
+  var _component_Observer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Observer");
+
   var _component_ModalQuestionForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalQuestionForm");
 
   var _component_ModalConfirmBox = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalConfirmBox");
@@ -23788,7 +23831,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onOnDelete: $options.showConfirmBox
   }, null, 8
   /* PROPS */
-  , ["data", "titles", "onOnEdit", "onOnDelete"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalQuestionForm), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalConfirmBox, {
+  , ["data", "titles", "onOnEdit", "onOnDelete"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Observer, {
+    onIntersect: $options.intersected
+  }, null, 8
+  /* PROPS */
+  , ["onIntersect"]), $data.loadingPage ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Loader, {
+    key: 3
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalQuestionForm), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalConfirmBox, {
     text: 'Delete question?',
     ref: "confirmDeleteQuestion",
     onConfirm: $options.onDelete
@@ -23823,6 +23872,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_ui_table = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ui-table");
 
+  var _component_Observer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Observer");
+
   var _component_ModalSurveyForm = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalSurveyForm");
 
   var _component_ModalConfirmBox = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ModalConfirmBox");
@@ -23843,7 +23894,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onOnDelete: $options.showConfirmBox
   }, null, 8
   /* PROPS */
-  , ["data", "titles", "onOnEdit", "onOnDelete"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalSurveyForm), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalConfirmBox, {
+  , ["data", "titles", "onOnEdit", "onOnDelete"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Observer, {
+    onIntersect: $options.intersected
+  }, null, 8
+  /* PROPS */
+  , ["onIntersect"]), $data.loadingPage ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Loader, {
+    key: 3
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalSurveyForm), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ModalConfirmBox, {
     text: 'Delete survey?',
     ref: "confirmDeleteSurvey",
     onConfirm: $options.onDelete
@@ -24793,17 +24850,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   namespaced: true,
   state: function state() {
     return {
-      fields: null,
+      fields: [],
       field: null,
       form: null,
       loading: false,
-      id: null
+      id: null,
+      current_page: 1,
+      last_page: null
     };
   },
   getters: {},
   mutations: {
     SET_FIELDS: function SET_FIELDS(state, payload) {
-      state.fields = payload;
+      state.fields = [].concat(_toConsumableArray(state.fields), _toConsumableArray(payload));
     },
     SET_FIELD: function SET_FIELD(state, payload) {
       state.field = payload;
@@ -24853,17 +24912,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     UPDATE_FORM_FIELD: function UPDATE_FORM_FIELD(state, payload) {
       state.form[payload.field] = payload.value;
+    },
+    SET_CURRENT_PAGE: function SET_CURRENT_PAGE(state, payload) {
+      state.current_page = payload + 1;
+    },
+    SET_LAST_PAGE: function SET_LAST_PAGE(state, payload) {
+      state.last_page = payload;
     }
   },
   actions: {
     getFields: function getFields(_ref) {
       var state = _ref.state,
           commit = _ref.commit;
+      if (state.last_page && state.current_page > state.last_page) return false;
       state.loading = true;
       return new Promise(function (resolve, reject) {
         window.axios.get('/sanctum/csrf-cookie').then(function (response) {
-          window.axios.get("api/v1/admin/fields").then(function (response) {
-            commit('SET_FIELDS', response.data);
+          window.axios.get("api/v1/admin/fields?page=".concat(state.current_page)).then(function (response) {
+            commit('SET_FIELDS', response.data.data);
+            commit('SET_CURRENT_PAGE', response.data.current_page);
+            commit('SET_LAST_PAGE', response.data.last_page);
             resolve(response);
           })["catch"](function (error) {
             if (error.request.status === 401) {
@@ -25061,17 +25129,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   namespaced: true,
   state: function state() {
     return {
-      questions: null,
+      questions: [],
       question: null,
       form: null,
       loading: false,
-      id: null
+      id: null,
+      current_page: 1,
+      last_page: null
     };
   },
   getters: {},
   mutations: {
     SET_QUESTIONS: function SET_QUESTIONS(state, payload) {
-      state.questions = payload;
+      state.questions = [].concat(_toConsumableArray(state.questions), _toConsumableArray(payload));
     },
     SET_QUESTION: function SET_QUESTION(state, payload) {
       state.question = payload;
@@ -25123,17 +25193,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     UPDATE_FORM_FIELD: function UPDATE_FORM_FIELD(state, payload) {
       state.form[payload.field] = payload.value;
+    },
+    SET_CURRENT_PAGE: function SET_CURRENT_PAGE(state, payload) {
+      state.current_page = payload + 1;
+    },
+    SET_LAST_PAGE: function SET_LAST_PAGE(state, payload) {
+      state.last_page = payload;
     }
   },
   actions: {
     getQuestions: function getQuestions(_ref) {
       var state = _ref.state,
           commit = _ref.commit;
+      if (state.last_page && state.current_page > state.last_page) return false;
       state.loading = true;
       return new Promise(function (resolve, reject) {
         window.axios.get('/sanctum/csrf-cookie').then(function (response) {
-          window.axios.get("api/v1/admin/questions").then(function (response) {
-            commit('SET_QUESTIONS', response.data);
+          window.axios.get("api/v1/admin/questions?page=".concat(state.current_page)).then(function (response) {
+            commit('SET_QUESTIONS', response.data.data);
+            commit('SET_CURRENT_PAGE', response.data.current_page);
+            commit('SET_LAST_PAGE', response.data.last_page);
             resolve(response);
           })["catch"](function (error) {
             if (error.request.status === 401) {
@@ -25331,17 +25410,19 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   namespaced: true,
   state: function state() {
     return {
-      surveys: null,
+      surveys: [],
       survey: null,
       form: null,
       loading: false,
-      id: null
+      id: null,
+      current_page: 1,
+      last_page: null
     };
   },
   getters: {},
   mutations: {
     SET_SURVEYS: function SET_SURVEYS(state, payload) {
-      state.surveys = payload;
+      state.surveys = [].concat(_toConsumableArray(state.surveys), _toConsumableArray(payload));
     },
     SET_SURVEY: function SET_SURVEY(state, payload) {
       state.survey = payload;
@@ -25393,17 +25474,26 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     UPDATE_FORM_FIELD: function UPDATE_FORM_FIELD(state, payload) {
       state.form[payload.field] = payload.value;
+    },
+    SET_CURRENT_PAGE: function SET_CURRENT_PAGE(state, payload) {
+      state.current_page = payload + 1;
+    },
+    SET_LAST_PAGE: function SET_LAST_PAGE(state, payload) {
+      state.last_page = payload;
     }
   },
   actions: {
     getSurveys: function getSurveys(_ref) {
       var state = _ref.state,
           commit = _ref.commit;
+      if (state.last_page && state.current_page > state.last_page) return false;
       state.loading = true;
       return new Promise(function (resolve, reject) {
         window.axios.get('/sanctum/csrf-cookie').then(function (response) {
-          window.axios.get("api/v1/admin/surveys").then(function (response) {
-            commit('SET_SURVEYS', response.data);
+          window.axios.get("api/v1/admin/surveys?page=".concat(state.current_page)).then(function (response) {
+            commit('SET_SURVEYS', response.data.data);
+            commit('SET_CURRENT_PAGE', response.data.current_page);
+            commit('SET_LAST_PAGE', response.data.last_page);
             resolve(response);
           })["catch"](function (error) {
             if (error.request.status === 401) {

@@ -63,4 +63,16 @@ class Question extends Model
     public function answers() {
         return $this->hasMany(Answer::class);
     }
+
+    public function scopeWithType($query) {
+        return $query->with([
+            'type' => fn($q) => $q->select(['id','name'])
+        ]);
+    }
+
+    public function scopeWithSurvey($query) {
+        return $query->with([
+            'survey' => fn($q) => $q->select(['id','title'])
+        ]);
+    }
 }

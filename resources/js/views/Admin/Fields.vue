@@ -10,6 +10,8 @@
         @on-edit="onEdit"
         @on-delete="showConfirmBox"
     />
+    <Observer @intersect="intersected"/>
+    <Loader v-if="loadingPage"/>
     <ModalFieldForm/>
     <ModalConfirmBox :text="'Delete field?'" ref="confirmDeleteField" @confirm="onDelete"/>
 </template>
@@ -19,14 +21,16 @@
     import Loader from "../../components/Loader";
     import ModalConfirmBox from "../../components/Admin/ModalConfirmBox";
     import ModalFieldForm from "../../components/Admin/ModalFieldForm";
+    import Observer from "../../components/Observer";
 
 
     export default {
         name: "AdminFields",
-        components: {ModalFieldForm, ModalConfirmBox, Loader},
+        components: {Observer, ModalFieldForm, ModalConfirmBox, Loader},
         data() {
             return {
                 loading: false,
+                loadingPage: false,
                 titles: [
                     {field: 'id', name: 'id'},
                     {field: 'text', name: 'text'},
@@ -63,14 +67,19 @@
             },
             onDelete(id) {
                 this.deleteField(id)
+            },
+            intersected() {
+                this.loadingPage = true;
+                this.getFields().finally(() => {
+                    this.loadingPage = false
+                })
             }
         },
         mounted() {
             this.loading = true
-            this.getQuestions()
-            this.getFields().finally(() => {
-                this.loading = false
-            })
+            this.getQuestions().then(
+                () => this.loading = false
+            )
         }
     }
 </script>
