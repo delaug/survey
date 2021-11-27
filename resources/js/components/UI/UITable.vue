@@ -3,7 +3,7 @@
         v-if="data"
         class="uk-overflow-auto">
         <table
-            class="uk-table uk-table-small uk-table-striped uk-table-responsive uk-table-hover uk-table-middle uk-table-divider">
+            class="uk-table uk-table-small uk-table-striped uk-table-responsive uk-table-hover uk-table-middle uk-table-divider uk-text-small">
             <thead>
             <tr>
                 <th

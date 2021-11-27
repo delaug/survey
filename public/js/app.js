@@ -21136,7 +21136,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: 'sort'
       }, {
         field: 'question_id',
-        name: 'question'
+        name: 'question_id'
       }, {
         field: 'created_at',
         name: 'created_at'
@@ -21231,11 +21231,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         field: 'sort',
         name: 'sort'
       }, {
-        field: 'type_id',
+        field: 'type',
         name: 'type'
       }, {
         field: 'survey_id',
-        name: 'survey'
+        name: 'survey_id'
       }, {
         field: 'created_at',
         name: 'created_at'
@@ -22980,7 +22980,7 @@ var _hoisted_1 = {
   "class": "uk-overflow-auto"
 };
 var _hoisted_2 = {
-  "class": "uk-table uk-table-small uk-table-striped uk-table-responsive uk-table-hover uk-table-middle uk-table-divider"
+  "class": "uk-table uk-table-small uk-table-striped uk-table-responsive uk-table-hover uk-table-middle uk-table-divider uk-text-small"
 };
 var _hoisted_3 = {
   key: 0,

@@ -31,7 +31,7 @@
                     {field: 'id', name: 'id'},
                     {field: 'text', name: 'text'},
                     {field: 'sort', name: 'sort'},
-                    {field: 'question_id', name: 'question'},
+                    {field: 'question_id', name: 'question_id'},
                     {field: 'created_at', name: 'created_at'},
                     {field: 'updated_at', name: 'updated_at'},
                     {field: 'deleted_at', name: 'deleted_at'},

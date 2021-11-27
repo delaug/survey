@@ -17,7 +17,9 @@ class QuestionService
      */
     public static function all()
     {
-        return Question::get();
+        return Question::with([
+            'type' => fn($q) => $q->select(['id','name'])
+        ])->get();
     }
 
     /**
@@ -31,7 +33,9 @@ class QuestionService
         $data = $request->validated();
         $question = Question::create($data);
 
-        return $question::find($question->id);
+        return Question::with([
+            'type' => fn($q) => $q->select(['id','name'])
+        ])->find($question->id);
     }
 
     /**
@@ -42,7 +46,9 @@ class QuestionService
      */
     public static function get(Question $question)
     {
-        return Question::find($question->id);
+        return Question::with([
+            'type' => fn($q) => $q->select(['id','name'])
+        ])->find($question->id);
     }
 
     /**
@@ -56,7 +62,10 @@ class QuestionService
     {
         $data = $request->validated();
         $question->update($data);
-        $question = Question::find($question->id);
+
+        $question = Question::with([
+            'type' => fn($q) => $q->select(['id','name'])
+        ])->find($question->id);
 
         return $question;
     }
