@@ -1,6 +1,6 @@
 <template>
     <Loader v-if="loading"/>
-    <div v-if="!loading" class="uk-margin">
+    <div v-if="!loading && user" class="uk-margin">
         <button class="uk-button uk-button-primary" type="button" @click="onEdit(null)">New</button>
     </div>
     <ui-table
@@ -39,6 +39,7 @@ import ModalConfirmBox from "../../components/Admin/ModalConfirmBox";
         computed: {
             ...mapState({
                 users: state => state.admin.users.users,
+                user: state => state.auth.user,
             })
         },
         methods: {
