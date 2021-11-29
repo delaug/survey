@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 
 class BaseService
@@ -10,5 +10,5 @@ class BaseService
      * Number elements per page for paginate
      * @var int
      */
-    static $paginate_per_page = 20;
+    protected $paginate_per_page = 20;
 }

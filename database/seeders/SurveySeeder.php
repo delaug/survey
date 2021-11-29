@@ -20,7 +20,7 @@ class SurveySeeder extends Seeder
         Survey::factory(25)->create()->each(
             fn($surveys) => Question::factory(5)->create([
                 'survey_id' => $surveys->id,
-                'type_id' => QuestionType::all()->random()->id
+                'type_id' => fn() => QuestionType::all()->random()->id
             ])->each(
                 fn($question) => Field::factory(4)->create([
                     'question_id' => $question->id

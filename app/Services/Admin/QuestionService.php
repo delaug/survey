@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 
 
@@ -15,9 +15,9 @@ class QuestionService extends BaseService
      *
      * @return Question[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function all()
+    public function all()
     {
-        return Question::withType()->paginate(request()->input('per_page',self::$paginate_per_page));
+        return Question::withType()->paginate(request()->input('per_page',$this->paginate_per_page));
     }
 
     /**
@@ -26,7 +26,7 @@ class QuestionService extends BaseService
      * @param StoreQuestionRequest $request
      * @return mixed
      */
-    public static function create(StoreQuestionRequest $request)
+    public function create(StoreQuestionRequest $request)
     {
         $data = $request->validated();
         $question = Question::create($data);
@@ -40,7 +40,7 @@ class QuestionService extends BaseService
      * @param Question $question
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
-    public static function get(Question $question)
+    public function get(Question $question)
     {
         return Question::withType()->find($question->id);
     }
@@ -52,7 +52,7 @@ class QuestionService extends BaseService
      * @param Question $question
      * @return mixed
      */
-    public static function update(UpdateQuestionRequest $request, Question $question)
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
         $data = $request->validated();
         $question->update($data);
@@ -68,7 +68,7 @@ class QuestionService extends BaseService
      * @param Question $question
      * @return bool
      */
-    public static function delete(Question $question)
+    public function delete(Question $question)
     {
         $question->delete();
         return true;

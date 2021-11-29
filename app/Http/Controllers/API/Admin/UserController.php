@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Facades\Admin\UserFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
-use App\Http\Services\Admin\UserService;
 use App\Models\User;
 use Illuminate\Http\Response;
 
@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = UserService::all();
+        $users = UserFacade::all();
         return response()->json($users, Response::HTTP_OK);
     }
 
@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $user = UserService::create($request);
+        $user = UserFacade::create($request);
         return response()->json($user, Response::HTTP_OK);
     }
 
@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function show(User $subject)
     {
-        $subject = UserService::get($subject);
+        $subject = UserFacade::get($subject);
         return response()->json($subject, Response::HTTP_OK);
     }
 
@@ -60,7 +60,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $subject)
     {
-        $subject = UserService::update($request, $subject);
+        $subject = UserFacade::update($request, $subject);
         return response()->json($subject, Response::HTTP_OK);
     }
 
@@ -72,7 +72,7 @@ class UserController extends Controller
      */
     public function destroy(User $subject)
     {
-        UserService::delete($subject);
+        UserFacade::delete($subject);
         return response()->json(null, Response::HTTP_OK);
     }
 }

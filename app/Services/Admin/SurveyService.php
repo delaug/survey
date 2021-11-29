@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 use App\Http\Requests\Admin\StoreSurveyRequest;
 use App\Http\Requests\Admin\UpdateSurveyRequest;
 use App\Models\Question;
 use App\Models\Survey;
+
 
 class SurveyService extends BaseService
 {
@@ -14,9 +15,9 @@ class SurveyService extends BaseService
      *
      * @return Survey[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function all()
+    public function all()
     {
-        return Survey::withUser()->paginate(request()->input('per_page', self::$paginate_per_page));
+        return Survey::withUser()->paginate(request()->input('per_page', $this->paginate_per_page));
     }
 
     /**
@@ -25,7 +26,7 @@ class SurveyService extends BaseService
      * @param StoreSurveyRequest $request
      * @return mixed
      */
-    public static function create(StoreSurveyRequest $request)
+    public function create(StoreSurveyRequest $request)
     {
         $data = $request->validated();
 
@@ -41,7 +42,7 @@ class SurveyService extends BaseService
      * @param Survey $survey
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
-    public static function get(Survey $survey)
+    public function get(Survey $survey)
     {
         return Survey::withUser()->find($survey->id);
     }
@@ -53,7 +54,7 @@ class SurveyService extends BaseService
      * @param Survey $survey
      * @return mixed
      */
-    public static function update(UpdateSurveyRequest $request, Survey $survey)
+    public function update(UpdateSurveyRequest $request, Survey $survey)
     {
         $data = $request->validated();
 
@@ -74,7 +75,7 @@ class SurveyService extends BaseService
      * @param Survey $survey
      * @return bool
      */
-    public static function delete(Survey $survey)
+    public function delete(Survey $survey)
     {
         $survey->delete();
         return true;
@@ -86,7 +87,7 @@ class SurveyService extends BaseService
      * @param Survey $survey
      * @return mixed
      */
-    public static function getQuestions(Survey $survey)
+    public function getQuestions(Survey $survey)
     {
         $questions = Question::with([
             'fields'

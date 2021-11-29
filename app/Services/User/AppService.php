@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\User;
+namespace App\Services\User;
 
 use App\Http\Requests\User\AnswerStoreRequest;
 use App\Http\Requests\User\QuestionIndexRequest;
@@ -19,7 +19,7 @@ class AppService
      * @param int $survey_id
      * @return int
      */
-    public static function getNextQuestionPageID(int $survey_id): int
+    public function getNextQuestionPageID(int $survey_id): int
     {
         $id = Question::withCount(['userAnswers'])
             ->where(['survey_id' => $survey_id])
@@ -38,7 +38,7 @@ class AppService
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function getSurveys()
+    public function getSurveys()
     {
         return Survey::with([
             'user:id,name,email',
@@ -56,7 +56,7 @@ class AppService
      * @param int $id
      * @return mixed
      */
-    public static function getSurvey(int $id)
+    public function getSurvey(int $id)
     {
         return Survey::withCount(['questions'])
             ->whereNotNull('publish_at')
@@ -69,7 +69,7 @@ class AppService
      * @param QuestionIndexRequest $request
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function getQuestions(QuestionIndexRequest $request)
+    public function getQuestions(QuestionIndexRequest $request)
     {
         $validatedRequest = $request->validated();
 
@@ -93,7 +93,7 @@ class AppService
      * @param AnswerStoreRequest $request
      * @return array
      */
-    public static function setAnswer(AnswerStoreRequest $request)
+    public function setAnswer(AnswerStoreRequest $request)
     {
         $validatedRequest = $request->validated();
 

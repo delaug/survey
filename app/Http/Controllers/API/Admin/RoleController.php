@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Facades\Admin\RoleFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreRoleRequest;
 use App\Http\Requests\Admin\UpdateRoleRequest;
-use App\Http\Services\Admin\RoleService;
 use App\Models\Role;
 use Illuminate\Http\Response;
 
@@ -23,7 +23,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = RoleService::all();
+        $roles = RoleFacade::all();
         return response()->json($roles, Response::HTTP_OK);
     }
 
@@ -35,7 +35,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $role = RoleService::create($request);
+        $role = RoleFacade::create($request);
         return response()->json($role, Response::HTTP_OK);
     }
 
@@ -47,7 +47,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        $role = RoleService::get($role);
+        $role = RoleFacade::get($role);
         return response()->json($role, Response::HTTP_OK);
     }
 
@@ -60,7 +60,7 @@ class RoleController extends Controller
      */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        $role = RoleService::update($request, $role);
+        $role = RoleFacade::update($request, $role);
         return response()->json($role, Response::HTTP_OK);
     }
 
@@ -72,7 +72,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        RoleService::delete($role);
+        RoleFacade::delete($role);
         return response()->json(null, Response::HTTP_OK);
     }
 }

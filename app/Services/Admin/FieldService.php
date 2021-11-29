@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 
 
@@ -15,9 +15,9 @@ class FieldService extends BaseService
      *
      * @return Field[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function all()
+    public function all()
     {
-        return Field::paginate(request()->input('per_page', self::$paginate_per_page));
+        return Field::paginate(request()->input('per_page', $this->paginate_per_page));
     }
 
     /**
@@ -26,7 +26,7 @@ class FieldService extends BaseService
      * @param StoreFieldRequest $request
      * @return mixed
      */
-    public static function create(StoreFieldRequest $request)
+    public function create(StoreFieldRequest $request)
     {
         $data = $request->validated();
         $field = Field::create($data);
@@ -40,7 +40,7 @@ class FieldService extends BaseService
      * @param Field $field
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
-    public static function get(Field $field)
+    public function get(Field $field)
     {
         return Field::find($field->id);
     }
@@ -52,7 +52,7 @@ class FieldService extends BaseService
      * @param Field $field
      * @return mixed
      */
-    public static function update(UpdateFieldRequest $request, Field $field)
+    public function update(UpdateFieldRequest $request, Field $field)
     {
         $data = $request->validated();
         $field->update($data);
@@ -67,7 +67,7 @@ class FieldService extends BaseService
      * @param Field $field
      * @return bool
      */
-    public static function delete(Field $field)
+    public function delete(Field $field)
     {
         $field->delete();
         return true;

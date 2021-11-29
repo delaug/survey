@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API\User;
 
+use App\Facades\User\AppFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\QuestionIndexRequest;
-use App\Http\Services\User\AppService;
 use Illuminate\Http\Response;
 
 class QuestionController extends Controller
@@ -17,7 +17,7 @@ class QuestionController extends Controller
      */
     public function index(QuestionIndexRequest $request)
     {
-        $questions = AppService::getQuestions($request);
+        $questions = AppFacade::getQuestions($request);
         return response()->json($questions, Response::HTTP_OK);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API\User;
 
+use App\Facades\User\AppFacade;
 use App\Http\Controllers\Controller;
-use App\Http\Services\User\AppService;
 use Illuminate\Http\Response;
 
 class SurveyController extends Controller
@@ -15,7 +15,7 @@ class SurveyController extends Controller
      */
     public function index()
     {
-        $surveys = AppService::getSurveys();
+        $surveys = AppFacade::getSurveys();
         return response()->json($surveys, Response::HTTP_OK);
     }
 
@@ -27,7 +27,7 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        $survey = AppService::getSurvey($id);
+        $survey = AppFacade::getSurvey($id);
         return response()->json($survey, Response::HTTP_OK);
     }
 

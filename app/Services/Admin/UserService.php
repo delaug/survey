@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
@@ -13,7 +13,7 @@ class UserService
      *
      * @return User[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function all()
+    public function all()
     {
         return User::with(['roles'])->get();
     }
@@ -24,7 +24,7 @@ class UserService
      * @param StoreUserRequest $request
      * @return mixed
      */
-    public static function create(StoreUserRequest $request)
+    public function create(StoreUserRequest $request)
     {
         $data = $request->validated();
         $data['password'] = bcrypt($data['password']);
@@ -48,7 +48,7 @@ class UserService
      * @param User $subject
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
      */
-    public static function get(User $subject)
+    public function get(User $subject)
     {
         return User::with(['roles'])->find($subject->id);
     }
@@ -60,7 +60,7 @@ class UserService
      * @param User $subject
      * @return mixed
      */
-    public static function update(UpdateUserRequest $request, User $subject)
+    public function update(UpdateUserRequest $request, User $subject)
     {
         $data = $request->validated();
 
@@ -90,7 +90,7 @@ class UserService
      * @param User $subject
      * @return bool
      */
-    public static function delete(User $subject)
+    public function delete(User $subject)
     {
         $subject->delete();
         return true;

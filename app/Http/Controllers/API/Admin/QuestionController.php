@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Facades\Admin\QuestionFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreQuestionRequest;
 use App\Http\Requests\Admin\UpdateQuestionRequest;
-use App\Http\Services\Admin\QuestionService;
 use App\Models\Question;
 use Illuminate\Http\Response;
 
@@ -23,7 +23,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $question = QuestionService::all();
+        $question = QuestionFacade::all();
         return response()->json($question, Response::HTTP_OK);
     }
 
@@ -35,7 +35,7 @@ class QuestionController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        $question = QuestionService::create($request);
+        $question = QuestionFacade::create($request);
         return response()->json($question, Response::HTTP_OK);
     }
 
@@ -47,7 +47,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        $question = QuestionService::get($question);
+        $question = QuestionFacade::get($question);
         return response()->json($question, Response::HTTP_OK);
     }
 
@@ -60,7 +60,7 @@ class QuestionController extends Controller
      */
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $question = QuestionService::update($request, $question);
+        $question = QuestionFacade::update($request, $question);
         return response()->json($question, Response::HTTP_OK);
     }
 
@@ -72,7 +72,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        QuestionService::delete($question);
+        QuestionFacade::delete($question);
         return response()->json(null, Response::HTTP_OK);
     }
 }

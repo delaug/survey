@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Facades\Admin\FieldFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreFieldRequest;
 use App\Http\Requests\Admin\UpdateFieldRequest;
-use App\Http\Services\Admin\FieldService;
 use App\Models\Field;
 use Illuminate\Http\Response;
 
@@ -23,7 +23,7 @@ class FieldController extends Controller
      */
     public function index()
     {
-        $field = FieldService::all();
+        $field = FieldFacade::all();
         return response()->json($field, Response::HTTP_OK);
     }
 
@@ -35,7 +35,7 @@ class FieldController extends Controller
      */
     public function store(StoreFieldRequest $request)
     {
-        $field = FieldService::create($request);
+        $field = FieldFacade::create($request);
         return response()->json($field, Response::HTTP_OK);
     }
 
@@ -47,7 +47,7 @@ class FieldController extends Controller
      */
     public function show(Field $field)
     {
-        $field = FieldService::get($field);
+        $field = FieldFacade::get($field);
         return response()->json($field, Response::HTTP_OK);
     }
 
@@ -60,7 +60,7 @@ class FieldController extends Controller
      */
     public function update(UpdateFieldRequest $request, Field $field)
     {
-        $field = FieldService::update($request, $field);
+        $field = FieldFacade::update($request, $field);
         return response()->json($field, Response::HTTP_OK);
     }
 
@@ -72,7 +72,7 @@ class FieldController extends Controller
      */
     public function destroy(Field $field)
     {
-        FieldService::delete($field);
+        FieldFacade::delete($field);
         return response()->json(null, Response::HTTP_OK);
     }
 }

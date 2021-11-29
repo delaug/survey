@@ -175,6 +175,19 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Admin Service Providers...
+         */
+        App\Providers\Admin\FieldServiceProvider::class,
+        App\Providers\Admin\QuestionServiceProvider::class,
+        App\Providers\Admin\RoleServiceProvider::class,
+        App\Providers\Admin\SurveyServiceProvider::class,
+        App\Providers\Admin\UserServiceProvider::class,
+
+        /*
+         * User Facades...
+         */
+        App\Providers\User\AppServiceProvider::class,
     ],
 
     /*
@@ -229,6 +242,19 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        /*
+         * Admin Facades...
+         */
+        'FieldService' => \App\Facades\Admin\FieldFacade::class,
+        'QuestionService' => \App\Facades\Admin\QuestionFacade::class,
+        'RoleService' => \App\Facades\Admin\RoleFacade::class,
+        'SurveyService' => \App\Facades\Admin\SurveyFacade::class,
+        'UserService' => \App\Facades\Admin\UserFacade::class,
+
+        /*
+         * User Facades...
+         */
+        'AppService' => \App\Facades\User\AppFacade::class,
     ],
 
 ];

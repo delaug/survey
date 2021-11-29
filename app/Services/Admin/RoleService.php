@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Admin;
+namespace App\Services\Admin;
 
 use App\Http\Requests\Admin\StoreRoleRequest;
 use App\Http\Requests\Admin\UpdateRoleRequest;
@@ -13,7 +13,7 @@ class RoleService
      *
      * @return Role[]|\Illuminate\Database\Eloquent\Collection
      */
-    public static function all()
+    public function all()
     {
         return Role::all();
     }
@@ -24,7 +24,7 @@ class RoleService
      * @param StoreRoleRequest $request
      * @return mixed
      */
-    public static function create(StoreRoleRequest $request)
+    public function create(StoreRoleRequest $request)
     {
         return Role::create($request->validated());
     }
@@ -35,7 +35,7 @@ class RoleService
      * @param Role $subject
      * @return Role
      */
-    public static function get(Role $role)
+    public function get(Role $role)
     {
         return $role;
     }
@@ -47,7 +47,7 @@ class RoleService
      * @param Role $role
      * @return mixed
      */
-    public static function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
         $role->update($request->validated());
 
@@ -61,7 +61,7 @@ class RoleService
      * @param Role $subject
      * @return bool
      */
-    public static function delete(Role $role)
+    public function delete(Role $role)
     {
         $role->delete();
         return true;

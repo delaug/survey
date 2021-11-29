@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API\User;
 
+use App\Facades\User\AppFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AnswerStoreRequest;
-use App\Http\Services\User\AppService;
 use Illuminate\Http\Response;
 
 class AnswerController extends Controller
@@ -17,7 +17,7 @@ class AnswerController extends Controller
      */
     public function store(AnswerStoreRequest $request)
     {
-        $data = AppService::setAnswer($request);
+        $data = AppFacade::setAnswer($request);
         return response()->json($data, Response::HTTP_OK);
     }
 }
