@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Admin\SurveyController as AdmSurveyController;
 use App\Http\Controllers\API\Admin\QuestionController as AdmQuestionController;
 use App\Http\Controllers\API\Admin\QuestionTypeController as AdmQuestionTypeController;
 use App\Http\Controllers\API\Admin\FieldController as AdmFieldController;
+use App\Http\Controllers\API\Admin\MediaController as AdmMediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,12 +32,12 @@ Route::prefix('v1')->group(function () {
      */
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::apiResources(['surveys' => SurveyController::class], ['only' => ['index','show']]);
+    Route::apiResources(['surveys' => SurveyController::class], ['only' => ['index', 'show']]);
 
     /*
      * User auth routes
      */
-    Route::group(['middleware'=>'auth:sanctum'], function () {
+    Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
         Route::apiResources(['questions' => QuestionController::class], ['only' => ['index']]);
@@ -60,10 +61,18 @@ Route::prefix('v1')->group(function () {
             'surveys' => ADmSurveyController::class,
             'questions' => AdmQuestionController::class,
             'fields' => AdmFieldController::class,
+
         ],
             ['parameters' => [ 'users' => 'subject']]);
+
+        Route::apiResources(['media' => AdmMediaController::class], [
+            'parameters' => ['media' => 'media'],
+            'except' => ['update']
+        ]);
+
         Route::get('surveys/{survey}/questions', [AdmSurveyController::class, 'indexQuestions']);
         Route::apiResources(['question-types' => AdmQuestionTypeController::class], ['only' => ['index']]);
+
     });
 
     // Unhandled routes

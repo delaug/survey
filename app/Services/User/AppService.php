@@ -42,7 +42,8 @@ class AppService
     {
         return Survey::with([
             'user:id,name,email',
-            'user.roles:id,name'
+            'user.roles:id,name',
+            'media:id,path',
         ])
             ->whereNotNull('publish_at')
             ->withCount('questions')

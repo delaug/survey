@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Field;
+use App\Models\Media;
 use App\Models\Question;
 use App\Models\QuestionType;
 use App\Models\Role;
 use App\Models\Survey;
 use App\Models\User;
 use App\Policies\Admin\FieldPolicy;
+use App\Policies\Admin\MediaPolicy;
 use App\Policies\Admin\QuestionPolicy;
 use App\Policies\Admin\QuestionTypePolicy;
 use App\Policies\Admin\RolePolicy;
@@ -32,6 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         Question::class => QuestionPolicy::class,
         QuestionType::class => QuestionTypePolicy::class,
         Field::class => FieldPolicy::class,
+        Media::class => MediaPolicy::class,
     ];
 
     /**

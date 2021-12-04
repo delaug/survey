@@ -1,6 +1,6 @@
 <template>
     <div v-if="question" class="uk-card uk-card-default uk-margin">
-        <div class="uk-card-media-top" :style="'width: 100%; height: 250px; background: url('+randImageSrc()+') no-repeat center/cover;'">
+        <div class="uk-card-media-top" :style="'width: 100%; height: 250px; background: url('+survey.img+') no-repeat center/cover;'">
         </div>
         <div class="uk-card-header">
             <div class="uk-grid-small uk-flex-middle" uk-grid>
@@ -39,7 +39,6 @@
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex';
     import FieldsList from "./FieldsList";
-    import {randImageSrc} from "../../helpers";
 
     export default {
         name: "Question",
@@ -56,7 +55,6 @@
             }
         },
         methods: {
-            randImageSrc,
             ...mapActions({
                 getQuestion: 'questions/getQuestion',
                 getNext: 'questions/getNext',

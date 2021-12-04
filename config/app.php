@@ -183,6 +183,7 @@ return [
         App\Providers\Admin\RoleServiceProvider::class,
         App\Providers\Admin\SurveyServiceProvider::class,
         App\Providers\Admin\UserServiceProvider::class,
+        App\Providers\Admin\MediaServiceProvider::class,
 
         /*
          * User Facades...
@@ -250,6 +251,7 @@ return [
         'RoleService' => \App\Facades\Admin\RoleFacade::class,
         'SurveyService' => \App\Facades\Admin\SurveyFacade::class,
         'UserService' => \App\Facades\Admin\UserFacade::class,
+        'MediaService' => \App\Facades\Admin\MediaFacade::class,
 
         /*
          * User Facades...

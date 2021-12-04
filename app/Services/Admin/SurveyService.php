@@ -17,7 +17,7 @@ class SurveyService extends BaseService
      */
     public function all()
     {
-        return Survey::withUser()->paginate(request()->input('per_page', $this->paginate_per_page));
+        return Survey::withUser()->withMedia()->paginate(request()->input('per_page', $this->paginate_per_page));
     }
 
     /**
@@ -33,7 +33,7 @@ class SurveyService extends BaseService
         $data['publish_at'] = $data['is_publish'] ? now() : null;
         $survey = Survey::create($data);
 
-        return Survey::withUser()->find($survey->id);
+        return Survey::withUser()->withMedia()->find($survey->id);
     }
 
     /**
@@ -44,7 +44,7 @@ class SurveyService extends BaseService
      */
     public function get(Survey $survey)
     {
-        return Survey::withUser()->find($survey->id);
+        return Survey::withUser()->withMedia()->find($survey->id);
     }
 
     /**
@@ -65,7 +65,7 @@ class SurveyService extends BaseService
 
         $survey->update($data);
 
-        $survey = Survey::withUser()->find($survey->id);
+        $survey = Survey::withUser()->withMedia()->find($survey->id);
         return $survey;
     }
 

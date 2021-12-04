@@ -2,7 +2,7 @@
     <div class="uk-card uk-card-medium uk-card-default uk-card-hover uk-grid-collapse uk-child-width-1-2@s uk-margin"
          uk-grid>
         <div :class="[evenOdd ? 'uk-card-media-left':'uk-card-media-right uk-flex-last@s', 'uk-cover-container']">
-            <img :src="randImageSrc()" alt="" uk-cover>
+            <img :src="survey.img" alt="" uk-cover>
         </div>
         <div>
             <div class="uk-card-header">
@@ -45,8 +45,6 @@
     import {mapGetters, mapState} from 'vuex';
     import router from "../../router";
 
-    import {randImageSrc} from "../../helpers";
-
     export default {
         name: "SurveyItem",
         props: {
@@ -76,7 +74,6 @@
             }
         },
         methods: {
-            randImageSrc,
             onTakeSurvey() {
                 router.push({name: 'survey.detail', params: {id: this.survey.id}})
             },
