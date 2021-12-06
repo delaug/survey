@@ -42,16 +42,11 @@ class Survey extends Model
         'updated_at' => 'date:Y-m-d H:i:s',
     ];
 
-    protected $appends = ['answers_to_questions_count','img'];
+    protected $appends = ['answers_to_questions_count'];
 
     public function getAnswersToQuestionsCountAttribute()
     {
         return $this->answersToQuestionsCount();
-    }
-
-    public function getImgAttribute()
-    {
-        return Storage::url($this->media->path);
     }
 
     public function answersToQuestionsCount()

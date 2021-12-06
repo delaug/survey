@@ -32,6 +32,7 @@
                 loadingPage: false,
                 titles: [
                     {field: 'id', name: 'id'},
+                    {field: 'img', name: 'img', type: 'img'},
                     {field: 'title', name: 'title'},
                     {field: 'description', name: 'description'},
                     {field: 'publish_at', name: 'publish_at'},

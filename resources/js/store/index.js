@@ -9,6 +9,7 @@ import admSurveys from "./modules/admin/surveys";
 import admQuestions from "./modules/admin/questions";
 import admQuestionTypes from "./modules/admin/question_types";
 import admFields from "./modules/admin/fields";
+import admMedia from "./modules/admin/media";
 
 const admin = {
     namespaced: true,
@@ -19,6 +20,7 @@ const admin = {
         'questions': admQuestions,
         'question_types': admQuestionTypes,
         'fields': admFields,
+        'media': admMedia,
     }
 }
 

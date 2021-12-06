@@ -18,7 +18,7 @@ class CreateSurveysTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('media_id')->constrained();
+            $table->foreignId('media_id')->nullable();
             $table->timestamp('publish_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

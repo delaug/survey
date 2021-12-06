@@ -27,6 +27,7 @@ class StoreSurveyRequest extends FormRequest
             'title' => ['required','string','max:255'],
             'description' => ['required','string','max:255'],
             'user_id' => ['required','exists:users,id'],
+            'media_id' => ['nullable','exists:media,id'],
             'is_publish' => ['boolean'],
         ];
     }

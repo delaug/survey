@@ -21,7 +21,13 @@
                 <td
                     v-for="(val, idx) in titles" :key="'td_'+idx"
                 >
-                    {{ prepareVal(idx, row[val.field]) }}
+                    <template v-if="!val.type">
+                        {{ prepareVal(idx, row[val.field]) }}
+                    </template>
+                    <template v-else-if="val.type == 'img'">
+                        <img v-if="row.media" class="uk-preserve-width" :src="row.media.public_path" width="120" alt="">
+                        <span v-else>null</span>
+                    </template>
                 </td>
                 <td v-if="colActions" class="uk-text-nowrap uk-text-center">
                     <a

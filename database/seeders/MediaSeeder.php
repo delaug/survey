@@ -14,7 +14,7 @@ class MediaSeeder extends Seeder
      */
     public function run()
     {
-        MediaFacade::dropMedia();
+        MediaFacade::deleteMediaFiles();
         MediaFacade::import();
     }
 }

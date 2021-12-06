@@ -9,8 +9,23 @@
             <div class="uk-modal-header">
                 <h2 class="uk-modal-title">Survey: {{id ? 'Edit' : 'New'}}</h2>
             </div>
+            <div v-if="form && form.media && form.media.public_path" class="uk-card-media-top">
+                <ul class="uk-iconnav panel-image-tools">
+                    <li><a href="javascript:;" uk-icon="icon: link" @click="onDetachMedia"></a></li>
+                </ul>
+                <img :src="form.media.public_path" alt=""/>
+            </div>
             <div class="uk-modal-body">
                 <Loader v-if="loading"/>
+
+                <div v-if="form && !form.media" class="uk-margin">
+                    <div uk-form-custom>
+                        <input type="file" @change="onUpload">
+                        <button class="uk-button uk-button-default" type="button" tabindex="-1"><span
+                            uk-icon="icon: upload"></span> Upload
+                        </button>
+                    </div>
+                </div>
 
                 <ui-input
                     :id="'title'"
@@ -85,6 +100,7 @@
                 postSurvey: 'admin/surveys/postSurvey',
                 updateSurvey: 'admin/surveys/updateSurvey',
                 deleteSurvey: 'admin/surveys/deleteSurvey',
+                postMedia: 'admin/media/postMedia',
             }),
             ...mapMutations({
                 updateFormField: 'admin/surveys/UPDATE_FORM_FIELD',
@@ -104,6 +120,16 @@
                         .then(() => this.UIkit.modal('#modal-survey-form').hide())
                     : this.postSurvey()
                         .then(() => this.UIkit.modal('#modal-survey-form').hide())
+            },
+            onUpload(event) {
+                this.postMedia(event.target.files[0]).then(response => {
+                    this.updateFormField({field: 'media', value: response.data})
+                    this.updateFormField({field: 'media_id', value: response.data.id})
+                })
+            },
+            onDetachMedia() {
+                this.updateFormField({field: 'media', value: null})
+                this.updateFormField({field: 'media_id', value: null})
             }
         }
     }
@@ -113,5 +139,13 @@
     .uk-modal-header, .uk-modal-footer {
         background: #f8f8f8;
 
+    }
+
+    .panel-image-tools {
+        position: absolute;
+        right: 0;
+        background-color: white;
+        padding: 10px;
+        padding-left: unset;
     }
 </style>

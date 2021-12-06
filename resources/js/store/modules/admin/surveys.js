@@ -47,7 +47,9 @@ export default {
                 title: '',
                 description: '',
                 user_id: null,
+                media_id: null,
                 is_publish: false,
+                media: null,
             }
 
             if (payload) {
@@ -58,7 +60,9 @@ export default {
                             title: state.survey.title,
                             description: state.survey.description,
                             user_id: state.survey.user_id,
+                            media_id: state.survey.media_id,
                             is_publish: state.survey.publish_at ? true : false,
+                            media: state.survey.media,
                         }
                     });
             }

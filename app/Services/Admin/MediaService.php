@@ -13,23 +13,12 @@ class MediaService extends BaseService
     private $importPath = 'public/import';
 
     /**
-     * Get public path
-     *
-     * @return string
-     */
-    public function getMediaPath()
-    {
-        return $this->mediaPath;
-    }
-
-    /**
      * All
      *
      * @return Media[]|\Illuminate\Database\Eloquent\Collection
      */
     public function all()
     {
-        $this->import();
         return Media::paginate(request()->input('per_page', $this->paginate_per_page));
     }
 
@@ -102,7 +91,7 @@ class MediaService extends BaseService
             // File prepare data
             $storagePath = storage_path('app/' . $path);
 
-            $fileHash = \Illuminate\Support\Facades\File::hash($storagePath);
+            $fileHash = hash('SHA1', $storagePath);
             $fileName = \Illuminate\Support\Facades\File::name($storagePath);
             $fileExtension = \Illuminate\Support\Facades\File::extension($storagePath);
             $fileSize = \Illuminate\Support\Facades\File::size($storagePath);
@@ -126,7 +115,7 @@ class MediaService extends BaseService
      * Deleted all media files
      * Using when need clean catalog (Before seeding)
      */
-    public function dropMedia()
+    public function deleteMediaFiles()
     {
         Storage::deleteDirectory($this->mediaPath);
     }
